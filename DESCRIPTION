@@ -1,0 +1,9 @@
+Package: TextWiller
+Type: Package
+Title: Collection of functions for text mining, specially devoted to the italian language
+Version: 1.0
+Date: 2013-12-19
+Author: Dario Solari, Livio Finos, Matteo Redaelli, Marco Rinaldo
+Maintainer: dario solari <dario.solari@gmail.com>
+Description: Collection of functions for text mining, specially devoted to the italian language
+License: GPL (>= 2)
