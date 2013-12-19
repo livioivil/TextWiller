@@ -1,0 +1,19 @@
+TextWiller
+==========
+
+Collection of functions for text mining, specially devoted to the italian language
+
+======
+
+dev for R package TextWiller.
+
+Install it in R using the following command
+
+install.packages("devtools")
+
+library(devtools)
+
+install_github("TextWiller", "livioivil")
+
+library(TextWiller)
+
