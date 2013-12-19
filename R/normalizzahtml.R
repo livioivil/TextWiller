@@ -1,5 +1,5 @@
 normalizzahtml <-
-function(testo, ...){
+function(testo){
 	
    y = NA
    try_error = tryCatch(tolower(testo), error=function(e) e)
@@ -28,6 +28,5 @@ testo <- gsub("\u0093",'"',testo,fixed=TRUE)
 testo <- gsub("\u0094",'"',testo,fixed=TRUE)
 
 testo <- gsub("[[:blank:]]+"," ",testo, perl=TRUE)
-    y <- testo
-    return(y)
+testo
 	}

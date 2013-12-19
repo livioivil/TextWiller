@@ -1,11 +1,11 @@
 \name{classificaUtenti}
 \alias{classificaUtenti}
+\alias{vocabolarioNomiProri}
 %- Also NEED an '\alias' for EACH other topic documented here.
-\title{
-%%  ~~function to do ... ~~
+\title{Associa i nomi in names ai valori indicati da vocabolarioNomiProri
 }
 \description{
-%%  ~~ A concise (1-5 lines) description of what the function does. ~~
+Associa i nomi in names ai valori indicati da vocabolarioNomiProri (per esempio, assegna il genere. vedi esempio)
 }
 \usage{
 classificaUtenti(names, vocabolarioNomiProri)
@@ -13,63 +13,25 @@ classificaUtenti(names, vocabolarioNomiProri)
 %- maybe also 'usage' for other objects documented here.
 \arguments{
   \item{names}{
-%%     ~~Describe \code{names} here~~
+vettore di nomi
 }
   \item{vocabolarioNomiProri}{
-%%     ~~Describe \code{vocabolarioNomiProri} here~~
+data.frame di una colonna con la classificazione da associare. I row.names devono essere unici (sono i nomi propri su cui viene fatto il controllo). il vocabolario fornito da noi è \code{vocabolarioNomiProri}
 }
 }
 \details{
-%%  ~~ If necessary, more details than the description above ~~
+vedi esempio sotto
 }
 \value{
-%%  ~Describe the value returned
-%%  If it is a LIST, use
-%%  \item{comp1 }{Description of 'comp1'}
-%%  \item{comp2 }{Description of 'comp2'}
-%% ...
+caccia fuori un named vector con elementi da c('masc','femm','ente')
 }
-\references{
-%% ~put references to the literature/web site here ~
-}
+
 \author{
-%%  ~~who you are~~
-}
-\note{
-%%  ~~further notes~~
-}
-
-%% ~Make other sections like Warning with \section{Warning }{....} ~
-
-\seealso{
-%% ~~objects to See Also as \code{\link{help}}, ~~~
+Livio, Andrea Mamprin, Dario Solari
 }
 \examples{
-##---- Should be DIRECTLY executable !! ----
-##-- ==>  Define data, use random,
-##--	or do  help(data=index)  for the standard data sets.
 
-## The function is currently defined as
-function (names, vocabolarioNomiProri) 
-{
-    data(nomi)
-    classNomi = sapply(names, function(txt) {
-        class = as.character(nomi[strsplit(txt, " |,|'|_")[[1]], 
-            ])
-        class = class[!is.na(class)]
-        if (length(class) == 0) 
-            classtab = NA
-        else if (length(class) == 1) 
-            classtab = class
-        else {
-            classtab = table(class)
-            classtab = names(classtab[classtab == max(classtab)])
-            if (length(class) > 1) 
-                classtab = NA
-        }
-        classtab
-    })
-  }
+classificaUtenti(c('livio','alessandra'), vocabolarioNomiProri)
 }
 % Add one or more standard keywords, see file 'KEYWORDS' in the
 % R documentation directory.

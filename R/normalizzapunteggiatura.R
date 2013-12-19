@@ -1,5 +1,5 @@
 normalizzapunteggiatura <-
-function(testo, ...){
+function(testo){
 	
 	testo <- paste(" ",testo," ", sep="")
 	testo <- gsub("#\\s+", "#", testo, perl=TRUE)
@@ -49,38 +49,7 @@ function(testo, ...){
 	testo <- gsub("[}]"," ",testo,perl=TRUE)
 	testo <- gsub("[[]"," ",testo,perl=TRUE)
 	testo <- gsub("[]]"," ",testo,perl=TRUE)
-	
-# da normalizzatesto.R
-
-	testo <- gsub("\010" ," ", testo, fixed=TRUE, useBytes=TRUE)	
-	testo <- gsub("\011" ," ", testo, fixed=TRUE, useBytes=TRUE)
-	testo <- gsub("\012" ,' ', testo, fixed=TRUE, useBytes=TRUE)	
-	testo <- gsub("\013" ,' ', testo, fixed=TRUE, useBytes=TRUE)
-	testo <- gsub("\014" ,' ', testo, fixed=TRUE, useBytes=TRUE)
-	testo <- gsub("\015" ,' ', testo, fixed=TRUE, useBytes=TRUE)
-	testo <- gsub("\016" ,' ', testo, fixed=TRUE, useBytes=TRUE)				
-	testo <- gsub("\017" ," ", testo, fixed=TRUE, useBytes=TRUE)
-	testo <- gsub("\018" ,' ', testo, fixed=TRUE, useBytes=TRUE)
-	testo <- gsub("\019" ,' ', testo, fixed=TRUE, useBytes=TRUE)
-	testo <- gsub("\020" ," ", testo, fixed=TRUE, useBytes=TRUE)	
-	testo <- gsub("\021" ," ", testo, fixed=TRUE, useBytes=TRUE)
-	testo <- gsub("\022" ,' ', testo, fixed=TRUE, useBytes=TRUE)	
-	testo <- gsub("\023" ,' ', testo, fixed=TRUE, useBytes=TRUE)
-	testo <- gsub("\024" ,' ', testo, fixed=TRUE, useBytes=TRUE)
-	testo <- gsub("\025" ,' ', testo, fixed=TRUE, useBytes=TRUE)
-	testo <- gsub("\026" ,' ', testo, fixed=TRUE, useBytes=TRUE)				
-	testo <- gsub("\027" ," ", testo, fixed=TRUE, useBytes=TRUE)
-	testo <- gsub("\028" ,' ', testo, fixed=TRUE, useBytes=TRUE)
-	testo <- gsub("\029" ,' ', testo, fixed=TRUE, useBytes=TRUE)				
-	testo <- gsub("\030" ," ", testo, fixed=TRUE, useBytes=TRUE)	
-	testo <- gsub("\031" ," ", testo, fixed=TRUE, useBytes=TRUE)
-	testo <- gsub("\032" ," ", testo, fixed=TRUE, useBytes=TRUE)
-	testo <- gsub("\033" ," ", testo, fixed=TRUE, useBytes=TRUE)		
-	testo <- gsub("\034" ," ", testo, fixed=TRUE, useBytes=TRUE)
-	testo <- gsub("\035" ," ", testo, fixed=TRUE, useBytes=TRUE)
-	testo <- gsub("\036" ," ", testo, fixed=TRUE, useBytes=TRUE)
-	testo <- gsub("\037" ," ", testo, fixed=TRUE, useBytes=TRUE)	
 
 	testo <- gsub("\\s+", " ", testo, perl=TRUE)
-
+testo
 	}

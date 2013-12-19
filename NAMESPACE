@@ -1,4 +1,2 @@
 exportPattern("^[[:alpha:]]+")
-
-
-importFrom(tm, stopwords)
+export(.itastopwords)

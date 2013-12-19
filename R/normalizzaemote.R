@@ -1,5 +1,5 @@
 normalizzaemote <-
-function(testo, ...){
+function(testo){
 	# EMOTEGOOD :) :-) :] :-] =) =] => :> ^^ ^_^ ^-^ ^o^ : ) (: :'D
 testo <- gsub("\\:\\)+|\\:\\-\\)+|\\:\\]+|\\:\\-\\]+|\\=\\)+|\\=\\]+|\\=\\>|\\:\\>|\\^\\^|\\^\\_+\\^|\\^\\-\\^|\\^\\o\\^|\\:[[:blank:]]\\)+|[[:blank:]]\\([[:blank:]]?\\:|\\:\\'D+",' EMOTEGOOD ', testo, perl=TRUE)	
 
@@ -40,5 +40,5 @@ testo <- gsub("\\:P+[^e]|\\:p+[^e]|\\=P+|\\=p+|XD+|xD+|xd+|[[:blank:]]d\\:",' EM
 testo <- gsub("#0_o"," EMOTESHOCK ",testo, perl=TRUE)
 
 testo <- gsub("[[:blank:]]+"," ",testo, perl=TRUE)
-
+testo
 	}

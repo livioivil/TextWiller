@@ -1,13 +1,10 @@
 tryTolower <-
-function(x)
+function(testo)
 {
-   # create missing value
-   y = NA
    # tryCatch error
-   try_error = tryCatch(tolower(x), error=function(e) e)
+   try_error = tryCatch(tolower(testo), error=function(e) e)
    # if not an error
    if (!inherits(try_error, "error"))
-      y = tolower(x)
-   # result
-   return(y)
+      testo = tolower(testo) else NA
+   
 }

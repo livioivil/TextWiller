@@ -1,5 +1,5 @@
 normalizzaslang <-
-function(testo, ...){
+function(testo){
 	
 	testo <- gsub(" (#?zz+|#?u+ff[aif]+?|#?r+o+n+f+|#uff|ronf) "," EMOTEZZZ ",testo, perl=TRUE, ignore.case=TRUE)
 	testo <- gsub(" (#?sii+|#si+|#?yes+|#?sìì+) "," EMOTESIII ",testo, perl=TRUE, ignore.case=TRUE)	
@@ -37,5 +37,5 @@ function(testo, ...){
 	testo <- gsub(" x(ch|k)[éeè] "," perchè ",testo, perl=TRUE, ignore.case=TRUE)
 	testo <- gsub(" nn "," non ",testo, perl=TRUE, ignore.case=TRUE)
 	testo <- gsub(" nun "," non ",testo, perl=TRUE, ignore.case=TRUE)	
-				
+		testo		
 	}
