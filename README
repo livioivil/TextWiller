@@ -1,0 +1,15 @@
+TextWiller
+
+======
+
+dev for R package TextWiller.
+
+Install it in R using the following command
+
+install.packages("devtools")
+
+library(devtools)
+
+install_github("TextWiller", "livioivil")
+
+library(TextWiller)
