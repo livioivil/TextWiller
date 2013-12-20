@@ -1,6 +1,0 @@
-##una volta nella cartella github/TextWiller digitare:
-git checkout
-git add .
-git commit -m "debug"
-git push
-
