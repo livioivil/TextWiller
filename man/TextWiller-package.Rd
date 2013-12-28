@@ -29,5 +29,5 @@ Maintainer: dario solari <dario.solari@gmail.com>
 }
 \examples{
 
-classificaUtenti(c('livio','alessandra'), vocabolarioNomiProri)
+classificaUtenti(c('livio','alessandra'), vocabolarioNomiPropri)
 }

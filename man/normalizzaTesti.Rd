@@ -14,8 +14,8 @@
 Varie funzioni di normalizzazione del testo
 }
 \usage{
-normalizzaTesti(testo,  tolower = TRUE, normalizzahtml = TRUE)
-normalizzacaratteri(testo)
+normalizzaTesti(testo, tolower = TRUE, normalizzahtml = TRUE)
+normalizzacaratteri(testo, fromToCharTab = NULL)
 normalizzapunteggiatura(testo)
 normalizzaslang(testo)
 normalizzahtml(testo)
@@ -32,6 +32,9 @@ TRUE/FALSE
 }
   \item{normalizzahtml}{
 TRUE/FALSE
+}
+  \item{romToCharTab}{
+A \code{character matrix} with two named columns: \code{from} and \code{to}. if it is \code{NULL}, the default \code{gsubCharTab} is used.
 }
 }
 \details{
@@ -55,7 +58,7 @@ Dario Solari, Livio Finos
 %% ~Make other sections like Warning with \section{Warning }{....} ~
 
 \examples{
- normalizzaTesti(c('ciao bella! :)','www.associazionerospo.net','ciò che bel'))
+ normalizzaTesti(c('ciao bella! :)','www.associazionerospo.org','ciò che bel'))
 }
 % Add one or more standard keywords, see file 'KEYWORDS' in the
 % R documentation directory.

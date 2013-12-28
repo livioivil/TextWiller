@@ -1,22 +1,22 @@
 \name{classificaUtenti}
 \alias{classificaUtenti}
-\alias{vocabolarioNomiProri}
+\alias{vocabolarioNomiPropri}
 %- Also NEED an '\alias' for EACH other topic documented here.
-\title{Associa i nomi in names ai valori indicati da vocabolarioNomiProri
+\title{Associa i nomi in names ai valori indicati da vocabolarioNomiPropri
 }
 \description{
-Associa i nomi in names ai valori indicati da vocabolarioNomiProri (per esempio, assegna il genere. vedi esempio)
+Associa i nomi in names ai valori indicati da vocabolarioNomiPropri (per esempio, assegna il genere. vedi esempio)
 }
 \usage{
-classificaUtenti(names, vocabolarioNomiProri)
+classificaUtenti(names, vocabolarioNomiPropri)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
   \item{names}{
 vettore di nomi
 }
-  \item{vocabolarioNomiProri}{
-data.frame di una colonna con la classificazione da associare. I row.names devono essere unici (sono i nomi propri su cui viene fatto il controllo). il vocabolario fornito da noi è \code{vocabolarioNomiProri}
+  \item{vocabolarioNomiProPri}{
+data.frame di una colonna con la classificazione da associare. I row.names devono essere unici (sono i nomi propri su cui viene fatto il controllo). il vocabolario fornito da noi è \code{vocabolarioNomiProPri}
 }
 }
 \details{
@@ -31,7 +31,7 @@ Livio, Andrea Mamprin, Dario Solari
 }
 \examples{
 
-classificaUtenti(c('livio','alessandra'), vocabolarioNomiProri)
+classificaUtenti(c('livio','alessandra'), vocabolarioNomiProPri)
 }
 % Add one or more standard keywords, see file 'KEYWORDS' in the
 % R documentation directory.
