@@ -15,8 +15,8 @@ classificaUtenti(names, vocabolarioNomiPropri)
   \item{names}{
 vettore di nomi
 }
-  \item{vocabolarioNomiProPri}{
-data.frame di una colonna con la classificazione da associare. I row.names devono essere unici (sono i nomi propri su cui viene fatto il controllo). il vocabolario fornito da noi è \code{vocabolarioNomiProPri}
+  \item{vocabolarioNomiPropri}{
+data.frame di una colonna con la classificazione da associare. I row.names devono essere unici (sono i nomi propri su cui viene fatto il controllo). il vocabolario fornito da noi è \code{vocabolarioNomiPropri}
 }
 }
 \details{
