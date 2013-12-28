@@ -15,7 +15,7 @@ Varie funzioni di normalizzazione del testo
 }
 \usage{
 normalizzaTesti(testo, tolower = TRUE, normalizzahtml = TRUE)
-normalizzacaratteri(testo, fromToCharTab = NULL)
+normalizzacaratteri(testo)
 normalizzapunteggiatura(testo)
 normalizzaslang(testo)
 normalizzahtml(testo)
@@ -32,9 +32,6 @@ TRUE/FALSE
 }
   \item{normalizzahtml}{
 TRUE/FALSE
-}
-  \item{romToCharTab}{
-A \code{character matrix} with two named columns: \code{from} and \code{to}. if it is \code{NULL}, the default \code{gsubCharTab} is used.
 }
 }
 \details{

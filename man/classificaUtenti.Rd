@@ -31,7 +31,7 @@ Livio, Andrea Mamprin, Dario Solari
 }
 \examples{
 
-classificaUtenti(c('livio','alessandra'), vocabolarioNomiProPri)
+classificaUtenti(c('livio','alessandra'), vocabolarioNomiPropri)
 }
 % Add one or more standard keywords, see file 'KEYWORDS' in the
 % R documentation directory.
