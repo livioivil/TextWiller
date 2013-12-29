@@ -18,7 +18,7 @@ normalizzaTesti <- function(testo, tolower=TRUE,normalizzahtml=TRUE){
   
 	# pulizia testo preliminare (html)
 	#source(paste(functiondir,"/normalizzahtml.R",sep=""), .GlobalEnv)
-	if(tolower) testo <- normalizzahtml(testo)
+	if(normalizzahtml) testo <- normalizzahtml(testo)
 
 	# identifica emote
 	#source(paste(functiondir,"/normalizzaemote.R",sep=""), .GlobalEnv)
