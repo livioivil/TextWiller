@@ -1,16 +1,16 @@
-
-normalizzacaratteri <- function(testo, ...){
+normalizzacaratteri <-
+function(testo){
 	# fonte: http://www.utf8-chartable.de/
 	#        http://www.utf8-chartable.de/unicode-utf8-table.pl?start=4736&number=128&utf8=string-literal&unicodeinhtml=dec
 	
 	# test: http://www.utf8-chartable.de/unicode-utf8-table.pl
-	testo <- gsub("\xc3\xa0" ,"ââ", testo, fixed=TRUE, useBytes=TRUE)
-	testo <- gsub("\xc3\xa8" ,"â®", testo, fixed=TRUE, useBytes=TRUE)
-	testo <- gsub("\xc3\xa9" ,"â©", testo, fixed=TRUE, useBytes=TRUE)
-	testo <- gsub("\xc3\xac" ,"â¨", testo, fixed=TRUE, useBytes=TRUE)
+	testo <- gsub("\xc3\xa0" ,"à", testo, fixed=TRUE, useBytes=TRUE)
+	testo <- gsub("\xc3\xa8" ,"è", testo, fixed=TRUE, useBytes=TRUE)
+	testo <- gsub("\xc3\xa9" ,"é", testo, fixed=TRUE, useBytes=TRUE)
+	testo <- gsub("\xc3\xac" ,"ì", testo, fixed=TRUE, useBytes=TRUE)
 	testo <- gsub("\xc3\xad" ,"i", testo, fixed=TRUE, useBytes=TRUE)	
-	testo <- gsub("\xc3\xb2" ,"ââ", testo, fixed=TRUE, useBytes=TRUE) 	
-	testo <- gsub("\xc3\xba" ,"âÏ", testo, fixed=TRUE, useBytes=TRUE)  
+	testo <- gsub("\xc3\xb2" ,"ò", testo, fixed=TRUE, useBytes=TRUE) 	
+	testo <- gsub("\xc3\xba" ,"ù", testo, fixed=TRUE, useBytes=TRUE)  
 
 	
 	testo <- gsub("\001" ," ", testo, fixed=TRUE, useBytes=TRUE)
@@ -77,7 +77,7 @@ normalizzacaratteri <- function(testo, ...){
 	testo <- gsub("\x9d" ," ", testo, fixed=TRUE, useBytes=TRUE)	
 	testo <- gsub("\x9e" ," ", testo, fixed=TRUE, useBytes=TRUE)	
 	testo <- gsub("\x9f" ," ", testo, fixed=TRUE, useBytes=TRUE)							
-	testo <- gsub("â¨\xa0" ," ", testo, fixed=TRUE, useBytes=TRUE) # strange	
+	testo <- gsub("ì\xa0" ," ", testo, fixed=TRUE, useBytes=TRUE) # strange	
 	testo <- gsub("\xa0" ," ", testo, fixed=TRUE, useBytes=TRUE)
 	testo <- gsub("\xa1" ,"!", testo, fixed=TRUE, useBytes=TRUE)	
 	testo <- gsub("\xa2" ," ", testo, fixed=TRUE, useBytes=TRUE)	
@@ -112,33 +112,33 @@ normalizzacaratteri <- function(testo, ...){
 	testo <- gsub("\xbf" ,"?", testo, fixed=TRUE, useBytes=TRUE)
 	testo <- gsub("\xc0" ,"A", testo, fixed=TRUE, useBytes=TRUE) # modified		
 	testo <- gsub("\xc1" ,"A", testo, fixed=TRUE, useBytes=TRUE) # modified	
-	testo <- gsub("\xc2" ,"ââ", testo, fixed=TRUE, useBytes=TRUE) # modified		
-	testo <- gsub("\xc3" ,"â®", testo, fixed=TRUE, useBytes=TRUE)
+	testo <- gsub("\xc2" ,"à", testo, fixed=TRUE, useBytes=TRUE) # modified		
+	testo <- gsub("\xc3" ,"è", testo, fixed=TRUE, useBytes=TRUE)
 	testo <- gsub("\xc4" ,"a", testo, fixed=TRUE, useBytes=TRUE)	
 	testo <- gsub("\xc5" ,"A", testo, fixed=TRUE, useBytes=TRUE)
 	testo <- gsub("\xc6" ," ", testo, fixed=TRUE, useBytes=TRUE)		
-	testo <- gsub("\xc7" ,"âÃ", testo, fixed=TRUE, useBytes=TRUE)		
-	testo <- gsub("\xc8" ,"â®", testo, fixed=TRUE, useBytes=TRUE) # modified
-	testo <- gsub("\xc9" ,"â©", testo, fixed=TRUE, useBytes=TRUE) # modified
+	testo <- gsub("\xc7" ,"ç", testo, fixed=TRUE, useBytes=TRUE)		
+	testo <- gsub("\xc8" ,"è", testo, fixed=TRUE, useBytes=TRUE) # modified
+	testo <- gsub("\xc9" ,"é", testo, fixed=TRUE, useBytes=TRUE) # modified
 	testo <- gsub("\xca" ,"E", testo, fixed=TRUE, useBytes=TRUE) # modified	
 	testo <- gsub("\xcb" ,"E", testo, fixed=TRUE, useBytes=TRUE) # modified		
-	testo <- gsub("\xcc" ,"â¨", testo, fixed=TRUE, useBytes=TRUE) # modified
+	testo <- gsub("\xcc" ,"ì", testo, fixed=TRUE, useBytes=TRUE) # modified
 	testo <- gsub("\xcd" ,"I", testo, fixed=TRUE, useBytes=TRUE) # modified	
 	testo <- gsub("\xce" ," ", testo, fixed=TRUE, useBytes=TRUE) 	
 	testo <- gsub("\xcf" ," ", testo, fixed=TRUE, useBytes=TRUE) 		
-	testo <- gsub("\xe0" ,"ââ", testo, fixed=TRUE, useBytes=TRUE)
+	testo <- gsub("\xe0" ,"à", testo, fixed=TRUE, useBytes=TRUE)
 	testo <- gsub("\xe1" ,"a", testo, fixed=TRUE, useBytes=TRUE) # modified
 	testo <- gsub("\xe2" ,"a", testo, fixed=TRUE, useBytes=TRUE) # modified 	 
 	testo <- gsub("\xe3" ,"a", testo, fixed=TRUE, useBytes=TRUE) # modified 
 	testo <- gsub("\xe4" ,"a", testo, fixed=TRUE, useBytes=TRUE) # modified		
 	testo <- gsub("\xe5" ,"a", testo, fixed=TRUE, useBytes=TRUE) # modified	
 	testo <- gsub("\xe6" ,"ae", testo, fixed=TRUE, useBytes=TRUE) # modified			
-	testo <- gsub("\xe7" ,"âÃ", testo, fixed=TRUE, useBytes=TRUE)
-	testo <- gsub("\xe8" ,"â®", testo, fixed=TRUE, useBytes=TRUE)
-	testo <- gsub("\xe9" ,"â©", testo, fixed=TRUE, useBytes=TRUE)
+	testo <- gsub("\xe7" ,"ç", testo, fixed=TRUE, useBytes=TRUE)
+	testo <- gsub("\xe8" ,"è", testo, fixed=TRUE, useBytes=TRUE)
+	testo <- gsub("\xe9" ,"é", testo, fixed=TRUE, useBytes=TRUE)
 	testo <- gsub("\xea" ,"e", testo, fixed=TRUE, useBytes=TRUE) # modified	
 	testo <- gsub("\xeb" ,"e", testo, fixed=TRUE, useBytes=TRUE) # modified		
-	testo <- gsub("\xec" ,"â¨", testo, fixed=TRUE, useBytes=TRUE)
+	testo <- gsub("\xec" ,"ì", testo, fixed=TRUE, useBytes=TRUE)
 	testo <- gsub("\xed" ,"i", testo, fixed=TRUE, useBytes=TRUE)	
 	testo <- gsub("\xee" ,"i", testo, fixed=TRUE, useBytes=TRUE)
 	testo <- gsub("\xef" ,"i", testo, fixed=TRUE, useBytes=TRUE)	
@@ -160,15 +160,15 @@ normalizzacaratteri <- function(testo, ...){
 	testo <- gsub("\xdf" ," ", testo, fixed=TRUE, useBytes=TRUE) # modified	
 	testo <- gsub("\xf0" ," ", testo, fixed=TRUE, useBytes=TRUE)	
 	testo <- gsub("\xf1" ,"n", testo, fixed=TRUE, useBytes=TRUE)			
-	testo <- gsub("\xf2" ,"ââ", testo, fixed=TRUE, useBytes=TRUE)
+	testo <- gsub("\xf2" ,"ò", testo, fixed=TRUE, useBytes=TRUE)
 	testo <- gsub("\xf3" ,"o", testo, fixed=TRUE, useBytes=TRUE) # modified
 	testo <- gsub("\xf4" ,"o", testo, fixed=TRUE, useBytes=TRUE) # modified	
 	testo <- gsub("\xf5" ,"o", testo, fixed=TRUE, useBytes=TRUE) # modified 	
 	testo <- gsub("\xf6" ,"o", testo, fixed=TRUE, useBytes=TRUE) # modified	
 	testo <- gsub("\xf8" ,"o", testo, fixed=TRUE, useBytes=TRUE)	
-	testo <- gsub("\xf9" ,"âÏ", testo, fixed=TRUE, useBytes=TRUE)
-	testo <- gsub("\xfa" ,"âÏ", testo, fixed=TRUE, useBytes=TRUE)
-	testo <- gsub("\xfb" ,"âÏ", testo, fixed=TRUE, useBytes=TRUE)	
+	testo <- gsub("\xf9" ,"ù", testo, fixed=TRUE, useBytes=TRUE)
+	testo <- gsub("\xfa" ,"ù", testo, fixed=TRUE, useBytes=TRUE)
+	testo <- gsub("\xfb" ,"ù", testo, fixed=TRUE, useBytes=TRUE)	
 	testo <- gsub("\xfc" ,"u", testo, fixed=TRUE, useBytes=TRUE) # modified 
 	testo <- gsub("\xfd" ,"y", testo, fixed=TRUE, useBytes=TRUE) # modified 
 	testo <- gsub("\xfe" ,"y", testo, fixed=TRUE, useBytes=TRUE) # modified 		
@@ -177,4 +177,5 @@ normalizzacaratteri <- function(testo, ...){
 	testo <- gsub("\n"," ", testo, fixed=TRUE, useBytes=TRUE)
 	testo <- gsub("\r"," ", testo, fixed=TRUE, useBytes=TRUE)
 	testo <- gsub("\t"," ", testo, fixed=TRUE, useBytes=TRUE)
-}
+  testo
+	}
