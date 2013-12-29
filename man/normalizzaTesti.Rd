@@ -7,6 +7,7 @@
 \alias{normalizzapunteggiatura}
 \alias{tryTolower}
 \alias{.itastopwords}
+\alias{twTerremoti}
 %- Also NEED an '\alias' for EACH other topic documented here.
 \title{Varie funzioni di normalizzazione del testo
 }
