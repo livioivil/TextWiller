@@ -177,4 +177,5 @@ normalizzacaratteri <- function(testo, ...){
 	testo <- gsub("\n"," ", testo, fixed=TRUE, useBytes=TRUE)
 	testo <- gsub("\r"," ", testo, fixed=TRUE, useBytes=TRUE)
 	testo <- gsub("\t"," ", testo, fixed=TRUE, useBytes=TRUE)
+  testo
 }
