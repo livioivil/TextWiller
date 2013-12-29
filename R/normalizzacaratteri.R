@@ -1,5 +1,4 @@
-
-normalizzacaratteri <- function(testo, ...){
+normalizzacaratteri <- function(testo){
 	# fonte: http://www.utf8-chartable.de/
 	#        http://www.utf8-chartable.de/unicode-utf8-table.pl?start=4736&number=128&utf8=string-literal&unicodeinhtml=dec
 	
