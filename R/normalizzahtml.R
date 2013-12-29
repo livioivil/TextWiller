@@ -1,11 +1,6 @@
 normalizzahtml <-
 function(testo){
 	
-   y = NA
-   try_error = tryCatch(tolower(testo), error=function(e) e)
-   # if not an error
-   if (!inherits(try_error, "error"))
-     testo=try_error
 	# fonte: http://htmlhelp.com/reference/html40/entities/special.html
 testo <- gsub("&quot;",'"',testo)
 testo <- gsub("&amp;","&",testo)
