@@ -14,6 +14,7 @@ function(testo){
 	testo <- gsub(" (#?azz+) "," EMOTEAZZ ",testo, perl=TRUE, ignore.case=TRUE)
 	testo <- gsub(" (#?[dv]aii+|#[dv]ai|forzaa+) "," EMOTEDAIII ",testo, perl=TRUE, ignore.case=TRUE)	
 	testo <- gsub(" (#?cazz+) "," cazzo ",testo, perl=TRUE, ignore.case=TRUE)	
+	testo <- gsub(" (#?cazzat+) "," cazzata ",testo, perl=TRUE, ignore.case=TRUE)  
 	testo <- gsub(" (#?merd+) "," merda ",testo, perl=TRUE, ignore.case=TRUE)	
 	testo <- gsub(" (#?aaa+) "," EMOTEAAA ",testo, perl=TRUE, ignore.case=TRUE)
 	testo <- gsub(" (#?ooo+) "," EMOTEOOO ",testo, perl=TRUE, ignore.case=TRUE)	
@@ -23,7 +24,7 @@ function(testo){
 	testo <- gsub(" (#ba+sta+|ba+staa+) "," EMOTEBASTA ",testo, perl=TRUE, ignore.case=TRUE)
 	testo <- gsub(" #?([uw]+[ao]+[uw]+) "," EMOTEWOW ",testo, perl=TRUE, ignore.case=TRUE)		
 	
-		
+	testo <- gsub(" (#?cazzat+) "," cazzata ",testo, perl=TRUE, ignore.case=TRUE)  	
 	testo <- gsub(" (#?grandee+|#?grandii+) "," grandeee ",testo, perl=TRUE, ignore.case=TRUE)
 	testo <- gsub(" #?(grand(issim)[aeoi]+) "," grandissimo ",testo, perl=TRUE, ignore.case=TRUE)	
 	testo <- gsub(" #?(brav(issim)?[aeoi][aeoi]+) "," bravooo ",testo, perl=TRUE, ignore.case=TRUE)
