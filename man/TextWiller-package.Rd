@@ -23,11 +23,8 @@ Dario Solari, Livio Finos, Matteo Redaelli, Marco Rinaldo
 Maintainer: dario solari <dario.solari@gmail.com>
 }
 \keyword{ package }
-\seealso{
-~~ Optional links to other man pages, e.g. ~~
-~~ \code{\link[<pkg>:<pkg>-package]{<pkg>}} ~~
-}
 \examples{
+normalizzaTesti(c('ciao bella!','www.associazionerospo.org','noooo, che grandeeeeee!!!!!','mitticooo'))
 
 classificaUtenti(c('livio','alessandra'), vocabolarioNomiPropri)
 }

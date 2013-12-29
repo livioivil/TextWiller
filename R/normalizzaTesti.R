@@ -2,7 +2,6 @@ normalizzaTesti <- function(testo, tolower=TRUE,normalizzahtml=TRUE){
 
 	#Sys.setlocale("LC_TIME", "C")
   
-
 	#######################
 	#   PREPROCESSING     #
 	#######################

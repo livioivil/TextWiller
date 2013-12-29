@@ -55,7 +55,7 @@ Dario Solari, Livio Finos
 %% ~Make other sections like Warning with \section{Warning }{....} ~
 
 \examples{
- normalizzaTesti(c('ciao bella! :)','www.associazionerospo.org','cio che bel'))
+normalizzaTesti(c('ciao bella! <3 :)','www.associazionerospo.org'))
 }
 % Add one or more standard keywords, see file 'KEYWORDS' in the
 % R documentation directory.
