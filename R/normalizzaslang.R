@@ -34,8 +34,8 @@ function(testo){
 	testo <- gsub(" #?(stronz[oaie]+) "," stronzooo ",testo, perl=TRUE, ignore.case=TRUE)	
 		
 	# ALTRO		
-	testo <- gsub(" perch[éeè] "," perchè ",testo, perl=TRUE, ignore.case=TRUE)
-	testo <- gsub(" x(ch|k)[éeè] "," perchè ",testo, perl=TRUE, ignore.case=TRUE)
+	testo <- gsub(" perch[éeè] "," perché ",testo, perl=TRUE, ignore.case=TRUE)
+	testo <- gsub(" x(ch|k)[éeè] "," perché ",testo, perl=TRUE, ignore.case=TRUE)
 	testo <- gsub(" nn "," non ",testo, perl=TRUE, ignore.case=TRUE)
 	testo <- gsub(" nun "," non ",testo, perl=TRUE, ignore.case=TRUE)	
 		testo		
