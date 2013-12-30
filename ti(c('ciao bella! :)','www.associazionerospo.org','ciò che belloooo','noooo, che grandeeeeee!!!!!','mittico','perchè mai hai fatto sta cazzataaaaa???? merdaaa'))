@@ -1,0 +1,39 @@
+normalizzaTesti           package:TextWiller           R Documentation
+
+_V_a_r_i_e _f_u_n_z_i_o_n_i _d_i _n_o_r_m_a_l_i_z_z_a_z_i_o_n_e _d_e_l _t_e_s_t_o
+
+_D_e_s_c_r_i_p_t_i_o_n:
+
+     Varie funzioni di normalizzazione del testo
+
+_U_s_a_g_e:
+
+     normalizzaTesti(testo, tolower = TRUE, normalizzahtml = TRUE)
+     normalizzacaratteri(testo)
+     normalizzapunteggiatura(testo)
+     normalizzaslang(testo)
+     normalizzahtml(testo)
+     normalizzaemote(testo)
+     tryTolower(testo)
+     
+_A_r_g_u_m_e_n_t_s:
+
+   testo: charachter vector of texts
+
+ tolower: TRUE/FALSE
+
+normalizzahtml: TRUE/FALSE
+
+_D_e_t_a_i_l_s:
+
+     aggiungere dettagli qui
+
+_A_u_t_h_o_r(_s):
+
+     Dario Solari, Livio Finos
+
+_E_x_a_m_p_l_e_s:
+
+     normalizzaTesti(c('ciao bella! <3 :)','www.associazionerospo.org'))
+     
+
