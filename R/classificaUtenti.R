@@ -1,6 +1,6 @@
 classificaUtenti <-
-function (names, vocabolarioNomiPropri){
-data(vocabolarioNomiPropri)
+function (names, vocabolarioNomiPropri=NULL){
+if(is.null(vocabolarioNomiPropri)) data(vocabolarioNomiPropri)
 classNomi=sapply(names,function(txt){ 
   class=as.character(vocabolarioNomiPropri[strsplit(txt," |,|'|_")[[1]],])
   class=class[!is.na(class)]

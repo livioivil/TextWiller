@@ -7,7 +7,6 @@
 \alias{normalizzapunteggiatura}
 \alias{tryTolower}
 \alias{.itastopwords}
-\alias{twTerremoti}
 %- Also NEED an '\alias' for EACH other topic documented here.
 \title{Varie funzioni di normalizzazione del testo
 }
@@ -39,11 +38,7 @@ TRUE/FALSE
 aggiungere dettagli qui
 }
 \value{
-%%  ~Describe the value returned
-%%  If it is a LIST, use
-%%  \item{comp1 }{Description of 'comp1'}
-%%  \item{comp2 }{Description of 'comp2'}
-%% ...
+l'output e' un \code{vector} della stessa lunghezza di \code{testo} ma con testi normalizzati.
 }
 
 \author{

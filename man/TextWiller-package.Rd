@@ -26,5 +26,5 @@ Maintainer: dario solari <dario.solari@gmail.com>
 \examples{
 normalizzaTesti(c('ciao bella!','www.associazionerospo.org','noooo, che grandeeeeee!!!!!','mitticooo'))
 
-classificaUtenti(c('livio','alessandra'), vocabolarioNomiPropri)
+classificaUtenti(c('livio','alessandra'))
 }

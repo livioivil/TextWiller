@@ -8,7 +8,7 @@
 Associa i nomi in names ai valori indicati da vocabolarioNomiPropri (per esempio, assegna il genere. vedi esempio)
 }
 \usage{
-classificaUtenti(names, vocabolarioNomiPropri)
+classificaUtenti(names, vocabolarioNomiPropri = NULL)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
@@ -16,7 +16,7 @@ classificaUtenti(names, vocabolarioNomiPropri)
 vettore di nomi
 }
   \item{vocabolarioNomiPropri}{
-data.frame di una colonna con la classificazione da associare. I row.names devono essere unici (sono i nomi propri su cui viene fatto il controllo). il vocabolario fornito da noi e' \code{vocabolarioNomiPropri}
+data.frame di una colonna con la classificazione da associare. I row.names devono essere unici (sono i nomi propri su cui viene fatto il controllo). il vocabolario fornito da noi e' \code{data(vocabolarioNomiPropri)}
 }
 }
 \details{
@@ -30,8 +30,10 @@ caccia fuori un named vector con elementi da c('masc','femm','ente')
 Livio, Andrea Mamprin, Dario Solari
 }
 \examples{
+data(vocabolarioNomiPropri)
+str(vocabolarioNomiPropri)
 
-classificaUtenti(c('livio','alessandra'), vocabolarioNomiPropri)
+classificaUtenti(c('livio','alessandra'))
 }
 % Add one or more standard keywords, see file 'KEYWORDS' in the
 % R documentation directory.
