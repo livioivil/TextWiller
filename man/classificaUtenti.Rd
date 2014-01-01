@@ -8,7 +8,7 @@
 Associa i nomi in names ai valori indicati da vocabolarioNomiPropri (per esempio, assegna il genere. vedi esempio)
 }
 \usage{
-classificaUtenti(names, vocabolarioNomiPropri = NULL)
+classificaUtenti(names, vocabolario = NULL)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{

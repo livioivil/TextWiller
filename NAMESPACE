@@ -1,2 +1,7 @@
 exportPattern("^[[:alpha:]]+")
 export(.itastopwords)
+
+import(stringr)
+import(twitteR)
+import(RCurl)
+
