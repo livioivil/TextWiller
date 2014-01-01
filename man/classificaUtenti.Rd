@@ -30,10 +30,11 @@ caccia fuori un named vector con elementi da c('masc','femm','ente')
 Livio, Andrea Mamprin, Dario Solari
 }
 \examples{
-data(vocabolarioNomiPropri)
-str(vocabolarioNomiPropri)
+ \dontrun{data(vocabolarioNomiPropri)}
+ \dontrun{str(vocabolarioNomiPropri)}
 
 classificaUtenti(c('livio','alessandra'))
+
 }
 % Add one or more standard keywords, see file 'KEYWORDS' in the
 % R documentation directory.
