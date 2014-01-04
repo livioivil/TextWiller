@@ -3,7 +3,7 @@ fixTimeStamp <- function(db,campoData="created",timeRange=NULL){
   # assegna fuso orario al ts
   if(is.integer(db[,campoData])) 
     db[,campoData] <- as.POSIXct(db[,campoData], origin="1970-01-01", tz="UTC") else
-      db[,campoData] <- as.POSIXct(db[,campoData]) + 3600
+      db[,campoData] <- as.POSIXct(db[,campoData]) 
   
   if(!is.null(timeRange)){
     db <- selezionaIntervalloTimeStamp(db,timeRange=timeRange,campoData=campoData)
