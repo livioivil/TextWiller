@@ -24,7 +24,8 @@ data.frame di una colonna con la classificazione da associare. I rownames devono
 \details{
 vedi esempio sotto.
 
-
+ATTENZIONE. Al momento la funzione spezza i documenti e non e' possibile identificare nomi/luoghi composti da piu' parole. Per i nomi propri non pare un problema,
+per i luoghi potrebbe esserlo (es. sestri levante non viene identificato se non esistono nel vocabolario le parole separate sestri e levante).
 
 Per il \code{data(vocabolarioLuoghi)} abbiamo escluso i paesi Re (800 abitanti, Nord-ovest) e Lu (1200 abitanti, Nord-ovest) perche' in conflitto con le sigle delle province.
 }

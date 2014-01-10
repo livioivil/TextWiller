@@ -4,7 +4,7 @@ if(is.null(vocabolario)){ data(vocabolarioNomiPropri)
                                     vocabolario=vocabolarioNomiPropri}
 names=tolower(names)
 classNomi=sapply(names,function(txt){ 
-  class=as.character(vocabolario[strsplit(txt,"\\W")[[1]],])
+  class=as.character(vocabolario[match(strsplit(txt,"\\W")[[1]], row.names(vocabolario)),"categoria"])
   class=class[!is.na(class)]
   if(length(class)==0) classtab=NA else
     if(length(class)==1) classtab=class else   {
