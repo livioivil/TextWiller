@@ -1,5 +1,5 @@
 normalizzaTesti <- function(testo, tolower=TRUE,normalizzahtml=TRUE){
-  Sys.setlocale("LC_ALL", "")
+  Sys.setlocale("LC_ALL", "C")
 	Sys.setlocale("LC_TIME", "C")
   
 	#######################

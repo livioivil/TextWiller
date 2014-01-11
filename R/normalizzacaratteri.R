@@ -1,6 +1,6 @@
 normalizzacaratteri <- function(testo){
 	
-	testo <- gsub("\001" ," ", testo, fixed=TRUE, useBytes=FALSE)
+ 	testo <- gsub("\001" ," ", testo, fixed=TRUE, useBytes=FALSE)
 	testo <- gsub("\002" ," ", testo, fixed=TRUE, useBytes=FALSE)
 	testo <- gsub("\003" ," ", testo, fixed=TRUE, useBytes=FALSE)
 	testo <- gsub("\004" ," ", testo, fixed=TRUE, useBytes=FALSE)			
