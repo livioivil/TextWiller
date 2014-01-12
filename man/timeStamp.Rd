@@ -43,6 +43,8 @@ Dario Solari, Livio Finos
  \dontrun{TW=fixTimeStamp(TW)}
 
  \dontrun{TW=selezionaIntervallo(TW,as.POSIXct(c("2013-12-27 17:54:42 CET", "2013-12-27 22:33:38 CET")))}
+ \dontrun{TW$created.round <- as.POSIXct(round(t$created,"hour"))}
+
 
 }
 % Add one or more standard keywords, see file 'KEYWORDS' in the

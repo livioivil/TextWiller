@@ -30,6 +30,10 @@ normalizzaTesti <- function(testo, tolower=TRUE,normalizzahtml=TRUE){
 	# normalizza slang 
 	#source(paste(functiondir,"/normalizzaslang.R",sep=""), .GlobalEnv)
 	testo <- normalizzaslang(testo)
-	
+
+  testo <- gsub("\\s+", " ", testo, perl=TRUE)
+  testo <- gsub("^[[:blank:]]","",testo)
+  testo <- gsub("[[:blank:]]$","",testo)
+  
 	testo
 }
