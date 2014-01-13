@@ -1,5 +1,5 @@
 tryTolower <-
-function(testo)
+function(testo, ifErrorReturnText=FALSE)
 {
    # tryCatch error
    try_error = tryCatch(tolower(testo), error=function(e) e)

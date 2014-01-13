@@ -15,12 +15,12 @@ Varie funzioni di normalizzazione del testo
 }
 \usage{
 normalizzaTesti(testo, tolower = TRUE, normalizzahtml = TRUE)
-normalizzacaratteri(testo)
-normalizzapunteggiatura(testo)
-normalizzaslang(testo)
-normalizzahtml(testo)
-normalizzaemote(testo)
-tryTolower(testo)
+normalizzacaratteri(testo,fixed=TRUE)
+normalizzapunteggiatura(testo,perl=TRUE,fixed=TRUE)
+normalizzaslang(testo,perl=TRUE)
+normalizzahtml(testo,perl=TRUE,fixed=TRUE))
+normalizzaemote(testo,perl=TRUE)
+tryTolower(testo, ifErrorReturnText=FALSE)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
@@ -33,6 +33,8 @@ TRUE/FALSE
   \item{normalizzahtml}{
 TRUE/FALSE
 }
+\item{fixed}{ vedi \code{\link[base:gsub]{base:gsub}})}
+\item{perl}{ vedi \code{\link[base:gsub]{base:gsub}})}
 }
 \details{
 aggiungere dettagli qui
