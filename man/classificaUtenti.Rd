@@ -14,12 +14,8 @@ classificaUtenti(names, vocabolario = NULL)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
-  \item{names}{
-vettore di nomi
-}
-  \item{vocabolarioNomiPropri}{
-data.frame di una colonna con la classificazione da associare. I rownames devono essere unici (sono i nomi unici su cui viene fatto il controllo). il vocabolario fornito da noi e' \code{data(vocabolarioNomiPropri)}. ATTENZIONE, nel \code{vocabolario} usare solo lower-case e non usare mai "NA" (mentre "na" e' valido).
-}
+  \item{names}{vettore di nomi}
+  \item{vocabolarioNomiPropri}{ data.frame di una colonna con la classificazione da associare. I rownames devono essere unici (sono i nomi unici su cui viene fatto il controllo). il vocabolario fornito da noi e' \code{data(vocabolarioNomiPropri)}. ATTENZIONE, nel \code{vocabolario} usare solo lower-case e non usare mai "NA" (mentre "na" e' valido).}
 }
 \details{
 vedi esempio sotto.
@@ -39,7 +35,6 @@ Livio, Andrea Mamprin, Dario Solari
 \examples{
  \dontrun{data(vocabolarioNomiPropri)}
  \dontrun{str(vocabolarioNomiPropri)}
-
 classificaUtenti(c('livio','alessandra'))
 data(vocabolarioLuoghi)
 classificaUtenti(c('Bosa','Pordenone, Italy'),vocabolarioLuoghi)

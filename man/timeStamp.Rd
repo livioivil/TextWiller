@@ -13,15 +13,9 @@ selezionaIntervalloTimeStamp(db, timeRange = range(db$created) , campoData = "cr
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
- \item{db}{
-data.frame contenente i tweets.
-}
-  \item{timeRange}{
-due valori di tipo data indicanti inizio e fine.
-}
-  \item{campoData}{
-"created" e "ts" sono due campi data del db estratto da dump_twitter.R
-}
+\item{db}{data.frame contenente i tweets.}
+\item{timeRange}{due valori di tipo data indicanti inizio e fine.}
+\item{campoData}{ "created" e "ts" sono due campi data del db estratto da dump_twitter.R}
 }
 \details{
 aggiungere dettagli qui

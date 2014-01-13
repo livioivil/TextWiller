@@ -24,15 +24,9 @@ tryTolower(testo, ifErrorReturnText=FALSE)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
- \item{testo}{
-charachter vector of texts
-}
-  \item{tolower}{
-TRUE/FALSE
-}
-  \item{normalizzahtml}{
-TRUE/FALSE
-}
+\item{testo}{ charachter vector of texts }
+\item{tolower}{ TRUE/FALSE }
+\item{normalizzahtml}{ TRUE/FALSE}
 \item{fixed}{ vedi \code{\link[base:gsub]{base:gsub}})}
 \item{perl}{ vedi \code{\link[base:gsub]{base:gsub}})}
 }

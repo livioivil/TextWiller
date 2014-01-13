@@ -1,22 +1,15 @@
 \name{urlextract}
 \alias{urlextract}
 %- Also NEED an '\alias' for EACH other topic documented here.
-\title{Funzioni di gestione delle date
+\title{Funzioni di gestione delle date}
+\description{convert gli shorturl in url contenuti in \code{testo}.
 }
-\description{
-convert gli shorturl in url contenuti in \code{testo}.
-}
-\usage{
-urlextract(testo, id = names(testo))
+\usage{urlextract(testo, id = names(testo))
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
- \item{testo}{
-Vettore (eventualmente con nomi) di testi contenenti shorturl.
-}
-  \item{id}{
-se \code{testo} e' un vettore con nomi, questi vengono presi come id. In caso contrario, gli id sono numeri progressivi da 1 a length(testo)
-}
+\item{testo}{Vettore (eventualmente con nomi) di testi contenenti shorturl.}
+\item{id}{se \code{testo} e' un vettore con nomi, questi vengono presi come id. In caso contrario, gli id sono numeri progressivi da 1 a length(testo)}
 }
 \details{
 aggiungere dettagli qui
