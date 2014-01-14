@@ -32,7 +32,7 @@ normalizzacaratteri <- function(testo,fixed=TRUE){
 	testo <- gsub("\035" ,"'", testo, fixed=fixed, useBytes=FALSE)
 	testo <- gsub("\036" ," ", testo, fixed=fixed, useBytes=FALSE)
 
-#	testo <- gsub("(\U3e35393c ? \U3e35393c)" ," ", testo, fixed=fixed, useBytes=FALSE)			
+  testo <- gsub("(\U3e35393c ? \U3e35393c)" ," ", testo, fixed=fixed, useBytes=FALSE)			
   
 	testo <- gsub("\n"," ", testo, fixed=fixed, useBytes=FALSE)
 	testo <- gsub("\r"," ", testo, fixed=fixed, useBytes=FALSE)

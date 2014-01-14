@@ -1,1 +1,4 @@
-.itastopwords <- c("rt","wwwurlwww","montilive","twitter","st","può","perchè","così","ogni","però","comunque","poi","quando","vabbè","quell","chissà","po","xchè","nè","né","sì","cose","xché","dà","pò","ció","già","xkè","anziche","cmq","quest","via","fa","quali","ecc","etc","sa","qual")
+.itastopwords <- c("rt","wwwurlwww","twitter","st","può","perchè","così","ogni","però","comunque","poi","quando","vabbè",
+                   "quell","chissà","po","xchè","nè","né","sì","cose","xché","dà","pò","ció","già","xkè","anziche","cmq","quest","via","fa","quali",
+                   "ecc","etc","sa","qual")
+.itastopwords <- c(stopwords("italian"),.itastopwords)

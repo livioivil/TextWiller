@@ -4,5 +4,4 @@ export(.itastopwords)
 import(stringr)
 import(twitteR)
 import(RCurl)
-importFrom(tm,stopwords)
 

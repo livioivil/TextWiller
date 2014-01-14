@@ -1,8 +1,8 @@
 \name{urlextract}
 \alias{urlextract}
 %- Also NEED an '\alias' for EACH other topic documented here.
-\title{Funzioni di gestione delle date}
-\description{convert gli shorturl in url contenuti in \code{testo}.
+\title{converte gli shorturl in url}
+\description{converte gli shorturl in url contenuti in \code{testo}.
 }
 \usage{urlextract(testo, id = names(testo))
 }

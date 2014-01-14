@@ -7,6 +7,7 @@
 \alias{normalizzapunteggiatura}
 \alias{tryTolower}
 \alias{.itastopwords}
+\alias{removeStopwords}
 %- Also NEED an '\alias' for EACH other topic documented here.
 \title{Varie funzioni di normalizzazione del testo
 }
@@ -15,12 +16,13 @@ Varie funzioni di normalizzazione del testo
 }
 \usage{
 normalizzaTesti(testo, tolower = TRUE, normalizzahtml = TRUE)
-normalizzacaratteri(testo,fixed=TRUE)
-normalizzapunteggiatura(testo,perl=TRUE,fixed=TRUE)
-normalizzaslang(testo,perl=TRUE)
-normalizzahtml(testo,perl=TRUE,fixed=TRUE))
-normalizzaemote(testo,perl=TRUE)
-tryTolower(testo, ifErrorReturnText=FALSE)
+normalizzacaratteri(testo,fixed = TRUE)
+normalizzapunteggiatura(testo,perl = TRUE,fixed = TRUE)
+normalizzaslang(testo,perl = TRUE)
+normalizzahtml(testo,perl = TRUE,fixed = TRUE))
+normalizzaemote(testo,perl = TRUE)
+tryTolower(testo, ifErrorReturnText = FALSE)
+removeStopwords(testo, stopwords = .itastopwords)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
@@ -31,10 +33,11 @@ tryTolower(testo, ifErrorReturnText=FALSE)
 \item{perl}{ vedi \code{\link[base:gsub]{base:gsub}})}
 }
 \details{
-aggiungere dettagli qui
+\code{.itastopwords} l'unione di \code{\link[tm:stopwords]{stopwords("italian")}} con altre parole italiane.
 }
 \value{
-l'output e' un \code{vector} della stessa lunghezza di \code{testo} ma con testi normalizzati.
+L'output e' un \code{vector} della stessa lunghezza di \code{testo} ma con testi normalizzati.
+
 }
 
 \author{

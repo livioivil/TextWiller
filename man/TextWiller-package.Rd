@@ -27,4 +27,7 @@ Maintainer: dario solari <dario.solari@gmail.com>
 normalizzaTesti(c('ciao bella!','www.associazionerospo.org','noooo, che grandeeeeee!!!!!','mitticooo'))
 
 classificaUtenti(c('livio','alessandra'))
+
+\dontrun{urls=urlextract("Influenza Vaccination | ONS - Oncology Nursing Society http://t.co/924sRKGBU9 See All http://t.co/dbtPJRMl00")}
+ 
 }
