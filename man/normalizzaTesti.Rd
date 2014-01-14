@@ -26,14 +26,14 @@ removeStopwords(testo, stopwords = .itastopwords)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
-\item{testo}{ charachter vector of texts }
-\item{tolower}{ TRUE/FALSE }
+\item{testo}{character vector of texts}
+\item{tolower}{TRUE/FALSE}
 \item{normalizzahtml}{ TRUE/FALSE}
 \item{fixed}{ vedi \code{\link[base:gsub]{base:gsub}})}
 \item{perl}{ vedi \code{\link[base:gsub]{base:gsub}})}
 }
 \details{
-\code{.itastopwords} l'unione di \code{\link[tm:stopwords]{stopwords("italian")}} con altre parole italiane.
+\code{.itastopwords} e' l'unione di \code{\link[tm:stopwords]{stopwords('italian')}} con altre parole italiane.
 }
 \value{
 L'output e' un \code{vector} della stessa lunghezza di \code{testo} ma con testi normalizzati.
