@@ -33,8 +33,6 @@ normalizzaTesti <- function(testo, tolower=TRUE,normalizzahtml=TRUE,normalizzaca
 	testo <- normalizzaslang(testo,perl=perl)
 
   testo <- gsub("\\s+", " ", testo, perl=perl)
-  testo <- gsub("^[[:blank:]]","",testo)
-  testo <- gsub("[[:blank:]]$","",testo)
-  
+  testo <- .togliSpaziEsterni(testo)
 	testo
 }
