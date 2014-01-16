@@ -1,4 +1,4 @@
-"categoria"
+     "categoria"
 "alberto" "masc"
 "alessandra" "femm"
 "alessandro" "masc"
