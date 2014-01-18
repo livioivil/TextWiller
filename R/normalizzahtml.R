@@ -13,7 +13,7 @@ testo <- gsub("&rsquo;","'",testo)
 testo <- gsub("&ldquo;",'"',testo)	
 
 testo <- gsub("http([[:graph:]]+)"," WWWURLWWW ",testo, perl=perl)
-    o <- gsub("www\\.([[:graph:]]+)"," WWWURLWWW ",testo, perl=perl)
+testo <- gsub("www\\.([[:graph:]]+)"," WWWURLWWW ",testo, perl=perl)
 
 
 #testo <- gsub("\n"," ",testo,fixed=TRUE)
