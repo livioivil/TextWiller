@@ -10,18 +10,17 @@
 Associa i nomi in names ai valori indicati da un vocabolario. ad esempio vocabolarioNomiPropri assegna il genere e \code{data(vocabolarioLuoghi)} l'area geografica (vedi esempio)
 }
 \usage{
-classificaUtenti(names, vocabolario = NULL)
+classificaUtenti(names, vocabolario = NULL, ifManyUseFirst = TRUE)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
   \item{names}{vettore di nomi}
   \item{vocabolarioNomiPropri}{ data.frame di una colonna con la classificazione da associare. I rownames devono essere unici (sono i nomi unici su cui viene fatto il controllo). il vocabolario fornito da noi e' \code{data(vocabolarioNomiPropri)}. ATTENZIONE, nel \code{vocabolario} usare solo lower-case e non usare mai "NA" (mentre "na" e' valido).}
+\item{ifManyUseFirst} \code{TRUE} by default. Nel caso di molteplici classificazioni, assegna alla prima categoria di \code{unique(vocabolario$categoria)}.
 }
 \details{
 vedi esempio sotto.
 
-ATTENZIONE. Al momento la funzione spezza i documenti e non e' possibile identificare nomi/luoghi composti da piu' parole. Per i nomi propri non pare un problema,
-per i luoghi potrebbe esserlo (es. sestri levante non viene identificato se non esistono nel vocabolario le parole separate sestri e levante).
 
 Per il \code{data(vocabolarioLuoghi)} abbiamo escluso i paesi Re (800 abitanti, Nord-ovest) e Lu (1200 abitanti, Nord-ovest) perche' in conflitto con le sigle delle province.
 }

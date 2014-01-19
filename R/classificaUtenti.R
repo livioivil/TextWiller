@@ -1,4 +1,4 @@
-classificaUtenti <-function (names, vocabolario=NULL){
+classificaUtenti <-function (names, vocabolario=NULL,ifManyUseFirst=TRUE){
 if(is.null(vocabolario)){ data(vocabolarioNomiPropri) 
                                     vocabolario=vocabolarioNomiPropri}
 names=tolower(names)
@@ -17,10 +17,14 @@ classNomi=sapply(names,function(txt){
   if(length(class)==0) classtab=NA else
     if(length(class)==1) classtab=class else   {
       classtab=table(class)
-      classtab=names(classtab[classtab==max(classtab)])
-      if(length(classtab)>1) classtab=NA
+      if(ifManyUseFirst) 
+        classtab=names(which.max(classtab)) else{
+        classtab=names(classtab[classtab==max(classtab)])
+        if(length(classtab)>1) classtab=NA
+      }
     } 
   classtab
 })
+#names(classNomi) =paste(1:length(names),names,sep="-")
 classNomi
 }
