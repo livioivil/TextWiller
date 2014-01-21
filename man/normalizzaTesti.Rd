@@ -15,7 +15,7 @@
 Varie funzioni di normalizzazione del testo
 }
 \usage{
-normalizzaTesti(testo, tolower = TRUE, normalizzahtml = TRUE)
+normalizzaTesti(testo, tolower = TRUE, normalizzahtml = TRUE,encoding="UTF-8")
 normalizzacaratteri(testo,fixed = TRUE)
 normalizzapunteggiatura(testo,perl = TRUE,fixed = TRUE)
 normalizzaslang(testo,perl = TRUE)
@@ -31,6 +31,7 @@ removeStopwords(testo, stopwords = .itastopwords)
 \item{normalizzahtml}{ TRUE/FALSE}
 \item{fixed}{ vedi \code{\link[base:gsub]{base:gsub}})}
 \item{perl}{ vedi \code{\link[base:gsub]{base:gsub}})}
+\item{encoding}{ "UTF-8" default.}
 }
 \details{
 \code{.itastopwords} e' l'unione di \code{\link[tm:stopwords]{stopwords('italian')}} con altre parole italiane.
