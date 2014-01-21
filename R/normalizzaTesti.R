@@ -1,6 +1,8 @@
-normalizzaTesti <- function(testo, tolower=TRUE,normalizzahtml=TRUE,normalizzacaratteri=TRUE,fixed=TRUE,perl=TRUE){
+normalizzaTesti <- function(testo, tolower=TRUE,normalizzahtml=TRUE,normalizzacaratteri=TRUE,fixed=TRUE,perl=TRUE,encoding="UTF-8"){
   Sys.setlocale("LC_ALL", "")
-	Sys.setlocale("LC_TIME", "C")
+  if(Encoding(testo) == "unknown")
+    Encoding(testo) <- encoding
+  testo <- enc2utf8(testo)
   
 	#######################
 	#   PREPROCESSING     #
