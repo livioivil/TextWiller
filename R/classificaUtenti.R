@@ -1,4 +1,4 @@
-classificaUtenti <-function (names, vocabolario=NULL,ifManyUseFirst=TRUE){
+classificaUtenti <-function (names, vocabolario=NULL,ifManyUseFirst=TRUE,NAasExtraLevel=FALSE){
 if(is.null(vocabolario)){ data(vocabolarioNomiPropri) 
                                     vocabolario=vocabolarioNomiPropri}
 names=tolower(names)
@@ -23,7 +23,9 @@ classNomi=sapply(names,function(txt){
         if(length(classtab)>1) classtab=NA
       }
     } 
+  if(NAasExtraLevel) classtab[is.na(classtab)]="NA"
   classtab
+  
 })
 #names(classNomi) =paste(1:length(names),names,sep="-")
 classNomi
