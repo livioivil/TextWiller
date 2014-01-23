@@ -10,14 +10,19 @@ function(testo,perl=TRUE,fixed=TRUE){
 	testo <- gsub("\n",' ',testo,fixed=fixed)
 	testo <- gsub("\t",' ',testo,fixed=fixed)
 	testo <- gsub("\r",' ',testo,fixed=fixed)
-	
 	testo <- gsub("\\s+", " ", testo, perl=perl)	
+  
 	testo <- gsub('^( ["][@]| [@]| \034[@])',' RT @', testo, perl=perl)	
 	testo <- gsub("^( ['][@])",' RT @', testo, perl=perl)
 	testo <- gsub("^( RT: @)",' RT @', testo, perl=perl)
 	testo <- gsub("^( RT '@)",' RT @', testo, perl=perl)			
 	
-	testo <- gsub('[///]+',' ', testo, perl=perl)
+  
+  testo <- gsub('[//?]+',' ', testo, perl=perl)
+	testo <- gsub('[//!]+',' ', testo, perl=perl)
+	
+  
+  testo <- gsub('[///]+',' ', testo, perl=perl)
 	testo <- gsub('[//?]+',' ', testo, perl=perl)
 	testo <- gsub('[//!]+',' ', testo, perl=perl)
 	testo <- gsub('[//|]+',' ', testo, perl=perl)

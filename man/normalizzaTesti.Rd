@@ -31,7 +31,7 @@ removeStopwords(testo, stopwords = .itastopwords)
 \item{normalizzahtml}{ TRUE/FALSE}
 \item{fixed}{ vedi \code{\link[base:gsub]{base:gsub}})}
 \item{perl}{ vedi \code{\link[base:gsub]{base:gsub}})}
-\item{encoding}{ "UTF-8" default.}
+\item{encoding}{ \code{"UTF-8"} default. Se \code{FALSE} evita la conversione.}
 }
 \details{
 \code{.itastopwords} e' l'unione di \code{\link[tm:stopwords]{stopwords('italian')}} con altre parole italiane.
