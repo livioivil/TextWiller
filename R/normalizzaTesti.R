@@ -1,6 +1,5 @@
 normalizzaTesti <- function(testo, tolower=TRUE,normalizzahtml=TRUE,normalizzacaratteri=TRUE,
-                            fixed=TRUE,perl=TRUE,encoding="UTF-8", contaStrighe=c("\\?","\\!"))
-                            {
+                            fixed=TRUE,perl=TRUE,encoding="UTF-8", contaStrighe=c("\\?","\\!")){
   Sys.setlocale("LC_ALL", "")
   
   testo<-.preprocessing(testo,encoding=encoding)
