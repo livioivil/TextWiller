@@ -1,10 +1,10 @@
-\name{urlextract}
-\alias{urlextract}
+\name{urlExtract}
+\alias{urlExtract}
 %- Also NEED an '\alias' for EACH other topic documented here.
 \title{converte gli shorturl in url}
 \description{converte gli shorturl in url contenuti in \code{testo}.
 }
-\usage{urlextract(testo, id = names(testo))
+\usage{urlExtract(testo, id = names(testo))
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
@@ -28,7 +28,7 @@ Dario Solari, Livio Finos
 %% ~Make other sections like Warning with \section{Warning }{....} ~
 
 \examples{
- \dontrun{urls=urlextract("Influenza Vaccination | ONS - Oncology Nursing Society http://t.co/924sRKGBU9 See All http://t.co/dbtPJRMl00")}
+ \dontrun{urls=urlExtract("Influenza Vaccination | ONS - Oncology Nursing Society http://t.co/924sRKGBU9 See All http://t.co/dbtPJRMl00")}
 
 }
 % Add one or more standard keywords, see file 'KEYWORDS' in the
