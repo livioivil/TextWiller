@@ -55,7 +55,7 @@ Dario Solari, Livio Finos
 %% ~Make other sections like Warning with \section{Warning }{....} ~
 
 \examples{
-normalizzaTesti(c('ciao bella!','www.associazionerospo.org','noooo, che grandeeeeee!!!!!','mitticooo', 'è mai possibile?!?!'))
+normalizzaTesti(c('ciao bella!','www.associazionerospo.org','noooo, che grandeeeeee!!!!!','mitticooo', 'mai possibile?!?!'))
 
 }
 % Add one or more standard keywords, see file 'KEYWORDS' in the

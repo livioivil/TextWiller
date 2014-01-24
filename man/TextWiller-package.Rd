@@ -30,7 +30,7 @@ install_github("TextWiller", "livioivil")
 library(TextWiller)
 }
 
-normalizzaTesti(c('ciao bella!','www.associazionerospo.org','noooo, che grandeeeeee!!!!!','mitticooo', 'è mai possibile?!?!'))
+normalizzaTesti(c('ciao bella!','www.associazionerospo.org','noooo, che grandeeeeee!!!!!','mitticooo', 'mai possibile?!?!'))
 
 classificaUtenti(c('livio','alessandra'))
 
