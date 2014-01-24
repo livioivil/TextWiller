@@ -5,30 +5,12 @@
   testo
 }
 
+##########################
 
-
-.contaStringhe  <- function(testo,stringhe=c("\\?","\\!","#","@","(€|euro)","(\\$|dollar)")){
+.contaStringhe  <- function(testo,
+                            stringhe=c("\\?","\\!","#","@","(€|euro)","(\\$|dollar)")                            
+                            ){
   conteggi=sapply(stringhe,function(stringa) str_count(testo,stringa))
+  colnames(conteggi)=paste("Conteggi.",colnames(conteggi),sep="")
   conteggi
-}
-
-
-.preprocessing <- function(testo, encoding="UTF-8"){
-  if(is.logical(encoding)) {
-    if(encoding){ 
-      encoding="UTF-8"  
-      testo=sapply(testo, function(text) {
-        if(Encoding(text) == "unknown")                      
-          Encoding(text) <- encoding
-        text <- enc2utf8(text)
-      })
-    } 
-  } else {
-    testo=sapply(testo, function(text) {
-      if(Encoding(text) == "unknown")
-        Encoding(text) <- encoding
-      text <- enc2utf8(text)
-    })
-  }
-  
 }

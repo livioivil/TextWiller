@@ -8,6 +8,7 @@
 \alias{tryTolower}
 \alias{.itastopwords}
 \alias{removeStopwords}
+\alias{preprocessingEncoding}
 %- Also NEED an '\alias' for EACH other topic documented here.
 \title{Varie funzioni di normalizzazione del testo
 }
@@ -15,7 +16,17 @@
 Varie funzioni di normalizzazione del testo
 }
 \usage{
-normalizzaTesti(testo, tolower = TRUE, normalizzahtml = TRUE, normalizzacaratteri = TRUE, fixed = TRUE, perl = TRUE, encoding = "UTF-8", contaStrighe = c("\\\\?","\\\\!","@","#"))                            
+normalizzaTesti(testo, tolower = TRUE, normalizzahtml = TRUE, 
+  normalizzacaratteri = TRUE, fixed = TRUE, perl = TRUE, 
+  encoding = "UTF-8", 
+  contaStrighe = c("\\\\?","\\\\!","#","@",
+    "(€|euro)","(\\\\$|dollar)","SUPPRESSEDTEXT"),
+  suppressStingsWithInvalidMultibye=TRUE,
+  verbatim=TRUE)  
+
+preprocessingEncoding(testo, encoding="UTF-8",
+                           suppressStingsWithInvalidMultibye=TRUE)
+
 normalizzacaratteri(testo,fixed = TRUE)
 normalizzapunteggiatura(testo,perl = TRUE,fixed = TRUE)
 normalizzaslang(testo,perl = TRUE)
@@ -33,7 +44,9 @@ removeStopwords(testo, stopwords = .itastopwords)
 \item{fixed}{ vedi \code{\link[base:gsub]{base:gsub}}. Preferibilmente non usare l'opzione.}
 \item{perl}{ vedi \code{\link[base:gsub]{base:gsub}}. Preferibilmente non usare l'opzione.}
 \item{encoding}{ \code{"UTF-8"} default. Se \code{FALSE} evita la conversione.}
-\item{contaStrighe}{stringhe da contare nei documenti. Default: \code{c("\\\\?","\\\\!","@","#")}}
+\item{contaStrighe}{stringhe da contare nei documenti. Default: \code{c("\\\\?","\\\\!","@","#","SUPPRESSEDTEXT")}}
+\item{suppressStingsWithInvalidMultibye} {Sostituisce con \code{"SUPPRESSEDTEXT"} le stringhe con mutibyte non valida (che produrrebbero verosimilmente errori nelle successive normalizzazioni). Default \code{TRUE}.}
+\item{verbatim}{Mostra statitiche durante il processo. Default \code{TRUE}}
 }
 \details{
 \code{.itastopwords} e' l'unione di \code{\link[tm:stopwords]{stopwords('italian')}} con altre parole italiane.

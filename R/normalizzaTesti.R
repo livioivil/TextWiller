@@ -1,8 +1,16 @@
-normalizzaTesti <- function(testo, tolower=TRUE,normalizzahtml=TRUE,normalizzacaratteri=TRUE,
-                            fixed=TRUE,perl=TRUE,encoding="UTF-8", contaStrighe=c("\\?","\\!","@","#")){
+normalizzaTesti <- function(testo, tolower=TRUE,normalizzahtml=TRUE,
+                             normalizzacaratteri=TRUE,fixed=TRUE,perl=TRUE,
+                             encoding="UTF-8", 
+                            contaStrighe=c("\\?","\\!","@","#","\\?",
+                                           "(€|euro)","(\\$|dollar)",
+                                           "SUPPRESSEDTEXT"),
+                             suppressStingsWithInvalidMultibye=TRUE,
+                             verbatim=TRUE){
   Sys.setlocale("LC_ALL", "")
   
-  testo<-.preprocessing(testo,encoding=encoding)
+  testo<-preprocessingEncoding(testo,encoding=encoding,
+                               suppressStingsWithInvalidMultibye=suppressStingsWithInvalidMultibye,
+                               verbatim=verbatim)
 	#######################
 	#   PREPROCESSING     #
 	#######################
@@ -10,16 +18,16 @@ normalizzaTesti <- function(testo, tolower=TRUE,normalizzahtml=TRUE,normalizzaca
   # aggiunta spazi per preprocessing
   testo <- paste(" ",testo," ",sep="")
   
+  
+  # normalizza encoding
+  if(normalizzacaratteri) testo <- normalizzacaratteri(testo,fixed=fixed)
+  
   # pulizia testo preliminare (html)
-  #source(paste(functiondir,"/normalizzahtml.R",sep=""), .GlobalEnv)
   if(normalizzahtml) testo <- normalizzahtml(testo)
   
   # tolower
   if(tolower)  testo <- tryTolower(testo,ifErrorReturnText=TRUE)
   
-  # normalizza encoding
-	if(normalizzacaratteri) testo <- normalizzacaratteri(testo,fixed=fixed)
-
   conteggiStringhe=.contaStringhe(testo,contaStrighe)
 	# identifica emote
 	#source(paste(functiondir,"/normalizzaemote.R",sep=""), .GlobalEnv)
