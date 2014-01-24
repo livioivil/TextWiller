@@ -15,7 +15,7 @@
 Varie funzioni di normalizzazione del testo
 }
 \usage{
-normalizzaTesti(testo, tolower = TRUE, normalizzahtml = TRUE, normalizzacaratteri = TRUE, fixed = TRUE, perl = TRUE, encoding = "UTF-8", contaStrighe = c("\\?","\\!","@","#"))                            
+normalizzaTesti(testo, tolower = TRUE, normalizzahtml = TRUE, normalizzacaratteri = TRUE, fixed = TRUE, perl = TRUE, encoding = "UTF-8", contaStrighe = c("\\\\?","\\\\!","@","#"))                            
 normalizzacaratteri(testo,fixed = TRUE)
 normalizzapunteggiatura(testo,perl = TRUE,fixed = TRUE)
 normalizzaslang(testo,perl = TRUE)
@@ -33,8 +33,7 @@ removeStopwords(testo, stopwords = .itastopwords)
 \item{fixed}{ vedi \code{\link[base:gsub]{base:gsub}}. Preferibilmente non usare l'opzione.}
 \item{perl}{ vedi \code{\link[base:gsub]{base:gsub}}. Preferibilmente non usare l'opzione.}
 \item{encoding}{ \code{"UTF-8"} default. Se \code{FALSE} evita la conversione.}
-\item{contaStrighe}{=c("\\?","\\!","@","#")}
-
+\item{contaStrighe}{stringhe da contare nei documenti. Default: \code{c("\\\\?","\\\\!","@","#")}}
 }
 \details{
 \code{.itastopwords} e' l'unione di \code{\link[tm:stopwords]{stopwords('italian')}} con altre parole italiane.
