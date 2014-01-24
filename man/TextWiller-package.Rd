@@ -24,7 +24,13 @@ Maintainer: dario solari <dario.solari@gmail.com>
 }
 \keyword{ package }
 \examples{
-normalizzaTesti(c('ciao bella!','www.associazionerospo.org','noooo, che grandeeeeee!!!!!','mitticooo'))
+ \dontrun{# install.packages("devtools") # if you don't already have it.
+library(devtools)
+install_github("TextWiller", "livioivil")
+library(TextWiller)
+}
+
+normalizzaTesti(c('ciao bella!','www.associazionerospo.org','noooo, che grandeeeeee!!!!!','mitticooo', 'è mai possibile?!?!'))
 
 classificaUtenti(c('livio','alessandra'))
 

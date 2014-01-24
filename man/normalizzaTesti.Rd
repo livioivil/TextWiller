@@ -15,7 +15,7 @@
 Varie funzioni di normalizzazione del testo
 }
 \usage{
-normalizzaTesti(testo, tolower = TRUE, normalizzahtml = TRUE,encoding="UTF-8")
+normalizzaTesti(testo, tolower = TRUE, normalizzahtml = TRUE, normalizzacaratteri = TRUE, fixed = TRUE, perl = TRUE, encoding = "UTF-8", contaStrighe = c("\\?","\\!","@","#"))                            
 normalizzacaratteri(testo,fixed = TRUE)
 normalizzapunteggiatura(testo,perl = TRUE,fixed = TRUE)
 normalizzaslang(testo,perl = TRUE)
@@ -29,16 +29,20 @@ removeStopwords(testo, stopwords = .itastopwords)
 \item{testo}{character vector of texts}
 \item{tolower}{TRUE/FALSE}
 \item{normalizzahtml}{ TRUE/FALSE}
-\item{fixed}{ vedi \code{\link[base:gsub]{base:gsub}})}
-\item{perl}{ vedi \code{\link[base:gsub]{base:gsub}})}
+\item{normalizzacaratteri}{=TRUE}
+\item{fixed}{ vedi \code{\link[base:gsub]{base:gsub}}. Preferibilmente non usare l'opzione.}
+\item{perl}{ vedi \code{\link[base:gsub]{base:gsub}}. Preferibilmente non usare l'opzione.}
 \item{encoding}{ \code{"UTF-8"} default. Se \code{FALSE} evita la conversione.}
+\item{contaStrighe}{=c("\\?","\\!","@","#")}
+
 }
 \details{
 \code{.itastopwords} e' l'unione di \code{\link[tm:stopwords]{stopwords('italian')}} con altre parole italiane.
 }
 \value{
-L'output e' un \code{vector} della stessa lunghezza di \code{testo} ma con testi normalizzati.
+Per \code{normalizzaTesti} l'output \e' una \code{list} con due oggetti: \code{$testo} e' un vettore contenente i testi normalizzati, \code{$conteggi} e' una matrice con i conteggi indicati dal parametro \code{contaStrighe}.
 
+Per tutte le altre funzioni, l'output e' un \code{vector} della stessa lunghezza di \code{testo} ma con testi normalizzati.
 }
 
 \author{
@@ -51,7 +55,8 @@ Dario Solari, Livio Finos
 %% ~Make other sections like Warning with \section{Warning }{....} ~
 
 \examples{
-normalizzaTesti(c('ciao bella! <3 :)','www.associazionerospo.org'))
+normalizzaTesti(c('ciao bella!','www.associazionerospo.org','noooo, che grandeeeeee!!!!!','mitticooo', 'è mai possibile?!?!'))
+
 }
 % Add one or more standard keywords, see file 'KEYWORDS' in the
 % R documentation directory.

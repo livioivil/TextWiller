@@ -1,5 +1,5 @@
 normalizzaTesti <- function(testo, tolower=TRUE,normalizzahtml=TRUE,normalizzacaratteri=TRUE,
-                            fixed=TRUE,perl=TRUE,encoding="UTF-8", contaStrighe=c("\\?","\\!")){
+                            fixed=TRUE,perl=TRUE,encoding="UTF-8", contaStrighe=c("\\?","\\!","@","#")){
   Sys.setlocale("LC_ALL", "")
   
   testo<-.preprocessing(testo,encoding=encoding)
@@ -20,7 +20,7 @@ normalizzaTesti <- function(testo, tolower=TRUE,normalizzahtml=TRUE,normalizzaca
   # normalizza encoding
 	if(normalizzacaratteri) testo <- normalizzacaratteri(testo,fixed=fixed)
 
-  conteggiStrighe=.contaStringhe(testo,stringhe)
+  conteggiStringhe=.contaStringhe(testo,contaStrighe)
 	# identifica emote
 	#source(paste(functiondir,"/normalizzaemote.R",sep=""), .GlobalEnv)
 	testo <- normalizzaemote(testo,perl=perl)
@@ -36,5 +36,5 @@ normalizzaTesti <- function(testo, tolower=TRUE,normalizzahtml=TRUE,normalizzaca
 
   testo <- gsub("\\s+", " ", testo, perl=perl)
   testo <- .togliSpaziEsterni(testo)
-	list(testo=testo,conteggi=conteggi)
+	list(testo=testo,conteggi=conteggiStringhe)
 }
