@@ -1,6 +1,6 @@
 preprocessingEncoding <- function(testo, 
                                   encoding="UTF-8",
-                                  suppressStingsWithInvalidMultibye=TRUE,
+                                  suppressInvalidTexts=TRUE,
                                   verbatim=TRUE){
   if(is.logical(encoding)) {
     if(encoding){ 
@@ -20,7 +20,7 @@ preprocessingEncoding <- function(testo,
   }
   
   #  elimina testi con encoding non riconoscibile:
-  if(suppressStingsWithInvalidMultibye){
+  if(suppressInvalidTexts){
     droptxt=sapply(testo,function(txt) is(try(nchar(txt),silent=TRUE),"try-error"))
     testo[droptxt]="SUPPRESSEDTEXT"
     if(verbatim) cat("\n NB: ",sum(droptxt)," documenti eliminati (",

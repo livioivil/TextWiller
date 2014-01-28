@@ -21,11 +21,11 @@ normalizzaTesti(testo, tolower = TRUE, normalizzahtml = TRUE,
   encoding = "UTF-8", 
   contaStrighe = c("\\\\?","\\\\!","#","@",
     "(€|euro)","(\\\\$|dollar)","SUPPRESSEDTEXT"),
-  suppressStingsWithInvalidMultibye=TRUE,
+  suppressInvalidTexts=TRUE,
   verbatim=TRUE)  
 
 preprocessingEncoding(testo, encoding="UTF-8",
-                           suppressStingsWithInvalidMultibye=TRUE)
+                           suppressInvalidTexts=TRUE)
 
 normalizzacaratteri(testo,fixed = TRUE)
 normalizzapunteggiatura(testo,perl = TRUE,fixed = TRUE)
@@ -45,7 +45,7 @@ removeStopwords(testo, stopwords = .itastopwords)
 \item{perl}{ vedi \code{\link[base:gsub]{base:gsub}}. Preferibilmente non usare l'opzione.}
 \item{encoding}{ \code{"UTF-8"} default. Se \code{FALSE} evita la conversione.}
 \item{contaStrighe}{stringhe da contare nei documenti. Default: \code{c("\\\\?","\\\\!","@","#","SUPPRESSEDTEXT")}}
-\item{suppressStingsWithInvalidMultibye} {Sostituisce con \code{"SUPPRESSEDTEXT"} le stringhe con mutibyte non valida (che produrrebbero verosimilmente errori nelle successive normalizzazioni). Default \code{TRUE}.}
+\item{suppressInvalidTexts} {Sostituisce con \code{"SUPPRESSEDTEXT"} le stringhe con mutibyte non valida (che produrrebbero verosimilmente errori nelle successive normalizzazioni). Default \code{TRUE}.}
 \item{verbatim}{Mostra statitiche durante il processo. Default \code{TRUE}}
 }
 \details{

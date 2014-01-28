@@ -4,12 +4,12 @@ normalizzaTesti <- function(testo, tolower=TRUE,normalizzahtml=TRUE,
                             contaStrighe=c("\\?","\\!","@","#","\\?",
                                            "(€|euro)","(\\$|dollar)",
                                            "SUPPRESSEDTEXT"),
-                             suppressStingsWithInvalidMultibye=TRUE,
+                            suppressInvalidTexts=TRUE,
                              verbatim=TRUE){
   Sys.setlocale("LC_ALL", "")
   
   testo<-preprocessingEncoding(testo,encoding=encoding,
-                               suppressStingsWithInvalidMultibye=suppressStingsWithInvalidMultibye,
+                               suppressInvalidTexts=suppressInvalidTexts,
                                verbatim=verbatim)
 	#######################
 	#   PREPROCESSING     #

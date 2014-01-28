@@ -2,7 +2,7 @@
 \alias{urlExtract}
 \alias{patternExtract}
 %- Also NEED an '\alias' for EACH other topic documented here.
-\title{Estrazione di regular expression (e quindi users, hastag) e shorturl}
+\title{Estrazione di regular expression (e quindi users, hashtag) e shorturl}
 \description{\code{patternExtract} estrae i pattern contenuti in in \code{testo}. \code{urlExtract} estrae e converte gli shorturl in url contenuti in \code{testo}.
 }
 \usage{urlExtract(testo, id = names(testo))}
@@ -10,7 +10,7 @@
 %- maybe also 'usage' for other objects documented here.
 \arguments{
 \item{testo}{Vettore (eventualmente con nomi) di testi contenenti shorturl.}
-\item{pattern}{stringa di testo da cercare ed estrarre. \code{\"@\\\\w+\"} (default) estrae i riferimenti ad uno user nei tweets. \code{\"#\\\\w+\"} estrae gli hashtag.}
+\item{pattern}{stringa di testo da cercare ed estrarre. \code{"@\\\\w+"} (default) estrae i riferimenti ad uno user nei tweets. \code{"#\\\w+"} estrae gli hashtag.}
 \item{id}{se \code{testo} e' un vettore con nomi, questi vengono presi come id. In caso contrario, gli id sono numeri progressivi da 1 a length(testo)}
 }
 \details{
