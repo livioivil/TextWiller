@@ -1,21 +1,25 @@
-\name{urlExtract}
+\name{extract}
 \alias{urlExtract}
+\alias{patternExtract}
 %- Also NEED an '\alias' for EACH other topic documented here.
 \title{converte gli shorturl in url}
 \description{converte gli shorturl in url contenuti in \code{testo}.
 }
-\usage{urlExtract(testo, id = names(testo))
-}
+\usage{urlExtract(testo, id = names(testo))}
+\usage{patternExtract(testo, pattern="@\\w+", id = names(testo))}
 %- maybe also 'usage' for other objects documented here.
 \arguments{
 \item{testo}{Vettore (eventualmente con nomi) di testi contenenti shorturl.}
+\item{pattern}{stringa di testo da cercare ed estrarre. \code{\"@\\\\w+\"} (default) estrae i riferimenti ad uno user nei tweets. \code{\"#\\\\w+\"} estrae gli hashtag.}
 \item{id}{se \code{testo} e' un vettore con nomi, questi vengono presi come id. In caso contrario, gli id sono numeri progressivi da 1 a length(testo)}
 }
 \details{
 aggiungere dettagli qui
 }
 \value{
-La funzione restituisce un \code{data.frame} con colonne:id, shorturl e url
+\code{patternExtract} restituisce un \code{data.frame} con colonne:id, pattern
+
+\code{urlExtract} restituisce un \code{data.frame} con colonne:id, shorturl e url
 }
 
 \author{

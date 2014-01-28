@@ -34,6 +34,10 @@ normalizzaTesti(c('ciao bella!','www.associazionerospo.org','noooo, che grandeee
 
 classificaUtenti(c('livio','alessandra'))
 
+#extract short urls and get the long ones
 \dontrun{urls=urlExtract("Influenza Vaccination | ONS - Oncology Nursing Society http://t.co/924sRKGBU9 See All http://t.co/dbtPJRMl00")}
- 
+
+#extract users:
+\dontrun{extract("@livio: #ciao","@\\w+")}
+
 }
