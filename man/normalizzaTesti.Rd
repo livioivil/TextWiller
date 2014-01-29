@@ -18,7 +18,7 @@ Varie funzioni di normalizzazione del testo
 \usage{
 normalizzaTesti(testo, tolower = TRUE, normalizzahtml = TRUE, 
   normalizzacaratteri = TRUE, fixed = TRUE, perl = TRUE, 
-  encoding = "UTF-8", 
+  preprocessingEncoding=TRUE, encoding="UTF-8",
   contaStrighe = c("\\\\?","\\\\!","#","@",
     "(€|euro)","(\\\\$|dollar)","SUPPRESSEDTEXT"),
   suppressInvalidTexts=TRUE,
@@ -38,11 +38,12 @@ removeStopwords(testo, stopwords = .itastopwords)
 %- maybe also 'usage' for other objects documented here.
 \arguments{
 \item{testo}{character vector of texts}
-\item{tolower}{TRUE/FALSE}
-\item{normalizzahtml}{ TRUE/FALSE}
-\item{normalizzacaratteri}{=TRUE}
+\item{tolower}{\code{TRUE} by default}
+\item{normalizzahtml}{\code{TRUE} by default}
+\item{normalizzacaratteri}{\code{TRUE} by default}
 \item{fixed}{ vedi \code{\link[base:gsub]{base:gsub}}. Preferibilmente non usare l'opzione.}
 \item{perl}{ vedi \code{\link[base:gsub]{base:gsub}}. Preferibilmente non usare l'opzione.}
+\item{preprocessingEncoding}{}
 \item{encoding}{ \code{"UTF-8"} default. Se \code{FALSE} evita la conversione.}
 \item{contaStrighe}{stringhe da contare nei documenti. Default: \code{c("\\\\?","\\\\!","@","#","SUPPRESSEDTEXT")}}
 \item{suppressInvalidTexts} {Sostituisce con \code{"SUPPRESSEDTEXT"} le stringhe con mutibyte non valida (che produrrebbero verosimilmente errori nelle successive normalizzazioni). Default \code{TRUE}.}
