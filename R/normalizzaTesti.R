@@ -1,7 +1,7 @@
 normalizzaTesti <- function(testo, tolower=TRUE,normalizzahtml=TRUE,
                              normalizzacaratteri=TRUE,fixed=TRUE,perl=TRUE,
                              preprocessingEncoding=TRUE, encoding="UTF-8",
-                            contaStrighe=c("\\?","\\!","@","#","\\?",
+                            contaStringhe=c("\\?","\\!","@","#","\\?",
                                            "(€|euro)","(\\$|dollar)",
                                            "SUPPRESSEDTEXT"),
                             suppressInvalidTexts=TRUE,
@@ -27,7 +27,7 @@ normalizzaTesti <- function(testo, tolower=TRUE,normalizzahtml=TRUE,
   # tolower
   if(tolower)  testo <- tryTolower(testo,ifErrorReturnText=TRUE)
   
-  conteggiStringhe=.contaStringhe(testo,contaStrighe)
+  conteggiStringhe=.contaStringhe(testo,contaStringhe)
 	# identifica emote
 	#source(paste(functiondir,"/normalizzaemote.R",sep=""), .GlobalEnv)
 	testo <- normalizzaemote(testo,perl=perl)

@@ -19,7 +19,7 @@ Varie funzioni di normalizzazione del testo
 normalizzaTesti(testo, tolower = TRUE, normalizzahtml = TRUE, 
   normalizzacaratteri = TRUE, fixed = TRUE, perl = TRUE, 
   preprocessingEncoding=TRUE, encoding="UTF-8",
-  contaStrighe = c("\\\\?","\\\\!","#","@",
+  contaStringhe = c("\\\\?","\\\\!","#","@",
     "(€|euro)","(\\\\$|dollar)","SUPPRESSEDTEXT"),
   suppressInvalidTexts=TRUE,
   verbatim=TRUE)  
@@ -45,7 +45,7 @@ removeStopwords(testo, stopwords = .itastopwords)
 \item{perl}{ vedi \code{\link[base:gsub]{base:gsub}}. Preferibilmente non usare l'opzione.}
 \item{preprocessingEncoding}{}
 \item{encoding}{ \code{"UTF-8"} default. Se \code{FALSE} evita la conversione.}
-\item{contaStrighe}{stringhe da contare nei documenti. Default: \code{c("\\\\?","\\\\!","@","#","SUPPRESSEDTEXT")}}
+\item{contaStringhe}{stringhe da contare nei documenti. Default: \code{ c("\\\\?","\\\\!","#","@", "(€|euro)","(\\\\$|dollar)","SUPPRESSEDTEXT")}}
 \item{suppressInvalidTexts} {Sostituisce con \code{"SUPPRESSEDTEXT"} le stringhe con mutibyte non valida (che produrrebbero verosimilmente errori nelle successive normalizzazioni). Default \code{TRUE}.}
 \item{verbatim}{Mostra statitiche durante il processo. Default \code{TRUE}}
 }
@@ -53,7 +53,7 @@ removeStopwords(testo, stopwords = .itastopwords)
 \code{.itastopwords} e' l'unione di \code{\link[tm:stopwords]{stopwords('italian')}} con altre parole italiane.
 }
 \value{
-Per \code{normalizzaTesti} l'output \e' una \code{list} con due oggetti: \code{$testo} e' un vettore contenente i testi normalizzati, \code{$conteggi} e' una matrice con i conteggi indicati dal parametro \code{contaStrighe}.
+Per \code{normalizzaTesti} l'output \e' una \code{list} con due oggetti: \code{$testo} e' un vettore contenente i testi normalizzati, \code{$conteggi} e' una matrice con i conteggi indicati dal parametro \code{contaStringhe}.
 
 Per tutte le altre funzioni, l'output e' un \code{vector} della stessa lunghezza di \code{testo} ma con testi normalizzati.
 }
