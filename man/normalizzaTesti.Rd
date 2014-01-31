@@ -52,7 +52,7 @@ removeStopwords(testo, stopwords = .itastopwords)
 \details{
 \code{.itastopwords} e' l'unione di \code{\link[tm:stopwords]{stopwords('italian')}} con altre parole italiane.
 }
-\value{Per \code{normalizzaTesti} l'output e' una \code{list} con due oggetti: \code{$testo} e' un vettore contenente i testi normalizzati, \code{$conteggi} e' una matrice con i conteggi indicati dal parametro \code{contaStringhe}.
+\value{Per \code{normalizzaTesti} l'output  e' una \code{list} con due oggetti: \code{$testo} e' un vettore contenente i testi normalizzati, \code{$conteggi} e' una matrice con i conteggi indicati dal parametro \code{contaStringhe}.
 
 Per tutte le altre funzioni, l'output e' un \code{vector} della stessa lunghezza di \code{testo} ma con testi normalizzati.
 }
