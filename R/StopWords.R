@@ -1,5 +1,5 @@
 .itastopwords <- c(#speciali
-  "rt","wwwurlwww","twitter"
+  "rt","wwwurlwww","twitter",
   #altre
                    "a",
                   "abbia",
