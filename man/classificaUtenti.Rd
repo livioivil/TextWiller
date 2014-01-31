@@ -15,7 +15,7 @@ classificaUtenti(names, vocabolario = NULL, ifManyUseFirst = TRUE, NAasExtraLeve
 %- maybe also 'usage' for other objects documented here.
 \arguments{
   \item{names}{vettore di nomi}
-  \item{vocabolarioNomiPropri}{ data.frame di una colonna con la classificazione da associare. I rownames devono essere unici (sono i nomi unici su cui viene fatto il controllo). il vocabolario fornito da noi e' \code{data(vocabolarioNomiPropri)}. ATTENZIONE, nel \code{vocabolario} usare solo lower-case e non usare mai "NA" (mentre "na" e' valido).}
+  \item{vocabolario}{\code{data.frame} di una colonna con la classificazione da associare. I \code{rownames(vocabolario)} devono essere unici (sono i nomi unici su cui viene fatto il controllo). il vocabolario fornito da noi e' \code{data(vocabolarioNomiPropri)}. ATTENZIONE, nel \code{vocabolario} usare solo lower-case e non usare mai "NA" (mentre "na" e' valido).}
 \item{ifManyUseFirst}{\code{TRUE} by default. Nel caso di molteplici classificazioni, assegna alla prima categoria di \code{unique(vocabolario$categoria)}.}
 \item{NAasExtraLevel}{gli NA diventano una categoria a parte.}
 }
