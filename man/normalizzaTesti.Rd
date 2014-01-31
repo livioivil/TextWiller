@@ -59,7 +59,7 @@ Per tutte le altre funzioni, l'output e' un \code{vector} della stessa lunghezza
 }
 
 \author{
-Dario Solari, Livio Finos
+Dario Solari, Livio Finos, Maddalena Branca
 }
 \note{
 %%  ~~further notes~~
