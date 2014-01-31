@@ -5,8 +5,8 @@
 \title{Estrazione di regular expression (e quindi users, hashtag) e shorturl}
 \description{\code{patternExtract} estrae i pattern contenuti in in \code{testo}. \code{urlExtract} estrae e converte gli shorturl in url contenuti in \code{testo}.
 }
-\usage{urlExtract(testo, id = names(testo))}
-\usage{patternExtract(testo, pattern="@\\w+", id = names(testo))}
+\usage{urlExtract(testo, id = names(testo))
+ patternExtract(testo, pattern="@\\w+", id = names(testo))}
 %- maybe also 'usage' for other objects documented here.
 \arguments{
 \item{testo}{Vettore (eventualmente con nomi) di testi contenenti shorturl.}
