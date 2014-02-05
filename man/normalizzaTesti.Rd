@@ -25,7 +25,7 @@ normalizzaTesti(testo, tolower = TRUE, normalizzahtml = TRUE,
   verbatim=TRUE)  
 
 preprocessingEncoding(testo, encoding="UTF-8",
-                           suppressInvalidTexts=TRUE)
+                           suppressInvalidTexts=TRUE, verbatim = TRUE)
 
 normalizzacaratteri(testo,fixed = TRUE)
 normalizzapunteggiatura(testo,perl = TRUE,fixed = TRUE)
