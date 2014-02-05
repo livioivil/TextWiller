@@ -8,8 +8,8 @@
 \code{shorturl2url} sostituisce gli shorturl contenuti in \code{testo} in url.
 }
 \usage{urlExtract(testo, id = names(testo))
- patternExtract(testo, pattern="@\\w+", id = names(testo))}
-  shorturl2url(testo,id=names(testo))
+ patternExtract(testo, pattern="@\\w+", id = names(testo))
+  shorturl2url(testo,id=names(testo))}
 \arguments{
 \item{testo}{Vettore (eventualmente con nomi) di testi contenenti shorturl.}
 \item{pattern}{stringa di testo da cercare ed estrarre. \code{"@\\\\w+"} (default) estrae i riferimenti ad uno user nei tweets. \code{"#\\\w+"} estrae gli hashtag.}
@@ -33,7 +33,6 @@ Dario Solari, Livio Finos
 
 \examples{
  \dontrun{urls=urlExtract("Influenza Vaccination | ONS - Oncology Nursing Society http://t.co/924sRKGBU9 See All http://t.co/dbtPJRMl00")}
-
 }
 % Add one or more standard keywords, see file 'KEYWORDS' in the
 % R documentation directory.
