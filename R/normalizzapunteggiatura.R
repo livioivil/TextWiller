@@ -1,5 +1,5 @@
 normalizzapunteggiatura <-
-function(testo,perl=TRUE,fixed=TRUE){
+function(testo,removeUnderscore=TRUE, perl=TRUE,fixed=TRUE){
 	
 	testo <- paste(" ",testo," ", sep="")
 	testo <- gsub("#\\s+", "#", testo, perl=perl)
@@ -55,6 +55,9 @@ function(testo,perl=TRUE,fixed=TRUE){
 	testo <- gsub("[[]"," ",testo,perl=perl)
 	testo <- gsub("[]]"," ",testo,perl=perl)
 
+  if(removeUnderscore) 
+    testo=gsub("_", " ",testo, perl=perl)
+    
 	testo <- gsub("\\s+", " ", testo, perl=perl)
 testo
 	}

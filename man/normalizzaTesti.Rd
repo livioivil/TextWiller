@@ -27,13 +27,14 @@ normalizzaTesti(testo, tolower = TRUE, normalizzahtml = TRUE,
 preprocessingEncoding(testo, encoding="UTF-8",
                            suppressInvalidTexts=TRUE, verbatim = TRUE)
 
-normalizzacaratteri(testo,fixed = TRUE)
+normalizzacaratteri(testo, removeUnderscore=TRUE, fixed = TRUE, fixed = TRUE)
 normalizzapunteggiatura(testo,perl = TRUE,fixed = TRUE)
 normalizzaslang(testo,perl = TRUE)
-normalizzahtml(testo,perl = TRUE,fixed = TRUE))
+normalizzahtml(testo,perl = TRUE,fixed = TRUE)
 normalizzaemote(testo,perl = TRUE)
 tryTolower(testo, ifErrorReturnText = FALSE)
 removeStopwords(testo, stopwords = .itastopwords)
+
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
