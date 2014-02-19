@@ -3,8 +3,8 @@ Type: Package
 Title: Collection of functions for text mining, specially devoted to the italian language
 Version: 1.0
 Date: 2013-12-19
-Author: (associazionerospo.org) Dario Solari, Livio Finos, Matteo Redaelli, con contributi di Marco Rinaldo, Maddalena Branca.
+Author: (associazionerospo.org) Dario Solari, Livio Finos, Matteo Redaelli, con contributi di Marco Rinaldo, Maddalena Branca, Federico Ferraccioli.
 Maintainer: dario solari <dario.solari@gmail.com>
-Depends: stringr, twitteR, RCurl
-Description: Collection of functions for text mining, specially devoted to the italian language
+Depends: stringr, twitteR, RCurl, RecordLinkage
+Description: Collection of functions for text mining, specially devoted to the italian language.
 License: GPL (>= 2)

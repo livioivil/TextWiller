@@ -4,3 +4,5 @@ export(.itastopwords)
 import(stringr)
 import(twitteR)
 import(RCurl)
+
+importFrom(RecordLinkage,levenshteinDist)
