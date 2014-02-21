@@ -1,26 +1,26 @@
-\name{RTHound}
+\name{RTHound {TextWiller}}
 \alias{RTHound}
 %- Also NEED an '\alias' for EACH other topic documented here.
-\title{title RTHound}
-\description{description RTHound
-}
-\usage{
+\title{RTHound} 
+\description{Identifies the most frequent retweets through hierarchical clustering on Levenshtein distance (dissimilarity) matrix.}
+\usage{ 
 RTHound(testo, S = 500, L = 100, 
                  hclust.dist = 100, hclust.method = "complete",
                  showTopN=5)
 }
 \arguments{
-\item{testo}{Vettore (eventualmente con nomi) di testi contenenti shorturl.}
-\item{S}{\code{500} by deafault.}
-\item{L}{\code{100} by deafault.}
-\item{hclust.dist}{\code{100} by deafault.}
-\item{hclust.method}{\code{"complete"}  by deafault.}
-\item{showTopN}{\code{5} by deafault.}
+\item{testo}{Tweets or generic texts vector.}
+\item{S}{Number of tweets (or texts) for each subset. \code{500} by deafault.}
+\item{L}{Number of tweets (or texts) belonging to the previous subset to embed in subset analysis. \code{100} by default.}
+\item{hclust.dist}{Numeric scalar with height where the trees should be cut. \code{100} by deafault.}
+\item{hclust.method}{The agglomeration method to be used. This should be (an unambiguous abbreviation of) one of \code{"ward"}, \code{"single"}, \code{"complete"}, \code{"average"}, \code{"mcquitty"}, \code{"median"} or \code{"centroid"}. \code{"complete"}  by default.}
+\item{showTopN}{Number of most frequent retweets to show. \code{5} by deafault.}
 }
-%\details{
-%}
+\details{
+\code{RTHound} divides \code{testo} in subsets of length \code{S} (from the second subset also incorporates \code{L} tweets of the previous subset); calculate a dissimilarity matrix based on Levenshtein distance for each subsets and clusterize tweets throught hierarchical clustering algorithm. 
+}
 \value{
-\code{RTHound} returns etc
+\code{RTHound} replaces the tweets belong to the same cluster with the oldest, identifying them as retweets, and returns a list of the most frequent retweets (\code{top}).
 }
 \author{
 Federico Ferraccioli, Livio Finos
@@ -33,10 +33,20 @@ Federico Ferraccioli, Livio Finos
 
 \examples{
  \dontrun{
- #modifichi l'esempio con tw veri, anche se pochi.
- testo=c("uno","RT uno","due","due","uno","RTtre","uno","quattro","tre","uno")
+ testo=c(
+ "RT @LAVonlus: Tre miti da sfatare sulla #vivisezione. Le risposte  ai luoghi comuni della sperimentazione animale  http://t.co/zHSfam16DT",
+ "Tre miti da sfatare sulla #vivisezione. Le risposte  ai luoghi comuni della sperimentazione animale  http://t.co/zHSfam16DT",
+ "RT @LAVonlus: Tre miti da sfatare sulla #vivisezione. Le risposte  ai luoghi comuni della sperimentazione animale  http://t.co/zHSfam16DT",
+ "RT @orianoPER: La #sperimentazioneanimale è inutile perché non predittiva per la specie umana. MEDICI ANTI #VIVISEZIONE- LIMAV http://t.co/…" ,
+ "La #sperimentazioneanimale è inutile perché non predittiva per la specie umana. MEDICI ANTI #VIVISEZIONE- LIMAV http://t.co/3MwubXIH8g",
+ "RT @orianoPER: La #ricerca in #Medicina con #sperimentazioneanimale non è predittiva per la specie umana. MEDICI ANTI #VIVISEZIONE http://t…",
+ "RT @HuffPostItalia: Il Governo italiano non fermi la sperimentazione animale. Intervista a Elena Cattaneo http://t.co/q1dm430a9j",
+ "RT @HuffPostItalia: \"Il Governo italiano non fermi la sperimentazione animale\". Intervista a Elena Cattaneo http://t.co/q1dm430a9j",
+ "\"Il Governo italiano non fermi la sperimentazione animale\". Intervista a Elena Cattaneo http://t.co/q1dm430a9j",
+ "RT @orianoPER: @EnricoLetta LA #VIVISEZIONE NON SERVE: PAROLA DI GLAXO-APTUIT http://t.co/mtsHJjDIvu #StopVivisection #SperimentazioneAnima&")
+ 
  RTHound(testo, S = 3, L = 1, 
-                 hclust.dist = 3, hclust.method = "complete",
+                 hclust.dist = 100, hclust.method = "complete",
                  showTopN=3)
 }
 }
