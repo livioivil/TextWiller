@@ -28,7 +28,7 @@ Federico Ferraccioli, Livio Finos
 \note{
 %%  ~~further notes~~
 }
-
+\seealso{\code{hclust}}
 %% ~Make other sections like Warning with \section{Warning }{....} ~
 
 \examples{
