@@ -1,4 +1,4 @@
-\name{RTHound {TextWiller}}
+\name{RTHound}
 \alias{RTHound}
 %- Also NEED an '\alias' for EACH other topic documented here.
 \title{RTHound} 
