@@ -2,22 +2,14 @@ preprocessingEncoding <- function(testo,
                                   encoding="UTF-8",
                                   suppressInvalidTexts=TRUE,
                                   verbatim=TRUE){
-  if(is.logical(encoding)) {
-    if(encoding){ 
-      encoding="UTF-8"  
-      testo=sapply(testo, function(text) {
-        if(Encoding(text) == "unknown")                      
-          Encoding(text) <- encoding
-        text <- enc2utf8(text)
-      })
-    } 
-  } else {
-    testo=sapply(testo, function(text) {
-      if(Encoding(text) == "unknown")
-        Encoding(text) <- encoding
-      text <- enc2utf8(text)
-    })
+   if(is.logical(encoding)) {
+    if(encoding) {encoding="UTF-8"  
+    } else if(encoding=="") encoding="UTF-8"  
   }
+
+  if(is.logical(encoding)&&(!encoding)){  
+    #do nothing
+    } else     testo=iconv(testo,to = encoding)
   
   #  elimina testi con encoding non riconoscibile:
   if(suppressInvalidTexts){
@@ -28,3 +20,21 @@ preprocessingEncoding <- function(testo,
   }
   testo
 }
+
+###OLD VERSION
+#   if(is.logical(encoding)) {
+#     if(encoding){ 
+#       encoding="UTF-8"  
+#       testo=sapply(testo, function(text) {
+#         if(Encoding(text) == "unknown")                      
+#           Encoding(text) <- encoding
+#         text <- enc2utf8(text)
+#       })
+#     } 
+#   } else {
+#     testo=sapply(testo, function(text) {
+#       if(Encoding(text) == "unknown")
+#         Encoding(text) <- encoding
+#       text <- enc2utf8(text)
+#     })
+#   }
