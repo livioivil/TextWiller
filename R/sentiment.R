@@ -1,7 +1,7 @@
 sentiment <- function(text, algorithm="Maddalena", vocabularies=NULL){
   if(!is.null(text)){ #se c'e' almeno un testo
-    if(!is.null(algorithm)) algorithm="Maddalena"
-    if(!is.null(vocabularies)) {
+    if(is.null(algorithm)) algorithm="Maddalena"
+    if(is.null(vocabularies)) {
       #       data(pos) #lo decommenti ed eventualmente cambi nomi dei dati 
       #       data(neg) 
       #       vocabularies =list(pos=pos,neg=neg)
