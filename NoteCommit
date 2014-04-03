@@ -6,11 +6,11 @@
 
 poi x scaricare eventuali aggiornamenti del pacchetto
 
-   git pull
+   git pull origin master
 
 editare i file e poi
 
-   git status
+   git status 
 
 x vedere quali file nuovi ci sono, quali modificati ,,,
 
