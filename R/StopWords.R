@@ -1,6 +1,7 @@
-.itastopwords <- c(#speciali
-  "rt","wwwurlwww","twitter",
-  #altre
+# .itastopwords.special <- c(#speciali
+#      "rt","wwwurlwww","twitter")
+
+.itastopwords <- c(#altre
                    "a",
                   "abbia",
                   "abbiamo",

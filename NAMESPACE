@@ -6,3 +6,7 @@ import(twitteR)
 import(RCurl)
 
 importFrom(RecordLinkage,levenshteinDist)
+importFrom(snowfall,sfInit)
+importFrom(SnowballC,wordStem)
+importFrom(RWeka,Weka_control)
+
