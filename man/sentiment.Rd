@@ -35,7 +35,7 @@ Maddalena Branca, Livio Finos
 %% ~Make other sections like Warning with \section{Warning }{....} ~
 
 \examples{
-sentiment(c("ciao", "ciao", "good","casa"))
+sentiment(c("ciao bella", "ciao", "good","casa", "farabutto!"))
 }
 % Add one or more standard keywords, see file 'KEYWORDS' in the
 % R documentation directory.
