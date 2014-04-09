@@ -1,5 +1,6 @@
 \name{sentiment}
 \alias{sentiment}
+\alias{sentimentVocabularies}
 %- Also NEED an '\alias' for EACH other topic documented here.
 \title{Performs sentiment analysis}
 \description{
