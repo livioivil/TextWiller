@@ -8,12 +8,11 @@
 #sfLibrary(Snowball)
 # sfLibrary(SnowballC)
 #sfLibrary(RWeka)
-.get.scores <- function(text, pos.words, neg.words) {
+.get.scores <- function(txt, pos.words, neg.words) {
   # tokenaizer parole
-  word.list = str_split(text, '\\s+')  
+  word.list = str_split(txt, '\\s+')  
   # sometimes a list() is one level of hierarchy too much
   words = unlist(word.list)
-  #words = SnowballStemmer(words, control=Weka_control(S="italian"))# stemmer porter
   words = wordStem(words, language = "italian")
   # compara le parole nei dizionari
   pos_matches =match (words, pos.words)
@@ -36,6 +35,6 @@
   score = sign( p - n )
   return(as.array(as.vector(score)))  
 }
-scores = sapply(text, .get.scores(text), pos.words, neg.words)
+scores = sapply(text, .get.scores, vocabularies$positive, vocabularies$negative)
 return(scores)
 }

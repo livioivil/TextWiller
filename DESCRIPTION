@@ -5,6 +5,6 @@ Version: 1.0
 Date: 2013-12-19
 Author: (associazionerospo.org) Dario Solari, Livio Finos, Matteo Redaelli, con contributi di Marco Rinaldo, Maddalena Branca, Federico Ferraccioli.
 Maintainer: dario solari <dario.solari@gmail.com>
-Depends: stringr, twitteR, RCurl, RecordLinkage
+Depends: stringr, twitteR, RCurl, RecordLinkage, SnowballC
 Description: Collection of functions for text mining, specially devoted to the italian language.
 License: GPL (>= 2)
