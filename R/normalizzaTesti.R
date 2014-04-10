@@ -28,7 +28,8 @@ normalizzaTesti <- function(testo, tolower=TRUE,normalizzahtml=TRUE,
   if(tolower)  testo <- tryTolower(testo,ifErrorReturnText=TRUE)
   
   if(!is.null(contaStringhe)) 
-    conteggiStringhe=.contaStringhe(testo,contaStringhe) else NULL
+    conteggiStringhe=.contaStringhe(testo,contaStringhe) else 
+    conteggiStringhe=NULL
 	# identifica emote
 	#source(paste(functiondir,"/normalizzaemote.R",sep=""), .GlobalEnv)
 	testo <- normalizzaemote(testo,perl=perl)
