@@ -1,4 +1,4 @@
-removeStopwords <- function(testo, stopwords=.itastopwords){
+removeStopwords <- function(testo, stopwords=itastopwords){
   testo <- strsplit(testo, "\\s")
   testo <- lapply(testo, function(x) { x[-which(x %in% stopwords | nchar(x)<=1)]} )
   testo <- unlist(lapply(testo, function(x) paste(x, collapse=" ")))

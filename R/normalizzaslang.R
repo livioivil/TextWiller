@@ -1,6 +1,6 @@
 normalizzaslang <-function(testo,perl=TRUE){
 	testo <- gsub(" (#?zz+|#?u+ff[aif]+?|#?r+o+n+f+|#uff|ronf) "," EMOTEZZZ ",testo, perl=perl, ignore.case=TRUE)
-	testo <- gsub(" (#?sii+|#si+|#?yes+|#?sìì+) "," EMOTESIII ",testo, perl=perl, ignore.case=TRUE)	
+	testo <- gsub(" (#?sii+|#si+|#?yes+|#?s\uc38c\uc38c+) "," EMOTESIII ",testo, perl=perl, ignore.case=TRUE)	
 	testo <- gsub(" (#?noo+|#no+|#?nuu+) "," EMOTENOOO ",testo, perl=perl, ignore.case=TRUE)	
 	testo <- gsub(" (#?ahh+) "," EMOTEAHHH ",testo, perl=perl, ignore.case=TRUE)
 	testo <- gsub(" (#?ehh+) "," EMOTEEHHH ",testo, perl=perl, ignore.case=TRUE)	
@@ -32,8 +32,8 @@ normalizzaslang <-function(testo,perl=TRUE){
 	testo <- gsub(" #?(stronz[oaie]+) "," stronzooo ",testo, perl=perl, ignore.case=TRUE)	
 		
 	# ALTRO		
-	testo <- gsub(" perch[éeè] "," perché ",testo, perl=perl, ignore.case=TRUE)
-	testo <- gsub(" x(ch|k)[éeè] "," perché ",testo, perl=perl, ignore.case=TRUE)
+	testo <- gsub(" perch[\uc3a9e\uc3a8] "," perch\uc3a9 ",testo, perl=perl, ignore.case=TRUE)
+	testo <- gsub(" x(ch|k)[\uc3a9e\uc3a8] "," perch\uc3a9 ",testo, perl=perl, ignore.case=TRUE)
 	testo <- gsub(" nn "," non ",testo, perl=perl, ignore.case=TRUE)
 	testo <- gsub(" nun "," non ",testo, perl=perl, ignore.case=TRUE)	
 		testo		

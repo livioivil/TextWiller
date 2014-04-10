@@ -2,7 +2,7 @@ normalizzaTesti <- function(testo, tolower=TRUE,normalizzahtml=TRUE,
                              normalizzacaratteri=TRUE,fixed=TRUE,perl=TRUE,
                              preprocessingEncoding=TRUE, encoding="UTF-8",
                             contaStringhe=c("\\?","\\!","@","#","\\?",
-                                           "(€|euro)","(\\$|dollar)",
+                                           "(\u20AC|euro)","(\\$|dollar)",
                                            "SUPPRESSEDTEXT"),
                             suppressInvalidTexts=TRUE,
                              verbatim=TRUE){

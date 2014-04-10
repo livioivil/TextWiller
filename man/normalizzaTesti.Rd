@@ -6,7 +6,7 @@
 \alias{normalizzaslang}
 \alias{normalizzapunteggiatura}
 \alias{tryTolower}
-\alias{.itastopwords}
+\alias{itastopwords}
 \alias{removeStopwords}
 \alias{preprocessingEncoding}
 %- Also NEED an '\alias' for EACH other topic documented here.
@@ -19,8 +19,7 @@ Varie funzioni di normalizzazione del testo
 normalizzaTesti(testo, tolower = TRUE, normalizzahtml = TRUE, 
   normalizzacaratteri = TRUE, fixed = TRUE, perl = TRUE, 
   preprocessingEncoding=TRUE, encoding="UTF-8",
-  contaStringhe = c("\\\\?","\\\\!","#","@",
-    "(€|euro)","(\\\\$|dollar)","SUPPRESSEDTEXT"),
+  contaStringhe = c("\\\\?","\\\\!","@","#","\\\\?",                                               "(\\u20AC|euro)","(\\\\$|dollar)",                                           "SUPPRESSEDTEXT"),
   suppressInvalidTexts=TRUE,
   verbatim=TRUE)  
 
@@ -33,8 +32,8 @@ normalizzaslang(testo,perl = TRUE)
 normalizzahtml(testo,perl = TRUE,fixed = TRUE)
 normalizzaemote(testo,perl = TRUE)
 tryTolower(testo, ifErrorReturnText = FALSE)
-removeStopwords(testo, stopwords = .itastopwords)
-
+removeStopwords(testo, stopwords = itastopwords)
+data(itastopwords)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
@@ -51,7 +50,7 @@ removeStopwords(testo, stopwords = .itastopwords)
 \item{verbatim}{Mostra statitiche durante il processo. Default \code{TRUE}}
 }
 \details{
-\code{.itastopwords} e' l'unione di \code{\link[tm:stopwords]{stopwords('italian')}} con altre parole italiane.
+\code{itastopwords} e' una lista di stopwords italiane.
 }
 \value{Per \code{normalizzaTesti} l'output  e' una \code{list} con due oggetti: \code{$testo} e' un vettore contenente i testi normalizzati, \code{$conteggi} e' una matrice con i conteggi indicati dal parametro \code{contaStringhe}.
 

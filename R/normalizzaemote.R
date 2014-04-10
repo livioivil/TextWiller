@@ -8,8 +8,8 @@ testo <- gsub("\\:\\)+|\\:\\-\\)+|\\:\\]+|\\:\\-\\]+|\\=\\)+|\\=\\]+|\\=\\>|\\:\
 
 	# EMOTEGOOD :d :D :-d :-D =d =D 8d 8D :') 
 testo <- gsub("\\:d+|\\:D+|\\:\\-d+|\\:\\-D+|\\=d+|\\=D+|8d+|8D+|\\:\\'+\\)+|v\\.v",' EMOTEGOOD ', testo, perl=perl)
-	# EMOTELOVE <3 ❤ ♥
-testo <- gsub("\\<3+|❤|♥",' EMOTELOVE ', testo, perl=perl)        
+	# EMOTELOVE <3
+testo <- gsub("\\<3+|\u2764|\u2665",' EMOTELOVE ', testo, perl=perl)        
               # EMOTEBAD :( :-( :[ :-[ =[ =( : ( ):
 testo <- gsub("\\:\\(+|\\:\\-\\(+|\\:\\[+|\\:\\-\\[+|\\=\\[+|\\=\\(+|\\:[[:blank:]]\\(|[[:blank:]]\\([[:blank:]]?\\:",' EMOTEBAD ', testo, perl=perl)
 	# EMOTEBAD :'( :-[ :* 
@@ -20,8 +20,8 @@ testo <- gsub("\\:\\|\\:/+|\\=/+|\\:x",' EMOTEBAD ', testo, perl=perl)
 testo <- gsub("\\#\\_+\\#|X\\_+X|x\\_+x|X\\.X|x\\.x|>\\.<|>\\_+<|>\\_+>|>\\.>",' EMOTEBAD ', testo, perl=perl)
 	# EMOTEWINK ;) ;-) ;] ;-] ;> ;d ;D ;o
 testo <- gsub("\\;\\)+|\\;\\-\\)+|\\;\\]|\\;\\-\\]|\\;\\>|;d+|;D+|;o",' EMOTEWINK ', testo, perl=perl)
-	# EMOTESHOCK O.o o.o O.O o.O O_o o_o O_O o_O :OO =O -.- u.u u.ù ù.u u_u çç ç_ç t_t ù_ù ù.ù :oo 0_0 =_= ._. òò ò_ò *u* -_- ùù -,- :s --' .-. '-'
-testo <- gsub("O\\.o|o\\.o|O\\.O|o\\.O|O\\_+o|o\\_+o|O\\_+O|o\\_+O|\\:OO+|\\=O+|\\-\\.\\-|u\\.u|u\\.ù|ù\\.u|u\\_+u|çç|ç_+ç|t_+t|ù\\_+ù|ù\\.ù|\\:oo+|0\\_+0|\\=\\_+\\=|\\.\\_+\\.|òò|ò\\_+ò|\\*u+\\*|\\-\\_+\\-|ùù|\\-\\,\\-|\\-\\-\\'|\\.\\-\\.|\\'\\-\\'",' EMOTESHOCK ', testo, perl=perl)
+	# EMOTESHOCK O.o o.o O.O o.O O_o o_o O_O o_O etc
+testo <- gsub("O\\.o|o\\.o|O\\.O|o\\.O|O\\_+o|o\\_+o|O\\_+O|o\\_+O|\\:OO+|\\=O+|\\-\\.\\-|u\\.u|u\\.\u00F9|\u00F9\\.u|u\\_+u|\u00E7\u00E7|\u00E7_+\u00E7|t_+t|\u00F9\\_+\u00F9|\u00F9\\.\u00F9|\\:oo+|0\\_+0|\\=\\_+\\=|\\.\\_+\\.|\u00F2\u00F2|\u00F2\\_+\u00F2|\\*u+\\*|\\-\\_+\\-|\u00F9\u00F9|\\-\\,\\-|\\-\\-\\'|\\.\\-\\.|\\'\\-\\'",' EMOTESHOCK ', testo, perl=perl)
 	# EMOTEAMAZE *_* *-* *o* *.* 
 testo <- gsub("\\*\\_+\\*|\\*\\-\\*|\\*\\o\\*|\\*\\.\\*",' EMOTEAMAZE ', testo, perl=perl)
 	# EMOTEJOKE :P :p =P =p XD xD xd d:
@@ -31,7 +31,6 @@ testo <- gsub("\\:P+[^e]|\\:p+[^e]|\\=P+|\\=p+|XD+|xD+|xd+|[[:blank:]]d\\:",' EM
 #testo <- gsub("([:=8]([- '])?[])Dd>]+)|(\\^[-_o]?\\^)","EMOTEGOOD", testo)
 #testo <- gsub("([:=]([- '])?[(|/x*[])|([>Xx#][._][>Xx<#])|(\\):)","EMOTEBAD", testo)
 #testo <- gsub(";-?[])>Ddo]","EMOTEWINK", testo)
-#testo <- gsub("([-oO0òtuùç=][._]+[-oO0òtuùç=])|(\\.[-_]+\\.)|(\\b[=oO0:][oO0]+\\b)|(:[sS]+\\b)|('-')|(\\*u+\\*)|(-,-)|(--')|([çòù]{2})","EMOTESHOCK", testo)
 #testo <- gsub("\\*[-._o]\\*","EMOTEAMAZE", testo)
 #testo <- gsub("([:=]-?[pP]+)|(\\b[xX][dD]+\\b)|(\\bd:\\b)","EMOTEJOKE", testo)
 

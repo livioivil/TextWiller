@@ -1,7 +1,7 @@
 \name{sentiment}
 \alias{sentiment}
 \alias{sentimentVocabularies}
-\alias{dizionariMadda}
+\alias{vocabolariMadda}
 %- Also NEED an '\alias' for EACH other topic documented here.
 \title{Performs sentiment analysis}
 \description{
@@ -10,13 +10,13 @@ Assegna una sentiment per ogni testo in \code{text}
 \usage{
 sentiment(text, algorithm="Maddalena", 
           vocabularies= NULL)
-data(dizionariMadda)
+data(vocabolariMadda)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
 \item{text}{descr .}
 \item{algorithm}{descr .}
-\item{vocabularies}{\code{dizionariMadda} by default.}}
+\item{vocabularies}{\code{vocabolariMadda} by default.}}
 
 \details{
 aggiungere dettagli qui

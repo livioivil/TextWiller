@@ -10,7 +10,7 @@
 \usage{
 shorturl2url(testo,id=names(testo))
 urlExtract(testo, id = names(testo))
-patternExtract(testo, pattern="@\\w+", id = names(testo))}
+patternExtract(testo, pattern="@\\\\w+", id = names(testo))}
 \arguments{
 \item{testo}{Vettore (eventualmente con nomi) di testi contenenti shorturl.}
 \item{pattern}{stringa di testo da cercare ed estrarre. \code{"@\\\\w+"} (default) estrae i riferimenti ad uno user nei tweets. \code{"#\\\w+"} estrae gli hashtag.}
