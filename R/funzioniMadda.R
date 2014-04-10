@@ -1,5 +1,5 @@
 .sentiment.maddalena<- function(text, vocabularies){
-  text<-normalizzaTesti(text,suppressInvalidTexts=FALSE,conteggiStringhe=NULL)$testo
+  text<-normalizzaTesti(text,suppressInvalidTexts=FALSE,contaStringhe=NULL)$testo
   #####################################################sentiment analisys
   
 # sfInit(par=T,cp=1) #cp = 10 calculus, devo metterci il numero di processori 
