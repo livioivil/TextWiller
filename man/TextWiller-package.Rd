@@ -32,6 +32,8 @@ library(TextWiller)
 
 normalizzaTesti(c('ciao bella!','www.associazionerospo.org','noooo, che grandeeeeee!!!!!','mitticooo', 'mai possibile?!?!'))
 
+sentiment(c("ciao bella!","farabutto!","fofi sei figo!"))
+
 classificaUtenti(c('livio','alessandra'))
 
 #extract short urls and get the long ones
