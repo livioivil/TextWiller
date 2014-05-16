@@ -9,7 +9,14 @@ preprocessingEncoding <- function(testo,
 
   if(is.logical(encoding)&&(!encoding)){  
     #do nothing
-    } else     testo=iconv(testo,to = encoding)
+    } else     {
+      encs=unique(Encoding(testo))
+      encs[encs=="unknown"]=""
+      for(i in encs){
+        idi=Encoding(testo)==i
+        testo[idi]=iconv(testo[idi],from=i,to = encoding)
+      }
+    }
   
   #  elimina testi con encoding non riconoscibile:
   if(suppressInvalidTexts){
