@@ -22,8 +22,8 @@ preprocessingEncoding <- function(testo,
   if(suppressInvalidTexts){
     droptxt=sapply(testo,function(txt) is(try(nchar(txt),silent=TRUE),"try-error"))
     testo[droptxt]="SUPPRESSEDTEXT"
-    if(verbatim) cat("\n NB: ",sum(droptxt)," documenti eliminati (",
-                     round(mean(droptxt)*100,3),"%) a causa di multibyte invalidi.\n",sep="")
+    if(verbatim&(sum(droptxt)>0)) warning(paste(sum(droptxt)," documenti eliminati (",
+                     round(mean(droptxt)*100,3),"%) a causa di multibyte invalidi.\n",sep=""))
   }
   testo
 }
