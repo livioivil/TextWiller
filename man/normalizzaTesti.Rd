@@ -19,7 +19,8 @@ Varie funzioni di normalizzazione del testo
 normalizzaTesti(testo, tolower = TRUE, normalizzahtml = TRUE, 
   normalizzacaratteri = TRUE, fixed = TRUE, perl = TRUE, 
   preprocessingEncoding=TRUE, encoding="UTF-8",
-  contaStringhe = c("\\\\?","\\\\!","@","#","\\\\?",                                               "(\\u20AC|euro)","(\\\\$|dollar)",                                           "SUPPRESSEDTEXT"),
+  contaStringhe = c("\\\\?","\\\\!","@","#",
+  "(\\u20AC|euro)","(\\\\$|dollar)", "SUPPRESSEDTEXT"),
   suppressInvalidTexts=TRUE,
   verbatim=TRUE)  
 
@@ -52,7 +53,8 @@ data(itastopwords)
 \details{
 \code{itastopwords} e' una lista di stopwords italiane.
 }
-\value{Per \code{normalizzaTesti} l'output  e' una \code{list} con due oggetti: \code{$testo} e' un vettore contenente i testi normalizzati, \code{$conteggi} e' una matrice con i conteggi indicati dal parametro \code{contaStringhe}.
+\value{Per \code{normalizzaTesti} l'output e' il vettore di testi normalizzati. 
+La tabella dei conteggi specificati in \code{contaStringhe} e' assegnato come tabella \code{counts} tra gli \code{attributes}  del vettore stesso.
 
 Per tutte le altre funzioni, l'output e' un \code{vector} della stessa lunghezza di \code{testo} ma con testi normalizzati.
 }
@@ -67,8 +69,9 @@ Dario Solari, Livio Finos, Maddalena Branca
 %% ~Make other sections like Warning with \section{Warning }{....} ~
 
 \examples{
-normalizzaTesti(c('ciao bella!','www.associazionerospo.org','noooo, che grandeeeeee!!!!!','mitticooo', 'mai possibile?!?!'))
-
+testoNorm <- normalizzaTesti(c('ciao bella!','www.associazionerospo.org','noooo, che grandeeeeee!!!!!','mitticooo', 'mai possibile?!?!'))
+testoNorm
+attr(testoNorm,"counts")
 }
 % Add one or more standard keywords, see file 'KEYWORDS' in the
 % R documentation directory.
