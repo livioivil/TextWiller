@@ -27,21 +27,3 @@ preprocessingEncoding <- function(testo,
   }
   testo
 }
-
-###OLD VERSION
-#   if(is.logical(encoding)) {
-#     if(encoding){ 
-#       encoding="UTF-8"  
-#       testo=sapply(testo, function(text) {
-#         if(Encoding(text) == "unknown")                      
-#           Encoding(text) <- encoding
-#         text <- enc2utf8(text)
-#       })
-#     } 
-#   } else {
-#     testo=sapply(testo, function(text) {
-#       if(Encoding(text) == "unknown")
-#         Encoding(text) <- encoding
-#       text <- enc2utf8(text)
-#     })
-#   }

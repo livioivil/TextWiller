@@ -1,7 +1,7 @@
 normalizzaTesti <- function(testo, tolower=TRUE,normalizzahtml=TRUE,
                              normalizzacaratteri=TRUE,fixed=TRUE,perl=TRUE,
                              preprocessingEncoding=TRUE, encoding="UTF-8",
-                            contaStringhe=c("\\?","\\!","@","#","\\?",
+                            contaStringhe=c("\\?","\\!","@","#",
                                            "(\u20AC|euro)","(\\$|dollar)",
                                            "SUPPRESSEDTEXT"),
                             suppressInvalidTexts=TRUE,
@@ -45,5 +45,6 @@ normalizzaTesti <- function(testo, tolower=TRUE,normalizzahtml=TRUE,
 
   testo <- gsub("\\s+", " ", testo, perl=perl)
   testo <- .togliSpaziEsterni(testo)
-	list(testo=testo,conteggi=conteggiStringhe)
+  attr(testo,"counts")=conteggiStringhe
+  testo
 }
