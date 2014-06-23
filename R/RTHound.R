@@ -34,8 +34,10 @@ RTHound=function(testo, S = 500, L = 100,
       testo[idClusters[[i]]]=testo[idClusters[[i]][1]]
   }
   
-  if(showTopN>0) cat("\n",showTopN," most frequent RTs\n",
-                     sort(table(testo),decreasing=T)[1:showTopN])
+  if(showTopN>0) {
+    cat("\n",showTopN," most frequent RTs\n")
+    print(sort(table(testo),decreasing=T)[1:showTopN])
+  }
   
   if(length(testo.na)>0){
     testoOut=rep("",ntesti)
