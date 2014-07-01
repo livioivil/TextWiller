@@ -45,9 +45,10 @@ Federico Ferraccioli, Livio Finos
  "\"Il Governo italiano non fermi la sperimentazione animale\". Intervista a Elena Cattaneo http://t.co/q1dm430a9j",
  "RT @orianoPER: @EnricoLetta LA #VIVISEZIONE NON SERVE: PAROLA DI GLAXO-APTUIT http://t.co/mtsHJjDIvu #StopVivisection #SperimentazioneAnima&")
  
- RTHound(testo, S = 3, L = 1, 
+ testo=RTHound(testo, S = 3, L = 1, 
                  hclust.dist = 100, hclust.method = "complete",
                  showTopN=3)
+
 }
 }
 % Add one or more standard keywords, see file 'KEYWORDS' in the
