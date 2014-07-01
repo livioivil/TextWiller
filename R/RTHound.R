@@ -35,8 +35,11 @@ RTHound=function(testo, S = 500, L = 100,
   }
   
   if(showTopN>0) {
-    cat("\n",showTopN," most frequent RTs\n")
-    print(sort(table(testo),decreasing=TRUE)[1:showTopN])
+    cat("\n",showTopN," most frequent RTs:")
+    out=sort(table(testo),decreasing=TRUE)[1:showTopN]
+    cat("\n",
+      paste("(fr ",out,") ",names(out),sep="","\n")
+      )
   }
   
   if(length(testo.na)>0){
