@@ -27,11 +27,11 @@ normalizzaTesti(testo, tolower = TRUE, normalizzahtml = TRUE,
 preprocessingEncoding(testo, encoding="UTF-8",
                            suppressInvalidTexts=TRUE, verbatim = TRUE)
 
-normalizzacaratteri(testo, removeUnderscore=TRUE, fixed = TRUE, fixed = TRUE)
-normalizzapunteggiatura(testo,perl = TRUE,fixed = TRUE)
-normalizzaslang(testo,perl = TRUE)
-normalizzahtml(testo,perl = TRUE,fixed = TRUE)
-normalizzaemote(testo,perl = TRUE)
+normalizzacaratteri(testo, fixed = TRUE)
+normalizzapunteggiatura(testo, removeUnderscore = TRUE, perl = TRUE, fixed = TRUE)
+normalizzaslang(testo, perl = TRUE)
+normalizzahtml(testo, perl = TRUE, fixed = TRUE)
+normalizzaemote(testo, perl = TRUE)
 tryTolower(testo, ifErrorReturnText = FALSE)
 removeStopwords(testo, stopwords = itastopwords)
 data(itastopwords)
@@ -44,10 +44,14 @@ data(itastopwords)
 \item{normalizzacaratteri}{\code{TRUE} by default}
 \item{fixed}{ vedi \code{\link[base:gsub]{base:gsub}}. Preferibilmente non usare l'opzione.}
 \item{perl}{ vedi \code{\link[base:gsub]{base:gsub}}. Preferibilmente non usare l'opzione.}
-\item{preprocessingEncoding}{}
+\item{preprocessingEncoding}{logical}
 \item{encoding}{ \code{"UTF-8"} default. Se \code{FALSE} evita la conversione.}
 \item{contaStringhe}{stringhe da contare nei documenti. Default: \code{ c("\\\\?","\\\\!","#","@", "(€|euro)","(\\\\$|dollar)","SUPPRESSEDTEXT")}}
 \item{suppressInvalidTexts}{Sostituisce con \code{"SUPPRESSEDTEXT"} le stringhe con mutibyte non valida (che produrrebbero verosimilmente errori nelle successive normalizzazioni). Default \code{TRUE}.}
+\item{removeUnderscore}{rimuovere gli underscore? }
+\item{ifErrorReturnText}{what to return for tests with a wrong encoding.}
+\item{stopwords}{Lista di parole da escludere dall'analisi. A list of words to be excluded from the process. \code{itastopwords} by default.}
+
 \item{verbatim}{Mostra statitiche durante il processo. Default \code{TRUE}}
 }
 \details{

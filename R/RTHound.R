@@ -19,13 +19,14 @@ RTHound=function(testo, S = 500, L = 100,
       selectPeriodoPrima=testo[((S)*s[l]-(L+1)):((S)*s[l]-1)] 
       select=c(selectPeriodoPrima,select)
     }
-    m=matrix(ncol=length(select),nrow=length(select))          
-    for(i in 1:(length(select)-1))  {
-      for(j in (i+1):length(select)){
-        m[i,j]=levenshteinDist(testo[i],testo[j])
-      }
-    }
-    m= as.dist(t(m))                            
+#     m=matrix(ncol=length(select),nrow=length(select))          
+#     for(i in 1:(length(select)-1))  {
+#       for(j in (i+1):length(select)){
+#         m[i,j]=levenshteinDist(testo[i],testo[j])
+#       }
+#     }
+#     m= as.dist(t(m))                            
+m= as.dist(testo[1:length(select)])
     h=hclust(dist(m),method=hclust.method)
     tree=cutree(h,h=hclust.dist)
     idClusters=sapply(unique(tree), function(x) which(tree==x))
