@@ -26,7 +26,7 @@ RTHound=function(testo, S = 500, L = 100,
 #       }
 #     }
 #     m= as.dist(t(m))                            
-m= as.dist(testo[1:length(select)])
+m= as.dist(adist(testo[1:length(select)]))
     h=hclust(dist(m),method=hclust.method)
     tree=cutree(h,h=hclust.dist)
     idClusters=sapply(unique(tree), function(x) which(tree==x))
