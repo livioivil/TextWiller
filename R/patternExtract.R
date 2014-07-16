@@ -1,4 +1,4 @@
-patternExtract <- function(testo, pattern="@\\w+", id = names(testo)){
+patternExtract <- function(testo, pattern="@( *)\\w+", id = names(testo)){
   
   if(is.null(id)) id=1:length(testo)
      pattern <- str_extract_all(testo, pattern)
