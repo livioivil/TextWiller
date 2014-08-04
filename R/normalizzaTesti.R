@@ -46,7 +46,7 @@ normalizzaTesti <- function(testo, tolower=TRUE,normalizzahtml=TRUE,
   testo <- gsub("\\s+", " ", testo, perl=perl)
   testo <- .togliSpaziEsterni(testo)
   attr(testo,"counts")=conteggiStringhe
-    
+  data(itastopwords)
   if(removeStopwords) testo <- removeStopwords(testo)
   
   testo
