@@ -5,7 +5,7 @@ normalizzaTesti <- function(testo, tolower=TRUE,normalizzahtml=TRUE,
                                            "(\u20AC|euro)","(\\$|dollar)",
                                            "SUPPRESSEDTEXT"),
                             suppressInvalidTexts=TRUE,
-                             verbatim=TRUE, removeStopwords=TRUE){
+                             verbatim=TRUE, remove=TRUE){
   Sys.setlocale("LC_ALL", "")
   if(preprocessingEncoding)  testo<-preprocessingEncoding(testo,encoding=encoding,
                                suppressInvalidTexts=suppressInvalidTexts,
@@ -24,8 +24,6 @@ normalizzaTesti <- function(testo, tolower=TRUE,normalizzahtml=TRUE,
   # pulizia testo preliminare (html)
   if(normalizzahtml) testo <- normalizzahtml(testo)
   
-  # tolower
-  if(tolower)  testo <- tryTolower(testo,ifErrorReturnText=TRUE)
   
   if(!is.null(contaStringhe)) 
     conteggiStringhe=.contaStringhe(testo,contaStringhe) else 
@@ -43,11 +41,16 @@ normalizzaTesti <- function(testo, tolower=TRUE,normalizzahtml=TRUE,
 	#source(paste(functiondir,"/normalizzaslang.R",sep=""), .GlobalEnv)
 	testo <- normalizzaslang(testo,perl=perl)
 
+  # tolower
+  if(tolower)  testo <- tryTolower(testo,ifErrorReturnText=TRUE)
+  
+  data(itastopwords)
+  if(remove) testo <- removeStopwords(testo)
+    
   testo <- gsub("\\s+", " ", testo, perl=perl)
   testo <- .togliSpaziEsterni(testo)
   attr(testo,"counts")=conteggiStringhe
-  data(itastopwords)
-  if(removeStopwords) testo <- removeStopwords(testo)
+  
   
   testo
 }

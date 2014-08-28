@@ -8,12 +8,12 @@ testo <- gsub("\\:\\)+|\\:\\-\\)+|\\:\\]+|\\:\\-\\]+|\\=\\)+|\\=\\]+|\\=\\>|\\:\
 
 	# EMOTEGOOD :d :D :-d :-D =d =D 8d 8D :') 
 testo <- gsub("\\:d+|\\:D+|\\:\\-d+|\\:\\-D+|\\=d+|\\=D+|8d+|8D+|\\:\\'+\\)+|v\\.v",' EMOTEGOOD ', testo, perl=perl)
-	# EMOTELOVE <3
-testo <- gsub("\\<3+|\u2764|\u2665",' EMOTELOVE ', testo, perl=perl)        
+	# EMOTELOVE <3 :*
+testo <- gsub("\\<3+|\u2764|\u2665|\\:\\*+",' EMOTELOVE ', testo, perl=perl)        
               # EMOTEBAD :( :-( :[ :-[ =[ =( : ( ):
 testo <- gsub("\\:\\(+|\\:\\-\\(+|\\:\\[+|\\:\\-\\[+|\\=\\[+|\\=\\(+|\\:[[:blank:]]\\(|[[:blank:]]\\([[:blank:]]?\\:",' EMOTEBAD ', testo, perl=perl)
-	# EMOTEBAD :'( :-[ :* 
-testo <- gsub("\\:\\'+\\(+|\\:\\'\\[|\\:\\*+|\\:\\-[\\|]",' EMOTEBAD ', testo, perl=perl)
+	# EMOTEBAD :'( :-[ D:
+testo <- gsub("\\:\\'+\\(+|\\:\\'\\[|D\\:|\\:\\-\\[",' EMOTEBAD ', testo, perl=perl)
 	# EMOTEBAD :| :/ =/ :x :-|
 testo <- gsub("\\:\\|\\:/+|\\=/+|\\:x",' EMOTEBAD ', testo, perl=perl)
 	# EMOTEBAD #_# X_X x_x X.X x.x >.< >_< >.> >_>

@@ -14,6 +14,7 @@ normalizzaslang <-function(testo,perl=TRUE){
 	testo <- gsub(" (#?cazz[oi]+) "," cazzo ",testo, perl=perl, ignore.case=TRUE)	
 	testo <- gsub(" (#?cazzat[a]+) "," cazzata ",testo, perl=perl, ignore.case=TRUE)  
 	testo <- gsub(" (#?merd[a]+) "," merda ",testo, perl=perl, ignore.case=TRUE)	
+	testo <- gsub("ca\\*\\*o|c\\*\\*\\*+o","cazzo",testo, perl=perl)
 	testo <- gsub(" (#?aaa+) "," EMOTEAAA ",testo, perl=perl, ignore.case=TRUE)
 	testo <- gsub(" (#?ooo+) "," EMOTEOOO ",testo, perl=perl, ignore.case=TRUE)	
 	testo <- gsub(" (#?eee+) "," EMOTEEEE ",testo, perl=perl, ignore.case=TRUE)		
