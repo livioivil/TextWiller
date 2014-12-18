@@ -18,7 +18,7 @@ Varie funzioni di normalizzazione del testo
 \usage{
 normalizzaTesti(testo, tolower = TRUE, normalizzahtml = TRUE, 
   normalizzacaratteri = TRUE, fixed = TRUE, perl = TRUE, 
-  preprocessingEncoding=TRUE, encoding="UTF-8",
+  preprocessingEncoding=TRUE, encoding="UTF-8", sub = "",
   contaStringhe = c("\\\\?","\\\\!","@","#",
   "(\\u20AC|euro)","(\\\\$|dollar)", "SUPPRESSEDTEXT"),
   suppressInvalidTexts=TRUE,

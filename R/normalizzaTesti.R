@@ -1,15 +1,17 @@
 normalizzaTesti <- function(testo, tolower=TRUE,normalizzahtml=TRUE,
                              normalizzacaratteri=TRUE,fixed=TRUE,perl=TRUE,
-                             preprocessingEncoding=TRUE, encoding="UTF-8",
+                             preprocessingEncoding=TRUE, encoding="UTF-8", sub="",
                             contaStringhe=c("\\?","\\!","@","#",
                                            "(\u20AC|euro)","(\\$|dollar)",
                                            "SUPPRESSEDTEXT"),
                             suppressInvalidTexts=TRUE,
                              verbatim=TRUE, remove=TRUE){
   Sys.setlocale("LC_ALL", "")
-  if(preprocessingEncoding)  testo<-preprocessingEncoding(testo,encoding=encoding,
-                               suppressInvalidTexts=suppressInvalidTexts,
-                               verbatim=verbatim)
+  if(preprocessingEncoding)  testo<-preprocessingEncoding(testo,
+                                      encoding=encoding,
+                                      sub=sub, 
+                                      suppressInvalidTexts=suppressInvalidTexts,
+                                      verbatim=verbatim)
 	#######################
 	#   PREPROCESSING     #
 	#######################
