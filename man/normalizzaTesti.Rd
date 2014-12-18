@@ -25,7 +25,7 @@ normalizzaTesti(testo, tolower = TRUE, normalizzahtml = TRUE,
   verbatim=TRUE)  
 
 preprocessingEncoding(testo, encoding="UTF-8",
-                           suppressInvalidTexts=TRUE, verbatim = TRUE)
+                           suppressInvalidTexts=TRUE, verbatim = TRUE, sub = "")
 
 normalizzacaratteri(testo, fixed = TRUE)
 normalizzapunteggiatura(testo, removeUnderscore = TRUE, perl = TRUE, fixed = TRUE)
@@ -46,6 +46,7 @@ data(itastopwords)
 \item{perl}{ vedi \code{\link[base:gsub]{base:gsub}}. Preferibilmente non usare l'opzione.}
 \item{preprocessingEncoding}{logical}
 \item{encoding}{ \code{"UTF-8"} default. Se \code{FALSE} evita la conversione.}
+\item{sub}{ character string. If not NA it is used to replace any non-convertible bytes in the input. See also parameter \code{sub} in function \code{iconv}.}
 \item{contaStringhe}{stringhe da contare nei documenti. Default: \code{ c("\\\\?","\\\\!","#","@", "(€|euro)","(\\\\$|dollar)","SUPPRESSEDTEXT")}}
 \item{suppressInvalidTexts}{Sostituisce con \code{"SUPPRESSEDTEXT"} le stringhe con mutibyte non valida (che produrrebbero verosimilmente errori nelle successive normalizzazioni). Default \code{TRUE}.}
 \item{removeUnderscore}{rimuovere gli underscore? }

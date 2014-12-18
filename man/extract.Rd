@@ -34,7 +34,7 @@ Dario Solari, Livio Finos
 
 \examples{
  \dontrun{
- testo=c("Influenza Vaccination | ONS - Oncology Nursing Society http://t.co/924sRKGBU9 See All http://t.co/dbtPJRMl00",See All http://t.co/dbtPJRMl00")
+ testo=c("Influenza Vaccination | ONS - Oncology Nursing Society http://t.co/924sRKGBU9 See All http://t.co/dbtPJRMl00,See All http://t.co/dbtPJRMl00")
  shorturl2url(testo,id=names(testo))
 urls=urlExtract(testo)
 patternExtract(c("@luca @paolo: buon giorno!", "@matteo: a te!"), pattern="@\\w+")

@@ -1,7 +1,7 @@
 preprocessingEncoding <- function(testo, 
                                   encoding="UTF-8",
                                   suppressInvalidTexts=TRUE,
-                                  verbatim=TRUE){
+                                  verbatim=TRUE, sub = ""){
    if(is.logical(encoding)) {
     if(encoding) {encoding="UTF-8"  
     } else if(encoding=="") encoding="UTF-8"  
@@ -13,8 +13,8 @@ preprocessingEncoding <- function(testo,
       encs=unique(Encoding(testo))
       encs[encs=="unknown"]=""
       for(i in encs){
-        idi=Encoding(testo)==i
-        testo[idi]=iconv(testo[idi],from=i,to = encoding)
+        idi=(Encoding(testo)==i)
+        testo[idi]=iconv(testo[idi],from=i,to = encoding, sub = "")
       }
     }
   

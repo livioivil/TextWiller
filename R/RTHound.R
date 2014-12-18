@@ -1,22 +1,31 @@
 RTHound=function(testo, S = 500, L = 100, 
                  hclust.dist = 100, hclust.method = "complete",
-                 showTopN=5){ 
+                 showTopN=5, dist="levenshtein",verbatim=TRUE){ 
+  testo=iconv(testo,to="UTF-8")
+  testo=gsub("^( *)(RT|rt|Rt)( *)","",testo)
   testo.na=which(is.na(testo))
   ntesti=length(testo)
-  
+  if(is.null(names(testo))) names(testo)=1:length(testo)
   if(length(testo.na)>0) testo=testo[-testo.na]
-  nWindows=(floor(length(testo)/S)-1)
+  ntestiNA=length(testo)
+  
+  #   if(dist=="profile") {
+  #     if(verbatim) cat("\n Making profile matrix..")
+  #     profile=make.profile(testo)
+  #   }
+  #     
+  nWindows=(floor(ntestiNA/S)-1)
+  if(verbatim) cat("\n There will be ",nWindows, " sliding windows:")
   s=c(0:nWindows)
   for(l in 1:length(s)) {
-    cat("\nWindow #", l)
-    if(l!=length(s))  {
-      ids=c(((S)*s[l]):((S)*s[l+1]))
-      select=testo[ids] 
-    } else {
-      select=testo[((S)*s[l]):length(testo)] 
-    }
+    if(verbatim) cat("\nWindow #", l)
+    if(l<length(s))  
+      select=c(((S)*s[l]+1):((S)*s[l+1])) else
+    if(l==length(s))  
+      select=((S)*s[l]+1):length(testo)
+    
     if(l>1)   {     
-      selectPeriodoPrima=testo[((S)*s[l]-(L+1)):((S)*s[l]-1)] 
+      selectPeriodoPrima=((S)*s[l]-(L+1)):((S)*s[l]-1)
       select=c(selectPeriodoPrima,select)
     }
 #     m=matrix(ncol=length(select),nrow=length(select))          
@@ -26,13 +35,18 @@ RTHound=function(testo, S = 500, L = 100,
 #       }
 #     }
 #     m= as.dist(t(m))                            
-m= as.dist(adist(testo[1:length(select)]))
+    if(dist=="levenshtein")
+      m= as.dist(adist(testo[select]))
+    if(dist=="profile")  
+      m= dist(make.profile(testo[select]))
+
+
     h=hclust(dist(m),method=hclust.method)
     tree=cutree(h,h=hclust.dist)
     idClusters=sapply(unique(tree), function(x) which(tree==x))
     
     for (i in 1:length(idClusters))
-      testo[idClusters[[i]]]=testo[idClusters[[i]][1]]
+      testo[names(idClusters[[i]])]=testo[names(idClusters[[i]])[1]]
   }
   
   if(showTopN>0) {
@@ -49,4 +63,13 @@ m= as.dist(adist(testo[1:length(select)]))
     testo=testoOut
   }
   return(testo)
+}
+
+####### util for profile-based distance
+make.profile <- function(testo){
+  split=strsplit(testo,"")
+  profileNames=table(unlist(split))
+  split=sapply(split,function(x)factor(x,levels=names(profileNames)))
+  profile=t(sapply(split,function(x)table(x)))
+  as.matrix(profile)
 }

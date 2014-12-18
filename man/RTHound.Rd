@@ -6,7 +6,7 @@
 \usage{ 
 RTHound(testo, S = 500, L = 100, 
                  hclust.dist = 100, hclust.method = "complete",
-                 showTopN=5)
+                 showTopN=5, dist="levenshtein", verbatim=TRUE)
 }
 \arguments{
 \item{testo}{Tweets or generic texts vector.}
@@ -15,6 +15,8 @@ RTHound(testo, S = 500, L = 100,
 \item{hclust.dist}{Numeric scalar with height where the trees should be cut. \code{100} by deafault.}
 \item{hclust.method}{The agglomeration method to be used. This should be (an unambiguous abbreviation of) one of \code{"ward"}, \code{"single"}, \code{"complete"}, \code{"average"}, \code{"mcquitty"}, \code{"median"} or \code{"centroid"}. \code{"complete"}  by default.}
 \item{showTopN}{Number of most frequent retweets to show. \code{5} by deafault.}
+\item{dist}{\code{"levenshtein"} is the default. \code{"profile"} is the other - quicker - accepted value.}
+\item{verbatim}{logical}
 }
 \details{
 \code{RTHound} divides \code{testo} in subsets of length \code{S} (from the second subset also incorporates \code{L} tweets of the previous subset); calculate a dissimilarity matrix based on Levenshtein distance for each subsets and clusterize tweets throught hierarchical clustering algorithm. 
