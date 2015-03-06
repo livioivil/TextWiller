@@ -18,7 +18,7 @@ License: GPL (>= 2)
 }
 }
 \author{
-Dario Solari, Livio Finos, Matteo Redaelli, Marco Rinaldo
+Dario Solari, Andrea Sciandra, Marco Rinaldo, Matteo Redaelli, Livio Finos (con contributi di Marco Rinaldo, Maddalena Branca, Federico Ferraccioli).
 
 Maintainer: dario solari <dario.solari@gmail.com>
 }
