@@ -17,12 +17,14 @@ Varie funzioni di normalizzazione del testo
 }
 \usage{
 normalizzaTesti(testo, tolower = TRUE, normalizzahtml = TRUE, 
-  normalizzacaratteri = TRUE, fixed = TRUE, perl = TRUE, 
+  normalizzacaratteri = TRUE, normalizzaemote = TRUE,
+  normalizzapunteggiatura = TRUE, normalizzaslang = TRUE, 
+  fixed = TRUE, perl = TRUE, 
   preprocessingEncoding=TRUE, encoding="UTF-8", sub = "",
   contaStringhe = c("\\\\?","\\\\!","@","#",
   "(\\u20AC|euro)","(\\\\$|dollar)", "SUPPRESSEDTEXT"),
   suppressInvalidTexts=TRUE,
-  verbatim=TRUE)  
+  verbatim=TRUE, remove = TRUE)  
 
 preprocessingEncoding(testo, encoding="UTF-8",
                            suppressInvalidTexts=TRUE, verbatim = TRUE, sub = "")
@@ -42,6 +44,9 @@ data(itastopwords)
 \item{tolower}{\code{TRUE} by default}
 \item{normalizzahtml}{\code{TRUE} by default}
 \item{normalizzacaratteri}{\code{TRUE} by default}
+\item{normalizzaemote}{\code{TRUE} by default}
+\item{normalizzapunteggiatura}{\code{TRUE} by default}
+\item{normalizzaslang}{\code{TRUE} by default}
 \item{fixed}{ vedi \code{\link[base:gsub]{base:gsub}}. Preferibilmente non usare l'opzione.}
 \item{perl}{ vedi \code{\link[base:gsub]{base:gsub}}. Preferibilmente non usare l'opzione.}
 \item{preprocessingEncoding}{logical}
@@ -52,8 +57,8 @@ data(itastopwords)
 \item{removeUnderscore}{rimuovere gli underscore? }
 \item{ifErrorReturnText}{what to return for tests with a wrong encoding.}
 \item{stopwords}{Lista di parole da escludere dall'analisi. A list of words to be excluded from the process. \code{itastopwords} by default.}
-
 \item{verbatim}{Mostra statitiche durante il processo. Default \code{TRUE}}
+\item{remove}{\code{TRUE} by default}
 }
 \details{
 \code{itastopwords} e' una lista di stopwords italiane.

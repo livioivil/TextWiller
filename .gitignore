@@ -1,8 +1,11 @@
 # History files
 .Rhistory
 
+TextWiller.Rproj
+
 # Example code in package build process
 *-Ex.R
 
 *~
 
+.Rproj.user

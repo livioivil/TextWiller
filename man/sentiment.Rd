@@ -9,7 +9,7 @@ Assegna una sentiment per ogni testo in \code{text}
 }
 \usage{
 sentiment(text, algorithm="Maddalena", 
-          vocabularies= NULL)
+          vocabularies= NULL, ...)
 data(vocabolariMadda)
 }
 %- maybe also 'usage' for other objects documented here.
