@@ -10,6 +10,6 @@ Install it in R using the following command
 
 library(devtools)
 
-install_github("TextWiller/livioivil")
+install_github("livioivil/TextWiller")
 
 library(TextWiller)
