@@ -1,10 +1,3 @@
----
-title: "TextWiller"
-author: "livio Finos"
-date: "11/06/2015"
-output: html_document
----
-
 # TextWiller
 Collection of text mining utilities, specially devoted to the italian language.
 

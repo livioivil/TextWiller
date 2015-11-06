@@ -68,8 +68,8 @@ img {
 </div>
 
 
-<div id="texrtwiller" class="section level1">
-<h1>TexrtWiller</h1>
+<div id="textwiller" class="section level1">
+<h1>TextWiller</h1>
 <p>Collection of text mining utilities, specially devoted to the italian language.</p>
 <hr />
 <div id="set-up" class="section level2">
@@ -108,9 +108,15 @@ install_github(&quot;livioivil/TextWiller&quot;)</code></pre>
 <pre class="r"><code>sentiment(c(&quot;ciao bella!&quot;,&quot;farabutto!&quot;,&quot;fofi sei figo!&quot;))</code></pre>
 <pre><code>## ciao bello  farabutto  fofi figo 
 ##          1         -1          1</code></pre>
-<pre class="r"><code>classificaUtenti(c('livio','alessandra','andrea'))</code></pre>
+<pre class="r"><code># Classify users' gender by (italian) names
+classificaUtenti(c('livio','alessandra','andrea'))</code></pre>
 <pre><code>##      livio alessandra     andrea 
 ##     &quot;masc&quot;     &quot;femm&quot;     &quot;masc&quot;</code></pre>
+<pre class="r"><code># and classify location
+data(vocabolarioLuoghi)
+classificaUtenti(c('Bosa','Pordenone, Italy','Milan'),vocabolarioLuoghi)</code></pre>
+<pre><code>##             bosa pordenone, italy            milan 
+##          &quot;Isole&quot;       &quot;Nord-est&quot;     &quot;Nord-ovest&quot;</code></pre>
 <pre class="r"><code>#extract short urls and get the long ones
 ## Not run: urls=urlExtract(&quot;Influenza Vaccination | ONS - Oncology Nursing Society http://t.co/924sRKGBU9 See All http://t.co/dbtPJRMl00&quot;)
 
