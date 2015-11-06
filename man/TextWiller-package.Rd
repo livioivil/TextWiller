@@ -26,7 +26,7 @@ Maintainer: dario solari <dario.solari@gmail.com>
 \examples{
  \dontrun{# install.packages("devtools") # if you don't already have it.
 library(devtools)
-install_github("TextWiller", "livioivil")
+install_github("livioivil/TextWiller")
 library(TextWiller)
 }
 
@@ -40,6 +40,6 @@ classificaUtenti(c('livio','alessandra'))
 \dontrun{urls=urlExtract("Influenza Vaccination | ONS - Oncology Nursing Society http://t.co/924sRKGBU9 See All http://t.co/dbtPJRMl00")}
 
 #extract users:
-\dontrun{extract("@livio: #ciao","@\\w+")}
+patternExtract(c("@luca @paolo: buon giorno!", "@matteo: a te!"), pattern="@\\w+")
 
 }

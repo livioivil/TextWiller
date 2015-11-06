@@ -1,0 +1,44 @@
+---
+title: "TextWiller"
+author: "livio Finos"
+date: "11/06/2015"
+output: html_document
+---
+
+# TextWiller
+Collection of text mining utilities, specially devoted to the italian language.
+
+* * *
+
+## Set up
+
+To **install** this github version type (in R):
+
+    #if devtools is not installed yet: 
+    # install.packages("devtools") 
+    library(devtools)
+    install_github("livioivil/TextWiller")
+
+
+* * *
+
+## Some examples
+
+
+```{r}
+library(TextWiller)
+
+normalizzaTesti(c('ciao bella!','www.associazionerospo.org','noooo, che grandeeeeee!!!!!','mitticooo', 'mai possibile?!?!'))
+
+sentiment(c("ciao bella!","farabutto!","fofi sei figo!"))
+
+
+classificaUtenti(c('livio','alessandra','andrea'))
+
+#extract short urls and get the long ones
+## Not run: urls=urlExtract("Influenza Vaccination | ONS - Oncology Nursing Society http://t.co/924sRKGBU9 See All http://t.co/dbtPJRMl00")
+
+#extract users:
+patternExtract(c("@luca @paolo: buon giorno!", "@matteo: a te!"), pattern="@\\w+")
+```
+
