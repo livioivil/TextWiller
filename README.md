@@ -23,6 +23,7 @@ To **install** this github version type (in R):
 ```r
 library(TextWiller)
 
+### normalize texts
 normalizzaTesti(c('ciao bella!','www.associazionerospo.org','noooo, che grandeeeeee!!!!!','mitticooo', 'mai possibile?!?!'))
 ```
 
@@ -45,6 +46,7 @@ normalizzaTesti(c('ciao bella!','www.associazionerospo.org','noooo, che grandeee
 ```
 
 ```r
+# get the sentiment of a document
 sentiment(c("ciao bella!","farabutto!","fofi sei figo!"))
 ```
 
@@ -72,6 +74,17 @@ classificaUtenti(c('Bosa','Pordenone, Italy','Milan'),vocabolarioLuoghi)
 ```
 ##             bosa pordenone, italy            milan 
 ##          "Isole"       "Nord-est"     "Nord-ovest"
+```
+
+```r
+# find re-twitts (RT) by texts similarity:
+RTHound(TWsperimentazioneanimale[1:10,"text"], S = 3, L = 1, 
+                 hclust.dist = 100, hclust.method = "complete",
+                 showTopN=3)
+```
+
+```
+## Error in iconv(testo, to = "UTF-8"): object 'TWsperimentazioneanimale' not found
 ```
 
 ```r
