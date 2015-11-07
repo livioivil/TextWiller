@@ -78,13 +78,45 @@ classificaUtenti(c('Bosa','Pordenone, Italy','Milan'),vocabolarioLuoghi)
 
 ```r
 # find re-twitts (RT) by texts similarity:
+data(TWsperimentazioneanimale)
 RTHound(TWsperimentazioneanimale[1:10,"text"], S = 3, L = 1, 
                  hclust.dist = 100, hclust.method = "complete",
                  showTopN=3)
 ```
 
 ```
-## Error in iconv(testo, to = "UTF-8"): object 'TWsperimentazioneanimale' not found
+## 
+##  There will be  2  sliding windows:
+## Window # 1
+## Window # 2
+## Window # 3
+##  3  most frequent RTs:
+##  (fr 8) Hanno augurato la morte a Caterina, la 25enne intubata a favore della sperimentazione animale. E non la auguravano a Bersani? Illusi.
+##  (fr 1) Caterina Simonsen, #animalari e #libertà (Potrebbe essere il nome di un nuovo partito! XD ) #iostoconcaterina http://t.co/Hlz94hfI57
+##  (fr 1) @orianoPER: http://t.co/RD5vyvA1Gw dr.ssa S. Penco-Ricercatrice-Premio Nazionale 2013 per la #Ricerca- #vivisezione #sperimentazione #an…
+```
+
+```
+##                                                                                                                                           1 
+## "@orianoPER: http://t.co/RD5vyvA1Gw dr.ssa S. Penco-Ricercatrice-Premio Nazionale 2013 per la #Ricerca- #vivisezione #sperimentazione #an…" 
+##                                                                                                                                           2 
+##     "Hanno augurato la morte a Caterina, la 25enne intubata a favore della sperimentazione animale. E non la auguravano a Bersani? Illusi." 
+##                                                                                                                                           3 
+##     "Hanno augurato la morte a Caterina, la 25enne intubata a favore della sperimentazione animale. E non la auguravano a Bersani? Illusi." 
+##                                                                                                                                           4 
+##     "Hanno augurato la morte a Caterina, la 25enne intubata a favore della sperimentazione animale. E non la auguravano a Bersani? Illusi." 
+##                                                                                                                                           5 
+##     "Hanno augurato la morte a Caterina, la 25enne intubata a favore della sperimentazione animale. E non la auguravano a Bersani? Illusi." 
+##                                                                                                                                           6 
+##     "Hanno augurato la morte a Caterina, la 25enne intubata a favore della sperimentazione animale. E non la auguravano a Bersani? Illusi." 
+##                                                                                                                                           7 
+##     "Hanno augurato la morte a Caterina, la 25enne intubata a favore della sperimentazione animale. E non la auguravano a Bersani? Illusi." 
+##                                                                                                                                           8 
+##     "Hanno augurato la morte a Caterina, la 25enne intubata a favore della sperimentazione animale. E non la auguravano a Bersani? Illusi." 
+##                                                                                                                                           9 
+##     "Hanno augurato la morte a Caterina, la 25enne intubata a favore della sperimentazione animale. E non la auguravano a Bersani? Illusi." 
+##                                                                                                                                          10 
+##      "Caterina Simonsen, #animalari e #libertà (Potrebbe essere il nome di un nuovo partito! XD ) #iostoconcaterina http://t.co/Hlz94hfI57"
 ```
 
 ```r
