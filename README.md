@@ -77,7 +77,7 @@ classificaUtenti(c('Bosa','Pordenone, Italy','Milan'),vocabolarioLuoghi)
 ```
 
 ```r
-# find re-twitts (RT) by texts similarity:
+# find re-twitt (RT) by evaluation of texts similarity (and replace texts so that they become equals):
 data(TWsperimentazioneanimale)
 RTHound(TWsperimentazioneanimale[1:10,"text"], S = 3, L = 1, 
                  hclust.dist = 100, hclust.method = "complete",
