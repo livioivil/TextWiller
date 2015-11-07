@@ -1,3 +1,5 @@
+#TextWiller
+
 Collection of text mining utilities, specially devoted to the italian language.
 
 * * *
@@ -20,17 +22,7 @@ To **install** this github version type (in R):
 
 ```r
 library(TextWiller)
-```
 
-```
-## Loading required package: stringr
-## Loading required package: twitteR
-## Loading required package: RCurl
-## Loading required package: bitops
-## Loading required package: SnowballC
-```
-
-```r
 normalizzaTesti(c('ciao bella!','www.associazionerospo.org','noooo, che grandeeeeee!!!!!','mitticooo', 'mai possibile?!?!'))
 ```
 
