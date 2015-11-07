@@ -30,11 +30,29 @@ install_github("livioivil/TextWiller")
 library(TextWiller)
 }
 
+
+### normalize texts
 normalizzaTesti(c('ciao bella!','www.associazionerospo.org','noooo, che grandeeeeee!!!!!','mitticooo', 'mai possibile?!?!'))
 
+# get the sentiment of a document
 sentiment(c("ciao bella!","farabutto!","fofi sei figo!"))
 
-classificaUtenti(c('livio','alessandra'))
+
+# Classify users' gender by (italian) names
+classificaUtenti(c('livio','alessandra','andrea'))
+# and classify location
+data(vocabolarioLuoghi)
+classificaUtenti(c('Bosa','Pordenone, Italy','Milan'),vocabolarioLuoghi)
+
+
+# find re-twitts (RT) by texts similarity:
+RTHound(TWsperimentazioneanimale[1:10,"text"], S = 3, L = 1, 
+                 hclust.dist = 100, hclust.method = "complete",
+                 showTopN=3)
+
+
+#extract short urls and get the long ones
+## Not run: urls=urlExtract("Influenza Vaccination | ONS - Oncology Nursing Society http://t.co/924sRKGBU9 See All http://t.co/dbtPJRMl00")
 
 #extract short urls and get the long ones
 \dontrun{urls=urlExtract("Influenza Vaccination | ONS - Oncology Nursing Society http://t.co/924sRKGBU9 See All http://t.co/dbtPJRMl00")}
