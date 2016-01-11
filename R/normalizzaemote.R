@@ -30,7 +30,7 @@ normalizzaemote <-
     #testo <- gsub("\\*[-._o]\\*","EMOTEAMAZE", testo)
     #testo <- gsub("([:=]-?[pP]+)|(\\b[xX][dD]+\\b)|(\\bd:\\b)","EMOTEJOKE", testo)
     # AGGIUNTA ConfrontoSky
-    testo <- gsub("#0_o"," EMOTESHOCK ",testo, perl=perl)
+#     testo <- gsub("#0_o"," EMOTESHOCK ",testo, perl=perl)
     testo <- gsub("[[:blank:]]+"," ",testo, perl=perl)
     testo
   }

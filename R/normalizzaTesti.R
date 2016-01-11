@@ -40,8 +40,15 @@ normalizzaTesti <- function(testo, tolower=TRUE,normalizzahtml=TRUE,
   if(normalizzaslang) testo <- normalizzaslang(testo,perl=perl)
   # tolower
   if(tolower) testo <- tryTolower(testo,ifErrorReturnText=TRUE)
-  data(itastopwords)
-  if(remove) testo <- removeStopwords(testo)
+  if(is.null(remove)) remove=TRUE
+  if(is.character(remove)) {
+    testo <- removeStopwords(testo,remove)
+    } else {
+      if(remove) {
+        data(itastopwords)
+        testo <- removeStopwords(testo,itastopwords)
+      }
+    }
   testo <- gsub("\\s+", " ", testo, perl=perl)
   testo <- .togliSpaziEsterni(testo)
   attr(testo,"counts")=conteggiStringhe

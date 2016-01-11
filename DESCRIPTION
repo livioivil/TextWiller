@@ -1,10 +1,20 @@
 Package: TextWiller
 Type: Package
-Title: Collection of functions for text mining, specially devoted to the italian language
+Title: Collection of functions for text mining, specially devoted to the italian
+    language
 Version: 1.0
 Date: 2013-12-19
-Author: (associazionerospo.org) Dario Solari, Andrea Sciandra, Marco Rinaldo, Matteo Redaelli, Livio Finos (con contributi di Marco Rinaldo, Maddalena Branca, Federico Ferraccioli).
+Author: (associazionerospo.org) Dario Solari, Andrea Sciandra, Marco Rinaldo,
+    Matteo Redaelli, Livio Finos (con contributi di Marco Rinaldo, Maddalena Branca,
+    Federico Ferraccioli).
 Maintainer: dario solari <dario.solari@gmail.com>
-Depends: R (>= 2.10), stringr, twitteR, RCurl, SnowballC
-Description: Collection of functions for text mining, specially devoted to the italian language.
+Depends:
+    R (>= 2.10),
+    stringr,
+    twitteR,
+    RCurl,
+    SnowballC
+Description: Collection of functions for text mining, specially devoted to the
+    italian language.
 License: GPL (>= 2)
+RoxygenNote: 5.0.0

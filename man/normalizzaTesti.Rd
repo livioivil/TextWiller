@@ -58,7 +58,7 @@ data(itastopwords)
 \item{ifErrorReturnText}{what to return for tests with a wrong encoding.}
 \item{stopwords}{Lista di parole da escludere dall'analisi. A list of words to be excluded from the process. \code{itastopwords} by default.}
 \item{verbatim}{Mostra statitiche durante il processo. Default \code{TRUE}}
-\item{remove}{\code{TRUE} by default}
+\item{remove}{\code{TRUE} by default. Possibily, a vector of stopwords to be removed.}
 }
 \details{
 \code{itastopwords} e' una lista di stopwords italiane.

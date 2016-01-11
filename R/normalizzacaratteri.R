@@ -30,7 +30,9 @@ normalizzacaratteri <- function(testo,fixed=TRUE){
 	testo <- gsub("\033" ," ", testo, fixed=fixed, useBytes=FALSE)		
 	testo <- gsub("\034" ,"'", testo, fixed=fixed, useBytes=FALSE)
 	testo <- gsub("\035" ,"'", testo, fixed=fixed, useBytes=FALSE)
-	testo <- gsub("\036" ," ", testo, fixed=fixed, useBytes=FALSE)
+  testo <- gsub("“" ,"'", testo, fixed=fixed, useBytes=FALSE)
+  testo <- gsub("”" ,"'", testo, fixed=fixed, useBytes=FALSE)
+
  	
  
    
