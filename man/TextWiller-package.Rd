@@ -59,6 +59,6 @@ RTHound(TWsperimentazioneanimale[1:10,"text"], S = 3, L = 1,
 \dontrun{urls=urlExtract("Influenza Vaccination | ONS - Oncology Nursing Society http://t.co/924sRKGBU9 See All http://t.co/dbtPJRMl00")}
 
 #extract users:
-patternExtract(c("@luca @paolo: buon giorno!", "@matteo: a te!"), pattern="@\\w+")
+## Not run: patternExtract(c("@luca @paolo: buon giorno!", "@matteo: a te!"), pattern="@\\w+")
 
 }
