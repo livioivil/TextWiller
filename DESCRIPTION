@@ -2,8 +2,8 @@ Package: TextWiller
 Type: Package
 Title: Collection of functions for text mining, specially devoted to the italian
     language
-Version: 1.0
-Date: 2013-12-19
+Version: 2.0
+Date: 2016-05-1
 Author: (associazionerospo.org) Dario Solari, Andrea Sciandra, Marco Rinaldo,
     Matteo Redaelli, Livio Finos (con contributi di Marco Rinaldo, Maddalena Branca,
     Federico Ferraccioli).
@@ -17,4 +17,4 @@ Depends:
 Description: Collection of functions for text mining, specially devoted to the
     italian language.
 License: GPL (>= 2)
-RoxygenNote: 5.0.0
+RoxygenNote: 5.0.1

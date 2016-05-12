@@ -1,3 +1,41 @@
+#' Associa i nomi in names ai valori indicati da vocabolarioNomiPropri
+#' 
+#' Associa i nomi in names ai valori indicati da un vocabolario. ad esempio
+#' vocabolarioNomiPropri assegna il genere e \code{data(vocabolarioLuoghi)}
+#' l'area geografica (vedi esempio)
+#' 
+#' vedi esempio sotto.
+#' 
+#' Per il \code{data(vocabolarioLuoghi)} abbiamo escluso i paesi Re (800
+#' abitanti, Nord-ovest) e Lu (1200 abitanti, Nord-ovest) perche' in conflitto
+#' con le sigle delle province.
+#' 
+#' @aliases classificaUtenti vocabolarioNomiPropri vocabolarioLuoghi
+#' @param names vettore di nomi
+#' @param vocabolario \code{data.frame} di una colonna con la classificazione
+#' da associare. I \code{rownames(vocabolario)} devono essere unici (sono i
+#' nomi unici su cui viene fatto il controllo). il vocabolario fornito da noi
+#' e' \code{data(vocabolarioNomiPropri)}. ATTENZIONE, nel \code{vocabolario}
+#' usare solo lower-case e non usare mai "NA" (mentre "na" e' valido).
+#' @param ifManyUseFirst \code{TRUE} by default. Nel caso di molteplici
+#' classificazioni, assegna alla prima categoria di
+#' \code{unique(vocabolario$categoria)}.
+#' @param NAasExtraLevel gli NA diventano una categoria a parte.
+#' @return caccia fuori un named vector con elementi dalla colonna
+#' \code{categoria} del data.frame \code{vocabolario}. Per
+#' \code{vocabolario=vocabolarioNomiPropri} le modalita' sono
+#' \code{c('masc','femm','ente')}
+#' @author Livio, Andrea Mamprin, Dario Solari
+#' @keywords ~kwd1 ~kwd2
+#' @examples
+#' 
+#'  \dontrun{data(vocabolarioNomiPropri)}
+#'  \dontrun{str(vocabolarioNomiPropri)}
+#' classificaUtenti(c('livio','alessandra'))
+#' data(vocabolarioLuoghi)
+#' classificaUtenti(c('Bosa','Pordenone, Italy'),vocabolarioLuoghi)
+#' 
+#' @export classificaUtenti
 classificaUtenti <-function (names, vocabolario=NULL,ifManyUseFirst=TRUE,NAasExtraLevel=FALSE){
 if(is.null(vocabolario)){ data(vocabolarioNomiPropri) 
                                     vocabolario=vocabolarioNomiPropri}
