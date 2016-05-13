@@ -30,6 +30,9 @@
 #' patternExtract(c("@luca @paolo: buon giorno!", "@matteo: a te!"), pattern="@\w+")
 #' }
 #' 
+#' @export urlExtract 
+#' @export shorturl2url 
+#' @export patternExtract
 
 urlExtract <- function(testo,id=names(testo)){
 

@@ -5,6 +5,8 @@
 #' aggiungere dettagli qui
 #' 
 #' @aliases fixTimeStamp selezionaIntervalloTimeStamp
+#' @export fixTimeStamp 
+#' @export selezionaIntervalloTimeStamp
 #' @param db data.frame contenente i tweets.
 #' @param timeRange due valori di tipo data indicanti inizio e fine.
 #' @param campoData "created" e "ts" sono due campi data del db estratto da

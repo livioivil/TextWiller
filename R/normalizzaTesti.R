@@ -53,6 +53,15 @@
 #' attr(testoNorm,"counts")
 #' 
 #' @export normalizzaTesti
+#' @export normalizzaemote
+#' @export normalizzacaratteri
+#' @export normalizzahtml
+#' @export normalizzapunteggiatura
+#' @export normalizzaslang
+#' @export preprocessingEncoding
+#' @export tryTolower 
+#' @export removeStopwords
+
 normalizzaTesti <- function(testo, tolower=TRUE,normalizzahtml=TRUE,
                             normalizzacaratteri=TRUE,
                             normalizzaemote=TRUE,
