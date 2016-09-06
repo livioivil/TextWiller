@@ -39,6 +39,8 @@ function(testo,removeUnderscore=TRUE, perl=TRUE,fixed=TRUE){
 	testo <- gsub("[+]"," ",testo,perl=perl)
 	testo <- gsub("[-]"," ",testo,perl=perl)
 	testo <- gsub('\\*{1}',' ', testo, perl=perl)
+	testo <- gsub('«',' ', testo, perl=perl)
+	testo <- gsub('»',' ', testo, perl=perl)
 	testo <- gsub("[<]"," ",testo,perl=perl)
 	testo <- gsub("[>]"," ",testo,perl=perl)
 	testo <- gsub("[~]"," ",testo,perl=perl)
