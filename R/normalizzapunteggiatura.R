@@ -28,6 +28,7 @@ function(testo,removeUnderscore=TRUE, perl=TRUE,fixed=TRUE){
 	testo <- gsub('[//|]+',' ', testo, perl=perl)
 	testo <- gsub("'"," ",testo,fixed=fixed)
 	testo <- gsub("’"," ",testo,fixed=fixed)
+	testo <- gsub("‘"," ",testo,fixed=fixed)
 	testo <- gsub('"',' ',testo,fixed=fixed)
 	testo <- gsub('\uc294|\uc293|\ucc8f|\ucc8e|\ucc8b|\ucbb6|\ucbb5|\ucbae|\ucb9d|\ucaba',' ',testo)
 	testo <- gsub('\uc2bb|\uc2ab',' ',testo,fixed=fixed)
