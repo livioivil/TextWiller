@@ -32,6 +32,7 @@ sentiment(c("ciao bella!","farabutto!","fofi sei figo!"))
 
 # Classify users' gender by (italian) names
 classificaUtenti(c('livio','alessandra','andrea'))
+classificaUtenti(c('alessandroBianchi', 'mariagiovanna', 'corriereDelMezzogiorno'), scan_interno=T)
 # and classify location
 data(vocabolarioLuoghi)
 classificaUtenti(c('Bosa','Pordenone, Italy','Milan'),vocabolarioLuoghi)

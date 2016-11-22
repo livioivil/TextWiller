@@ -6,8 +6,8 @@
 \alias{vocabolarioNomiPropri}
 \title{Associa i nomi in names ai valori indicati da vocabolarioNomiPropri}
 \usage{
-classificaUtenti(names, vocabolario = NULL, ifManyUseFirst = TRUE,
-  NAasExtraLevel = FALSE)
+classificaUtenti(names, vocabolario = NULL, scan_interno = FALSE,
+  vocab_interno = NULL, how_class = "modeFirst", cat_interna = NULL)
 }
 \arguments{
 \item{names}{vettore di nomi}
@@ -18,14 +18,25 @@ nomi unici su cui viene fatto il controllo). il vocabolario fornito da noi
 e' \code{data(vocabolarioNomiPropri)}. ATTENZIONE, nel \code{vocabolario}
 usare solo lower-case e non usare mai "NA" (mentre "na" e' valido).}
 
-\item{ifManyUseFirst}{\code{TRUE} by default. Nel caso di molteplici
-classificazioni, assegna alla prima categoria di
-\code{unique(vocabolario$categoria)}.}
+\item{scan_interno}{flag, se vero la funzione effettua anche la parte di
+scanning interno (\code{grepl} sui vocaboli passati)}
 
-\item{NAasExtraLevel}{gli NA diventano una categoria a parte.}
+\item{vocab_interno}{è il vocabolario su cui viene effettuato (eventualmente)
+lo scanning interno (di default, se previsto, è pari a tutti i nomi di vocabolario
+di lunghezza >=5 caratteri)}
+
+\item{how_class}{gestisce la classificazione in casi "ambigui", cioè in cui per
+un nome vengano ritrovati più match; sono state pensati tre casi:
+"modeFirst" (default), in cui viene preso la categoria modale tra le riconosciute e,
+nel caso di multimodalità, il primo in ordine tra i match; "first" che classifica
+con il primo match nella stringa e "last" con l'ultimo}
+
+\item{cat_interna}{(default=NULL) permette di identificare una (o più categorie) della classificazione
+per cui vengono tenuti nello scanning interno tutti i termini di vocabolario e non solo
+quelli con più di 5 caratteri}
 }
 \value{
-caccia fuori un named vector con elementi dalla colonna
+restituisce un named vector con elementi dalla colonna
 \code{categoria} del data.frame \code{vocabolario}. Per
 \code{vocabolario=vocabolarioNomiPropri} le modalita' sono
 \code{c('masc','femm','ente')}
@@ -41,18 +52,26 @@ vedi esempio sotto.
 Per il \code{data(vocabolarioLuoghi)} abbiamo escluso i paesi Re (800
 abitanti, Nord-ovest) e Lu (1200 abitanti, Nord-ovest) perche' in conflitto
 con le sigle delle province.
+
+(update 05-09-2016) Ponendo particolare attenzione alla detection dei nomi propri,
+si è pensato di introdurre nella funzione tre diversi "tentativi" di classificazione.
+Mentre nei primi due, con diverse accortezze, si cercano parole suddivise da spazi, nel
+terzo ed ultimo step si prova a ricercare le stringhe di caratteri anche internamente alle parole,
+grazie alla funzione \code{grepl}. Alcuni parametri, descritti successivamente, regolano
+questa parte della classificazione.
 }
 \examples{
 
  \dontrun{data(vocabolarioNomiPropri)}
  \dontrun{str(vocabolarioNomiPropri)}
-classificaUtenti(c('livio','alessandra'))
+classificaUtenti(c('livio','alessandra','alessandraRossi', 'mariobianchi'),
+                   scan_interno=TRUE)
 data(vocabolarioLuoghi)
-classificaUtenti(c('Bosa','Pordenone, Italy'),vocabolarioLuoghi)
+classificaUtenti(c('Bosa','Pordenone, Italy'), vocabolarioLuoghi)
 
 }
 \author{
-Livio, Andrea Mamprin, Dario Solari
+Mattia Uttini, Livio Finos, Andrea Mamprin, Dario Solari
 }
 \keyword{~kwd1}
 \keyword{~kwd2}
