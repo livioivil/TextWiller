@@ -1,4 +1,4 @@
-#' Associa i nomi in names ai valori indicati da vocabolarioNomiPropri
+#' Classificazione per vocabolario di utenti
 #' 
 #' Associa i nomi in names ai valori indicati da un vocabolario. ad esempio
 #' vocabolarioNomiPropri assegna il genere e \code{data(vocabolarioLuoghi)}

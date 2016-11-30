@@ -4,7 +4,7 @@
 \alias{classificaUtenti}
 \alias{vocabolarioLuoghi}
 \alias{vocabolarioNomiPropri}
-\title{Associa i nomi in names ai valori indicati da vocabolarioNomiPropri}
+\title{Classificazione per vocabolario di utenti}
 \usage{
 classificaUtenti(names, vocabolario = NULL, scan_interno = FALSE,
   vocab_interno = NULL, how_class = "modeFirst", cat_interna = NULL)
