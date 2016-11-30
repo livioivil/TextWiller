@@ -4,7 +4,6 @@
 #' vocabolarioNomiPropri assegna il genere e \code{data(vocabolarioLuoghi)}
 #' l'area geografica (vedi esempio)
 #' 
-#' vedi esempio sotto.
 #' 
 #' Per il \code{data(vocabolarioLuoghi)} abbiamo escluso i paesi Re (800
 #' abitanti, Nord-ovest) e Lu (1200 abitanti, Nord-ovest) perche' in conflitto
@@ -37,10 +36,10 @@
 #' @param cat_interna (default=NULL) permette di identificare una (o più categorie) della classificazione
 #' per cui vengono tenuti nello scanning interno tutti i termini di vocabolario e non solo
 #' quelli con più di 5 caratteri
-#' @return restituisce un named vector con elementi dalla colonna
+#' @return Restituisce un named vector con elementi dalla colonna
 #' \code{categoria} del data.frame \code{vocabolario}. Per
 #' \code{vocabolario=vocabolarioNomiPropri} le modalita' sono
-#' \code{c('masc','femm','ente')}
+#' \code{c('masc','femm','ente')}.
 #' @author Mattia Uttini, Livio Finos, Andrea Mamprin, Dario Solari
 #' @keywords ~kwd1 ~kwd2
 #' @examples

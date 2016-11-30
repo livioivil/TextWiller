@@ -36,10 +36,10 @@ per cui vengono tenuti nello scanning interno tutti i termini di vocabolario e n
 quelli con più di 5 caratteri}
 }
 \value{
-restituisce un named vector con elementi dalla colonna
+Restituisce un named vector con elementi dalla colonna
 \code{categoria} del data.frame \code{vocabolario}. Per
 \code{vocabolario=vocabolarioNomiPropri} le modalita' sono
-\code{c('masc','femm','ente')}
+\code{c('masc','femm','ente')}.
 }
 \description{
 Associa i nomi in names ai valori indicati da un vocabolario. ad esempio
@@ -47,8 +47,6 @@ vocabolarioNomiPropri assegna il genere e \code{data(vocabolarioLuoghi)}
 l'area geografica (vedi esempio)
 }
 \details{
-vedi esempio sotto.
-
 Per il \code{data(vocabolarioLuoghi)} abbiamo escluso i paesi Re (800
 abitanti, Nord-ovest) e Lu (1200 abitanti, Nord-ovest) perche' in conflitto
 con le sigle delle province.
