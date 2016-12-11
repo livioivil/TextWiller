@@ -36,6 +36,11 @@ normalizzaslang <-function(testo,perl=TRUE){
 	testo <- gsub(" perch[\uc3a9e\uc3a8] "," perch\uc3a9 ",testo, perl=perl, ignore.case=TRUE)
 	testo <- gsub(" x(ch|k)[\uc3a9e\uc3a8] "," perch\uc3a9 ",testo, perl=perl, ignore.case=TRUE)
 	testo <- gsub(" nn "," non ",testo, perl=perl, ignore.case=TRUE)
-	testo <- gsub(" nun "," non ",testo, perl=perl, ignore.case=TRUE)	
+	testo <- gsub(" nun "," non ",testo, perl=perl, ignore.case=TRUE)
+	testo <- gsub("o+","o",testo, perl=perl, ignore.case=TRUE)
+	testo <- gsub("i+","i",testo, perl=perl, ignore.case=TRUE)
+	testo <- gsub("e+","e",testo, perl=perl, ignore.case=TRUE)
+	testo <- gsub("u+","u",testo, perl=perl, ignore.case=TRUE)
+	testo <- gsub("a+","a",testo, perl=perl, ignore.case=TRUE)
 		testo		
 	}
