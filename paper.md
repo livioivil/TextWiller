@@ -8,7 +8,7 @@ tags:
   - users gender and location classification
 authors:
  - name: Dario Solari
-   orcid: 0000-0001-5621-5463
+   orcid:
    affiliation: 1
  - name: Andrea Sciandra
    orcid: 0000-0001-5621-5463
@@ -19,7 +19,7 @@ authors:
 affiliations:
  - name: Bee Viva srl
    index: 1
-- name: STAR.Lab - Socio Territorial Analysis and Research, University of Padova
+ - name: STAR.Lab - Socio Territorial Analysis and Research, University of Padova
    index: 2
  - name: Department of Developmental Psychology and Socialisation, University of Padova
    index: 3
