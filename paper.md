@@ -8,7 +8,7 @@ tags:
   - users gender and location classification
 authors:
  - name: Dario Solari
-   orcid:
+   orcid: 0000-0003-2901-2155
    affiliation: 1
  - name: Andrea Sciandra
    orcid: 0000-0001-5621-5463
