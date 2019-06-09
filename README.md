@@ -139,4 +139,5 @@ patternExtract(c("@luca @paolo: buon giorno!", "@matteo: a te!"), pattern="@\\w+
 ## Contributing
 
 You can contribute by reporting an issue or by directly contributing to the source code. You can create a fork of the repo in your own GitHub account and download the repository to your local machine.
+
 Please note that this project is released with a [Contributor Code of Conduct](CODE_OF_CONDUCT.md). By participating in this project you agree to abide by its terms.
