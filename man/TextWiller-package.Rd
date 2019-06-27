@@ -2,8 +2,8 @@
 % Please edit documentation in R/TextWiller-package.R
 \docType{package}
 \name{TextWiller-package}
-\alias{TextWiller}
 \alias{TextWiller-package}
+\alias{TextWiller}
 \title{A package for text mining, specially devoted to the italian
 language}
 \description{
@@ -64,4 +64,3 @@ Ferraccioli).
 Maintainer: dario solari <dario.solari@gmail.com>
 }
 \keyword{package}
-

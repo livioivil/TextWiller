@@ -2,8 +2,8 @@
 % Please edit documentation in R/classificaUtenti.R
 \name{classificaUtenti}
 \alias{classificaUtenti}
-\alias{vocabolarioLuoghi}
 \alias{vocabolarioNomiPropri}
+\alias{vocabolarioLuoghi}
 \title{Classificazione per vocabolario di utenti}
 \usage{
 classificaUtenti(names, vocabolario = NULL, scan_interno = FALSE,
@@ -73,4 +73,3 @@ Mattia Uttini, Livio Finos, Andrea Mamprin, Dario Solari
 }
 \keyword{~kwd1}
 \keyword{~kwd2}
-

@@ -58,8 +58,8 @@ subsets and clusterize tweets throught hierarchical clustering algorithm.
  "RT @LAVonlus: Tre miti da sfatare sulla #vivisezione. Le risposte  ai luoghi comuni della sperimentazione animale  http://t.co/zHSfam16DT",
  "Tre miti da sfatare sulla #vivisezione. Le risposte  ai luoghi comuni della sperimentazione animale  http://t.co/zHSfam16DT",
  "RT @LAVonlus: Tre miti da sfatare sulla #vivisezione. Le risposte  ai luoghi comuni della sperimentazione animale  http://t.co/zHSfam16DT",
- "RT @orianoPER: La #sperimentazioneanimale è inutile perché non predittiva per la specie umana. MEDICI ANTI #VIVISEZIONE- LIMAV http://t.co/" ,
- "La #sperimentazioneanimale è inutile perché non predittiva per la specie umana. MEDICI ANTI #VIVISEZIONE- LIMAV http://t.co/3MwubXIH8g",
+ "RT @orianoPER: La #sperimentazioneanimale Ã¨ inutile perchÃ© non predittiva per la specie umana. MEDICI ANTI #VIVISEZIONE- LIMAV http://t.co/" ,
+ "La #sperimentazioneanimale Ã¨ inutile perchÃ© non predittiva per la specie umana. MEDICI ANTI #VIVISEZIONE- LIMAV http://t.co/3MwubXIH8g",
  "RT @orianoPER: La #ricerca in #Medicina con #sperimentazioneanimale non e' predittiva per la specie umana. MEDICI ANTI #VIVISEZIONE http://t",
  "RT @HuffPostItalia: Il Governo italiano non fermi la sperimentazione animale. Intervista a Elena Cattaneo http://t.co/q1dm430a9j",
  "RT @HuffPostItalia: \\"Il Governo italiano non fermi la sperimentazione animale\\". Intervista a Elena Cattaneo http://t.co/q1dm430a9j",
@@ -73,12 +73,11 @@ subsets and clusterize tweets throught hierarchical clustering algorithm.
 }
 
 }
-\author{
-Federico Ferraccioli, Livio Finos
-}
 \seealso{
 \code{hclust}
 }
+\author{
+Federico Ferraccioli, Livio Finos
+}
 \keyword{~kwd1}
 \keyword{~kwd2}
-
