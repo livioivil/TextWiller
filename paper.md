@@ -35,7 +35,7 @@ This software is one of the few text mining R packages in Italian language. The 
 - upper-lower cases;
 - plurals;
 - URLs and emoticons recognition;
-- some slang expressions (which are brought back to the correct form in Italian);
+- some slang expressions (which are brought back to the correct form in Italian).
 
 Specifically, other relevant ``TextWiller`` functions allow to:
 - get the sentiment (@wilson2005recognizing, @ceron2014social) of each document in a corpus, based on an internal lexicon or a custom one; 
