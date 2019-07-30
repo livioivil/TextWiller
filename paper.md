@@ -31,13 +31,15 @@ bibliography: paper.bib
 
 ``TextWiller`` is the development version of a R package that collects some text mining utilities intended for the Italian language. It's available at https://github.com/livioivil/TextWiller. The aim of ``TextWiller`` is to help to deal with the pre-processing of a corpus and it also provides some functions about word classification and polarity. 
 
-This software is one of the few text mining R packages in Italian language. The main differences compared to other popular packages like ``tm`` is that TextWiller allows sentiment analysis; it includes classification tools for Italian cities and names; and it can help social media researchers with some specific functions for the data extracted from a social networking site via APIs. In particular, ``TextWiller`` allows to normalize (@miner2012practical, @bolasco2013analisi) Italian text, i.e. transforming a corpus in a canonical form, useful for text mining. Normalization includes several functions for removing punctuation, stopwords and for managing: 
+This software is one of the few text mining R packages in Italian language. The main differences compared to other popular packages like ``tm`` is that TextWiller allows sentiment analysis; it includes classification tools for Italian cities and names; and it can help social media researchers with some specific functions for the data extracted from a social networking site via APIs. In particular, ``TextWiller`` allows to normalize (@miner2012practical, @bolasco2013analisi) Italian text, i.e. transforming a corpus in a canonical form, useful for text mining. Normalization includes several functions for removing punctuation, stopwords and for managing:
+
 - upper-lower cases;
 - plurals;
 - URLs and emoticons recognition;
 - some slang expressions (which are brought back to the correct form in Italian).
 
 Specifically, other relevant ``TextWiller`` functions allow to:
+
 - get the sentiment (@wilson2005recognizing, @ceron2014social) of each document in a corpus, based on an internal lexicon or a custom one; 
 - classify users' gender by (Italian) names; 
 - classify Italian cities into 5 macro-areas (North East, North West, Centre, South, Islands); 
