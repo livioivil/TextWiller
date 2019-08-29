@@ -1,6 +1,6 @@
 [![DOI](https://zenodo.org/badge/15321801.svg)](https://zenodo.org/badge/latestdoi/15321801)
 
-#TextWiller
+# TextWiller
 
 Collection of text mining utilities, specially devoted to the italian language.
 
