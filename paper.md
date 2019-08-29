@@ -40,7 +40,7 @@ This software is one of the few text mining R packages in the Italian language. 
 
 Specifically, other relevant ``TextWiller`` functions allow to:
 
-- get the sentiment (@wilson_2005, @ceron_2014) of each document in a corpus, based on an internal lexicon or a custom one; 
+- get the sentiment (@Wilson_2005, @Ceron_2014) of each document in a corpus, based on an internal lexicon or a custom one; 
 - classify users' gender by (Italian) names; 
 - classify Italian cities into 5 macro-areas (North East, North West, Centre, South, Islands); 
 - find re-tweets (``RTHound`` function; @ferraccioli2014topic) by evaluation of texts similarity (and replace texts so that they become equals) through hierarchical clustering on Levenshtein distance (dissimilarity) matrix; 
