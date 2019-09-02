@@ -2,7 +2,7 @@
 
 # TextWiller
 
-Collection of text mining utilities, specially devoted to the italian language.
+Collection of text mining utilities, specially devoted to the Italian language.
 
 * * *
 
