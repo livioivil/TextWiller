@@ -1,3 +1,4 @@
+[![DOI](https://joss.theoj.org/papers/10.21105/joss.01256/status.svg)](https://doi.org/10.21105/joss.01256)
 [![DOI](https://zenodo.org/badge/15321801.svg)](https://zenodo.org/badge/latestdoi/15321801)
 
 # TextWiller
