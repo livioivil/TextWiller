@@ -1,3 +1,19 @@
+#' normalizzacaratteri
+#'
+#' \code{normalizzacaratteri} replaces escape and punctation codes in \code{testo} with a blank
+#'  
+#' @param testo a set of texts to be stripped of escape and punctation codes
+#' @param fixed logical. If TRUE, pattern is a string to be matched as is. Overrides all conflicting arguments.
+#' @return a set of processed texts
+#' @author Livio Finos
+#' @examples 
+#'
+#'  testo<-c("\t","\r") 
+#'  normalizzacaratteri(testo)
+#'  
+#'  
+
+
 normalizzacaratteri <- function(testo,fixed=TRUE){
   
  	testo <- gsub("\001" ," ", testo, fixed=fixed, useBytes=FALSE)
@@ -41,5 +57,5 @@ normalizzacaratteri <- function(testo,fixed=TRUE){
 	testo <- gsub("\t"," ", testo, fixed=fixed, useBytes=FALSE)
    
  	
-  testo
+  return(testo)
 }

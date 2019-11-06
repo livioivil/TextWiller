@@ -1,3 +1,21 @@
+#'normalizzahtml
+#'
+#' 
+#' \code{normalizzahtml} replaces links and URLs in \code{testo} with the keyword WWWURLWWW
+#' 
+#' @param testo a set of texts to be preprocessed
+#' @return a set of texts where URLS have been replaced by the keyword WWWURLWWW
+#' @param fixed logical. If TRUE, pattern is a string to be matched as is. Overrides all conflicting arguments.
+#' @param perl logical. If TRUE Perl-compatible regexps are used.
+#' @author Livio Finos
+#' @examples 
+#' 
+#'  testo<-c("http:textwiller.com","www.textwiller.com") 
+#'  normalizzahtml(testo)
+#'  
+#'  
+
+
 normalizzahtml <-
 function(testo,perl=TRUE,fixed=TRUE){
 	

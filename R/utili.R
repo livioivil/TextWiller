@@ -6,11 +6,11 @@
 }
 
 ##########################
+# questo è stato aggiornato
 
-.contaStringhe  <- function(testo,
-                            stringhe=c("\\?","\\!","#","@","(€|euro)","(\\$|dollar)")                            
-                            ){
-  conteggi=sapply(stringhe,function(stringa) str_count(testo,stringa))
-  colnames(conteggi)=paste("Conteggi.",colnames(conteggi),sep="")
+.contaStringhe<-function(testo){
+  toMatch<-c("\\?","\\!","(€|euro)","(\\$|dollar)","@\\w+","#\\w+")
+  conteggi<-sapply(toMatch,function(stringa) str_count(testo,stringa))
+  colnames(conteggi)<-c("?","!","(€|euro)","$|dollar","retweet","hashtag")
   conteggi
 }

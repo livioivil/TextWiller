@@ -1,3 +1,22 @@
+#'normalizzaslang
+#' 
+#' 
+#' \code{normalizzaslang} replaces slang expressions of the italian language in \code{testo} with
+#' a keyword linked with the corresponding feeling
+#' 
+#' @param testo a set of texts to be normalized
+#' @param perl logical. If TRUE Perl-compatible regexps are used.
+#' @return a set of texts where slang expressions of the italian language have been replaced with a keyword
+#' @author Livio Finos
+#' @examples 
+#' 
+#'  testo<-c("grandissima","aaa","nun")
+#'  normalizzaslang(testo)
+#'  
+#'  
+
+
+
 normalizzaslang <-function(testo,perl=TRUE){
 	testo <- gsub(" (#?zz+|#?u+ff[aif]+?|#?r+o+n+f+|#uff|ronf) "," EMOTEZZZ ",testo, perl=perl, ignore.case=TRUE)
 	testo <- gsub(" (#?sii+|#si+|#?yes+|#?s\uc38c\uc38c+) "," EMOTESIII ",testo, perl=perl, ignore.case=TRUE)	

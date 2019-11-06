@@ -2,15 +2,6 @@
 % Please edit documentation in R/normalizzaTesti.R
 \name{normalizzaTesti}
 \alias{normalizzaTesti}
-\alias{normalizzacaratteri}
-\alias{normalizzaemote}
-\alias{normalizzahtml}
-\alias{normalizzaslang}
-\alias{normalizzapunteggiatura}
-\alias{tryTolower}
-\alias{itastopwords}
-\alias{removeStopwords}
-\alias{preprocessingEncoding}
 \title{Varie funzioni di normalizzazione del testo}
 \usage{
 normalizzaTesti(testo, tolower = TRUE, normalizzahtml = TRUE,

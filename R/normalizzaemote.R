@@ -1,3 +1,19 @@
+#' normalizzaemote
+#' 
+#' \code{normalizzaemote} replaces emoticons in \code{testo} with a keyword corresponding the feeling described
+#' 
+#' @param testo a set of texts to be preprocessed
+#' @param perl logical. If TRUE Perl-compatible regexps are used.
+#' 
+#' @return a set of text where emoticons has been replaced by the respective keyword
+#' @author Livio Finos
+#'  
+
+
+
+
+
+
 normalizzaemote <-
   function(testo,perl=TRUE){
     # EMOTEGOOD :) :-) :] :-] =) =] => :> ^^ ^_^ ^-^ ^o^ : ) (: :'D

@@ -4,9 +4,6 @@
 #' 
 #' \code{itastopwords} e' una lista di stopwords italiane.
 #' 
-#' @aliases normalizzaTesti normalizzacaratteri normalizzaemote normalizzahtml
-#' normalizzaslang normalizzapunteggiatura tryTolower itastopwords
-#' removeStopwords preprocessingEncoding
 #' @param testo character vector of texts
 #' @param tolower \code{TRUE} by default
 #' @param normalizzahtml \code{TRUE} by default
