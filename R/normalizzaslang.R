@@ -17,6 +17,15 @@
 
 
 
+
+
+
+
+
+
+
+
+
 normalizzaslang <-function(testo,perl=TRUE){
 	testo <- gsub(" (#?zz+|#?u+ff[aif]+?|#?r+o+n+f+|#uff|ronf) "," EMOTEZZZ ",testo, perl=perl, ignore.case=TRUE)
 	testo <- gsub(" (#?sii+|#si+|#?yes+|#?s\uc38c\uc38c+) "," EMOTESIII ",testo, perl=perl, ignore.case=TRUE)	

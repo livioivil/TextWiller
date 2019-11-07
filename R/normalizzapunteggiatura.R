@@ -16,14 +16,21 @@
 #'  
 
 
+
+
+
+
+
+
+
 normalizzapunteggiatura <-
 function(testo,removeUnderscore=TRUE, perl=TRUE,fixed=TRUE){
 	
 	testo <- paste(" ",testo," ", sep="")
-	testo <- gsub("#[[:space:]]", " ", testo, perl=perl) #qui ho modificato e anche nel caso della @
-	testo <- gsub("#", " ", testo, perl=perl)            #la modifica come detto prevede che se cè una @/# singolo ossia non seguito
-	testo <- gsub("@[[:space:]]", " ", testo, perl=perl) #da una parola ( o numero ) viene eliminato mentre nel caso sia seguito da una parola 
-	testo <- gsub("@", " ", testo, perl=perl)            #viene lasciato.
+	testo <- gsub("#\\s+", "#", testo, perl=perl)
+	testo <- gsub("#", " #", testo, perl=perl)
+	testo <- gsub("@\\s+", "@", testo, perl=perl)	
+	testo <- gsub("@", " @", testo, perl=perl)
 	
 	testo <- gsub("\n",' ',testo,fixed=fixed)
 	testo <- gsub("\t",' ',testo,fixed=fixed)

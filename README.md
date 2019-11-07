@@ -14,7 +14,15 @@ To **install** this github version type (in R):
     #if devtools is not installed yet: 
     # install.packages("devtools") 
     library(devtools)
+    #if you wanto to download the last stable version, use the following code
+    install_github("livioivil/TextWiller@TextWiller_JOSS")
+    
+    #if you want to download the latest release (unstable) use the following code
     install_github("livioivil/TextWiller")
+    
+    
+    
+    
 
 
 * * *

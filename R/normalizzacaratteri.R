@@ -14,6 +14,7 @@
 #'  
 
 
+
 normalizzacaratteri <- function(testo,fixed=TRUE){
   
  	testo <- gsub("\001" ," ", testo, fixed=fixed, useBytes=FALSE)
@@ -57,5 +58,5 @@ normalizzacaratteri <- function(testo,fixed=TRUE){
 	testo <- gsub("\t"," ", testo, fixed=fixed, useBytes=FALSE)
    
  	
-  return(testo)
+  testo
 }

@@ -3,6 +3,7 @@
 export(RTHound)
 export(classificaUtenti)
 export(fixTimeStamp)
+export(normalizzaEmoticons)
 export(normalizzaTesti)
 export(normalizzacaratteri)
 export(normalizzaemote)

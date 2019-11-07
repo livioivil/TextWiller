@@ -14,6 +14,9 @@
 
 
 
+
+
+
 normalizzaemote <-
   function(testo,perl=TRUE){
     # EMOTEGOOD :) :-) :] :-] =) =] => :> ^^ ^_^ ^-^ ^o^ : ) (: :'D

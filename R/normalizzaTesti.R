@@ -4,10 +4,14 @@
 #' 
 #' \code{itastopwords} e' una lista di stopwords italiane.
 #' 
+#' @aliases normalizzaTesti normalizzacaratteri normalizzaemote normalizzahtml
+#' normalizzaslang normalizzapunteggiatura tryTolower itastopwords
+#' removeStopwords preprocessingEncoding
 #' @param testo character vector of texts
 #' @param tolower \code{TRUE} by default
 #' @param normalizzahtml \code{TRUE} by default
 #' @param normalizzacaratteri \code{TRUE} by default
+#' @param normalizzaEmoticons \code{TRUE} by default
 #' @param normalizzaemote \code{TRUE} by default
 #' @param normalizzapunteggiatura \code{TRUE} by default
 #' @param normalizzaslang \code{TRUE} by default
@@ -51,6 +55,7 @@
 #' 
 #' @export normalizzaTesti
 #' @export normalizzaemote
+#' @export normalizzaEmoticons
 #' @export normalizzacaratteri
 #' @export normalizzahtml
 #' @export normalizzapunteggiatura
@@ -62,6 +67,7 @@
 normalizzaTesti <- function(testo, tolower=TRUE,normalizzahtml=TRUE,
                             normalizzacaratteri=TRUE,
                             normalizzaemote=TRUE,
+                            normalizzaEmoticons=TRUE,
                             normalizzapunteggiatura=TRUE,
                             normalizzaslang=TRUE,
                             fixed=TRUE,perl=TRUE,
@@ -91,6 +97,7 @@ normalizzaTesti <- function(testo, tolower=TRUE,normalizzahtml=TRUE,
       conteggiStringhe=NULL
   # identifica emote
   #source(paste(functiondir,"/normalizzaemote.R",sep=""), .GlobalEnv)
+  if(normalizzaEmoticons) testo<-normalizzaEmoticons(testo) 
   if(normalizzaemote) testo <- normalizzaemote(testo,perl=perl)
   # pulizia punteggiatura
   #source(paste(functiondir,"/normalizzapunteggiatura.R",sep=""), .GlobalEnv)

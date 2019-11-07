@@ -2,15 +2,25 @@
 % Please edit documentation in R/normalizzaTesti.R
 \name{normalizzaTesti}
 \alias{normalizzaTesti}
+\alias{normalizzacaratteri}
+\alias{normalizzaemote}
+\alias{normalizzahtml}
+\alias{normalizzaslang}
+\alias{normalizzapunteggiatura}
+\alias{tryTolower}
+\alias{itastopwords}
+\alias{removeStopwords}
+\alias{preprocessingEncoding}
 \title{Varie funzioni di normalizzazione del testo}
 \usage{
 normalizzaTesti(testo, tolower = TRUE, normalizzahtml = TRUE,
   normalizzacaratteri = TRUE, normalizzaemote = TRUE,
-  normalizzapunteggiatura = TRUE, normalizzaslang = TRUE,
-  fixed = TRUE, perl = TRUE, preprocessingEncoding = TRUE,
-  encoding = "UTF-8", sub = "", contaStringhe = c("\\\\?", "\\\\!",
-  "@", "#", "(\\200|euro)", "(\\\\$|dollar)", "SUPPRESSEDTEXT"),
-  suppressInvalidTexts = TRUE, verbatim = TRUE, remove = TRUE)
+  normalizzaEmoticons = TRUE, normalizzapunteggiatura = TRUE,
+  normalizzaslang = TRUE, fixed = TRUE, perl = TRUE,
+  preprocessingEncoding = TRUE, encoding = "UTF-8", sub = "",
+  contaStringhe = c("\\\\?", "\\\\!", "@", "#", "(\\200|euro)",
+  "(\\\\$|dollar)", "SUPPRESSEDTEXT"), suppressInvalidTexts = TRUE,
+  verbatim = TRUE, remove = TRUE)
 }
 \arguments{
 \item{testo}{character vector of texts}
@@ -22,6 +32,8 @@ normalizzaTesti(testo, tolower = TRUE, normalizzahtml = TRUE,
 \item{normalizzacaratteri}{\code{TRUE} by default}
 
 \item{normalizzaemote}{\code{TRUE} by default}
+
+\item{normalizzaEmoticons}{\code{TRUE} by default}
 
 \item{normalizzapunteggiatura}{\code{TRUE} by default}
 

@@ -16,6 +16,12 @@
 #'  
 
 
+
+
+
+
+
+
 normalizzahtml <-
 function(testo,perl=TRUE,fixed=TRUE){
 	
