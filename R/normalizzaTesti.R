@@ -97,11 +97,12 @@ normalizzaTesti <- function(testo, tolower=TRUE,normalizzahtml=TRUE,
       conteggiStringhe=NULL
   # identifica emote
   #source(paste(functiondir,"/normalizzaemote.R",sep=""), .GlobalEnv)
-  if(normalizzaEmoticons) testo<-normalizzaEmoticons(testo) 
+   
   if(normalizzaemote) testo <- normalizzaemote(testo,perl=perl)
   # pulizia punteggiatura
   #source(paste(functiondir,"/normalizzapunteggiatura.R",sep=""), .GlobalEnv)
   if(normalizzapunteggiatura) testo <- normalizzapunteggiatura(testo,perl=perl,fixed=fixed)
+  if(normalizzaEmoticons) testo<-normalizzaEmoticons(testo)
   # normalizza slang
   #source(paste(functiondir,"/normalizzaslang.R",sep=""), .GlobalEnv)
   if(normalizzaslang) testo <- normalizzaslang(testo,perl=perl)
