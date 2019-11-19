@@ -76,7 +76,7 @@ normalizzaTesti <- function(testo, tolower=TRUE,normalizzahtml=TRUE,
                                             "(\u20AC|euro)","(\\$|dollar)",
                                             "SUPPRESSEDTEXT"),
                             suppressInvalidTexts=TRUE,
-                            verbatim=TRUE, remove=TRUE){
+                            verbatim=TRUE, remove=TRUE,removeUnderscore=TRUE){
   Sys.setlocale("LC_ALL", "")
   if(preprocessingEncoding) testo<-preprocessingEncoding(testo,
                                                          encoding=encoding,
@@ -101,7 +101,7 @@ normalizzaTesti <- function(testo, tolower=TRUE,normalizzahtml=TRUE,
   if(normalizzaemote) testo <- normalizzaemote(testo,perl=perl)
   # pulizia punteggiatura
   #source(paste(functiondir,"/normalizzapunteggiatura.R",sep=""), .GlobalEnv)
-  if(normalizzapunteggiatura) testo <- normalizzapunteggiatura(testo,perl=perl,fixed=fixed)
+  if(normalizzapunteggiatura) testo <- normalizzapunteggiatura(testo,perl=perl,fixed=fixed,removeUnderscore=removeUnderscore)
   if(normalizzaEmoticons) testo<-normalizzaEmoticons(testo)
   # normalizza slang
   #source(paste(functiondir,"/normalizzaslang.R",sep=""), .GlobalEnv)
