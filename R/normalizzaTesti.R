@@ -76,7 +76,7 @@ normalizzaTesti <- function(testo, tolower=TRUE,normalizzahtml=TRUE,
                                             "(\u20AC|euro)","(\\$|dollar)",
                                             "SUPPRESSEDTEXT"),
                             suppressInvalidTexts=TRUE,
-                            verbatim=TRUE, remove=TRUE,removeUnderscore=TRUE){
+                            verbatim=TRUE, remove=TRUE,removeUnderscore=FALSE){
   Sys.setlocale("LC_ALL", "")
   if(preprocessingEncoding) testo<-preprocessingEncoding(testo,
                                                          encoding=encoding,
