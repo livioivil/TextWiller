@@ -37,10 +37,10 @@ function(testo,removeUnderscore=TRUE, perl=TRUE,fixed=TRUE){
 	testo <- gsub("\r",' ',testo,fixed=fixed)
 	testo <- gsub("\\s+", " ", testo, perl=perl)	
   
-	testo <- gsub('^( ["][@]| [@]| \034[@])',' RT @', testo, perl=perl)	
-	testo <- gsub("^( ['][@])",' RT @', testo, perl=perl)
-	testo <- gsub("^( RT: @)",' RT @', testo, perl=perl)
-	testo <- gsub("^( RT '@)",' RT @', testo, perl=perl)			
+#	testo <- gsub('^( ["][@]| [@]| \034[@])',' RT @', testo, perl=perl)	
+#	testo <- gsub("^( ['][@])",' RT @', testo, perl=perl)
+#	testo <- gsub("^( RT: @)",' RT @', testo, perl=perl)
+#	testo <- gsub("^( RT '@)",' RT @', testo, perl=perl)			
 	
   
   testo <- gsub('[//?]+',' ', testo, perl=perl)
