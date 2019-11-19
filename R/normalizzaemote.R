@@ -6,7 +6,7 @@
 #' @param perl logical. If TRUE Perl-compatible regexps are used.
 #' 
 #' @return a set of text where emoticons has been replaced by the respective keyword
-#' @author Livio Finos
+#' @author Mattia Da Pont, Livio Finos, Dario Solari
 #'  
 
 
