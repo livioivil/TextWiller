@@ -45,7 +45,7 @@
 #' Per tutte le altre funzioni, l'output e' un \code{vector} della stessa
 #' lunghezza di \code{testo} ma con testi normalizzati.
 #' @note %% ~~further notes~~
-#' @author Dario Solari, Livio Finos, Maddalena Branca
+#' @authors Dario Solari, Livio Finos, Maddalena Branca
 #' @keywords ~kwd1 ~kwd2
 #' @examples
 #' 

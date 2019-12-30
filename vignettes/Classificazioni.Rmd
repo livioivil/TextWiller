@@ -1,0 +1,169 @@
+---
+title: "Classificazione"
+author: "Mattia Da Pont"
+date: "29/10/2019"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Put the title of your vignette here}
+  %\VignetteEngine{knitr::rmarkdown}
+  \usepackage[utf8]{inputenc}
+---
+
+In questa vignette vengono presentati esempi di classificazione
+di testi su categorie note che sono possibili dopo aver preprocessato i dati tramite TextWiller.
+Grazie alla funzione normalizzaTesti infatti, l'insieme di testi che andremo ad analizzare è spogliato di tutte parole o caratteri inutili ai fini delle analisi.
+Il modello utilizzato è il RandomForest, in sue due diverse applicazioni.
+Nel primo caso classifichiamo i testi, nel secondo invece stimiamo la probabilità di appartenere a ciascuna classe.
+Il pacchetto utilizzato per stimare i RandomForest è ranger.
+
+
+```{r,message=FALSE,echo=FALSE,warning=FALSE}
+library(e1071)
+library(iSAX)
+library(`TextWiller`)
+library(ranger)
+library(tm)
+library(xtable)
+library(ngram)
+
+
+data("quotidiani_2_ottobre")
+data<-tw
+rm(tw)
+
+set.seed(123)
+
+
+
+
+
+```
+
+```{r}
+
+text<-normalizzaTesti(data$text)
+corpus <- Corpus(VectorSource(text))
+dtm <- DocumentTermMatrix(corpus)
+dtm.999<-removeSparseTerms(dtm,.999)
+set.seed(123)
+idx<-sample(1:nrow(data),nrow(data)*.75)
+temp<-as.matrix(dtm.999)
+nomi<-colnames(temp)
+
+colnames(temp)<-paste("w","_",as.character(1:ncol(temp)),sep = "")
+
+data.train<-temp[idx,]
+data.test<-temp[-idx,]
+
+
+D<-data$screen_name
+D.train<-D[idx]
+D.test<-D[-idx]
+
+
+#####################################
+# creazione variabili per RF e SVM #
+####################################
+
+n.parole<-NA
+n.caratteri<-NA
+
+for(i in 1:nrow(data)){
+  n.parole[i]<-wordcount(data$text[i])
+  n.caratteri[i]<-nchar(data$text[i], type = "chars", allowNA = FALSE, keepNA = NA)
+  
+}
+
+
+head(n.parole)
+head(n.caratteri)
+
+
+################################
+# creo dataset di train e test #
+################################
+
+
+data.train<-cbind(D[idx],data.train, n.parole[idx],n.caratteri[idx])
+data.test<-cbind(D[-idx],data.test, n.parole[-idx],n.caratteri[-idx])
+
+
+
+
+```
+
+
+
+Classificazione tramite RandomForest
+
+```{r}
+
+data.train<-as.data.frame(data.train)
+data.test<-as.data.frame(data.test)
+
+data.train[,1]<-as.factor(data.train[,1])
+data.test[,1]<-as.factor(data.test[,1])
+
+rf<-ranger(data.train[,1]~., data=data.train[,-1], num.trees=1000,mtry=38,classification = TRUE, importance = "impurity")
+
+
+pred.rf<-predict(rf,data=data.test[,-1])
+pred.rf<-pred.rf$predictions
+
+
+tab.rf <- table(Prediction = pred.rf, True = (D.test))
+accuracy.rf<-sum(diag(tab.rf))/sum(tab.rf)
+
+tab.rf
+accuracy.rf
+
+
+#calcoliamo il Mean Absolute Error
+
+mae.rf <- cbind(RF_test=prop.table(table(pred.rf)),True_test=prop.table(table(D.test)))
+colnames(mae.rf) <- c("RF","True")
+round(mae.rf,3)
+rownames(mae.rf)<-c("il Corriere","La Stampa","la Repubblica")
+
+
+
+mae.rf.class <- mean(abs(mae.rf[,1]- mae.rf[,2]))
+mae.rf.class
+
+
+
+
+```
+
+otteniamo una discreta precisione nella classificazione.
+Anche il MAE è piuttosto basso.
+
+
+Stima delle probabilità
+
+
+```{r}
+
+rf<-ranger(data.train[,1]~., data=data.train[,-1], num.trees=1000,mtry=38,
+           classification = TRUE,probability = TRUE)
+pred.rf<-predict(rf,data=data.test[,-1])
+pred.rf<-pred.rf$predictions
+
+mae.rf <- cbind(RF_test=colMeans(pred.rf),True_test=prop.table(table(D.test)))
+colnames(mae.rf) <- c("RF","True")
+round(mae.rf,3)
+rownames(mae.rf)<-c("il Corriere","La Stampa","la Repubblica")
+
+mae.rf.prob <- mean(abs(mae.rf[,1]- mae.rf[,2]))
+mae.rf.prob
+
+
+
+```
+
+Tramite la stima delle probabilità guadagniamo in termini di Mean Absolute Error.
+
+
+
+
+

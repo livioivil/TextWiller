@@ -21,14 +21,14 @@ normalizzaEmoticons<-function(testo){
   vocabolarioEmote[,1]<-encodeString(vocabolarioEmote[,1])
   
   
-  testo=stringi::stri_replace_all_fixed(testo,
-                       vocabolarioEmote[,1], 
-                                        vocabolarioEmote[,2], vectorize_all=FALSE)
+#  testo=stringi::stri_replace_all_fixed(testo,
+#                       vocabolarioEmote[,1], 
+#                                        vocabolarioEmote[,2], vectorize_all=TRUE)
 
-  #for(i in 1:nrow(vocabolarioEmote)){
-  #  testo<-gsub(vocabolarioEmote[i,1],vocabolarioEmote[i,2],
-  #              testo,ignore.case =TRUE)
-  #}
+  for(i in 1:nrow(vocabolarioEmote)){
+    testo<-gsub(vocabolarioEmote[i,1],vocabolarioEmote[i,2],
+                testo,ignore.case =TRUE)
+  }
   testo
 }
 

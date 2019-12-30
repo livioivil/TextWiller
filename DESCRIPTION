@@ -19,5 +19,6 @@ Description: Collection of functions for text mining, specially devoted to the
 License: GPL (>= 2)
 RoxygenNote: 6.1.1
 Suggests: 
-    testthat
+    testthat,  knitr, rmarkdown
 Encoding: UTF-8
+VignetteBuilder: knitr
