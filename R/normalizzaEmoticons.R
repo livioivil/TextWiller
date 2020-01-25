@@ -16,17 +16,17 @@
 
 normalizzaEmoticons<-function(testo){
   
-  data(vocabolarioEmote)
+  data(vocabolarioEmoteSorted)
   testo<-encodeString(testo)
-  vocabolarioEmote[,1]<-encodeString(vocabolarioEmote[,1])
+  vocabolarioEmoteSorted[,1]<-encodeString(vocabolarioEmoteSorted[,1])
   
   
 #  testo=stringi::stri_replace_all_fixed(testo,
 #                       vocabolarioEmote[,1], 
 #                                        vocabolarioEmote[,2], vectorize_all=TRUE)
 
-  for(i in 1:nrow(vocabolarioEmote)){
-    testo<-gsub(vocabolarioEmote[i,1],vocabolarioEmote[i,2],
+  for(i in 1:nrow(vocabolarioEmoteSorted)){
+    testo<-gsub(vocabolarioEmoteSorted[i,1],vocabolarioEmoteSorted[i,2],
                 testo,ignore.case =TRUE)
   }
   testo
