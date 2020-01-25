@@ -10,11 +10,9 @@
 #' @name TextWiller-package
 #' @aliases TextWiller-package TextWiller
 #' @docType package
-#' @author Dario Solari, Andrea Sciandra, Matteo Redaelli, Livio
-#' Finos (con contributi di Mattia Uttini, Marco Rinaldo, Maddalena Branca, Federico
-#' Ferraccioli).
-#' 
-#' Maintainer: dario solari <dario.solari@@gmail.com>
+#' Author: Andrea Sciandra, Dario Solari, Mattia Da Pont, Livio Finos (con contributi di Mattia Uttini, Marco Rinaldo, Maddalena Branca,
+#' Federico Ferraccioli, Marco Rinaldo, Matteo Redaelli).
+#' Maintainer: Livio Finos <livio.finos@@unipd.it>
 #' @keywords package
 #' @examples
 #' 
