@@ -4,9 +4,16 @@
 \alias{RTHound}
 \title{RTHound}
 \usage{
-RTHound(testo, S = 500, L = 100, hclust.dist = 100,
-  hclust.method = "complete", showTopN = 5, dist = "levenshtein",
-  verbatim = TRUE)
+RTHound(
+  testo,
+  S = 500,
+  L = 100,
+  hclust.dist = 100,
+  hclust.method = "complete",
+  showTopN = 5,
+  dist = "levenshtein",
+  verbatim = TRUE
+)
 }
 \arguments{
 \item{testo}{Tweets or generic texts vector.}
@@ -62,8 +69,8 @@ subsets and clusterize tweets throught hierarchical clustering algorithm.
  "La #sperimentazioneanimale Ã¨ inutile perchÃ© non predittiva per la specie umana. MEDICI ANTI #VIVISEZIONE- LIMAV http://t.co/3MwubXIH8g",
  "RT @orianoPER: La #ricerca in #Medicina con #sperimentazioneanimale non e' predittiva per la specie umana. MEDICI ANTI #VIVISEZIONE http://t",
  "RT @HuffPostItalia: Il Governo italiano non fermi la sperimentazione animale. Intervista a Elena Cattaneo http://t.co/q1dm430a9j",
- "RT @HuffPostItalia: \\"Il Governo italiano non fermi la sperimentazione animale\\". Intervista a Elena Cattaneo http://t.co/q1dm430a9j",
- "\\"Il Governo italiano non fermi la sperimentazione animale\\". Intervista a Elena Cattaneo http://t.co/q1dm430a9j",
+ "RT @HuffPostItalia: \"Il Governo italiano non fermi la sperimentazione animale\". Intervista a Elena Cattaneo http://t.co/q1dm430a9j",
+ "\"Il Governo italiano non fermi la sperimentazione animale\". Intervista a Elena Cattaneo http://t.co/q1dm430a9j",
  "RT @orianoPER: @EnricoLetta LA #VIVISEZIONE NON SERVE: PAROLA DI GLAXO-APTUIT http://t.co/mtsHJjDIvu #StopVivisection #SperimentazioneAnima&")
  
  testo=RTHound(testo, S = 3, L = 1, 

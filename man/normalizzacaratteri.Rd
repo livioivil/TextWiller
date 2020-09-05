@@ -19,7 +19,7 @@ a set of processed texts
 }
 \examples{
 
- testo<-c("\\t","\\r") 
+ testo<-c("\t","\r") 
  normalizzacaratteri(testo)
  
  

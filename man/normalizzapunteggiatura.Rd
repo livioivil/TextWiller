@@ -4,8 +4,12 @@
 \alias{normalizzapunteggiatura}
 \title{normalizzapunteggiatura}
 \usage{
-normalizzapunteggiatura(testo, removeUnderscore = TRUE, perl = TRUE,
-  fixed = TRUE)
+normalizzapunteggiatura(
+  testo,
+  removeUnderscore = TRUE,
+  perl = TRUE,
+  fixed = TRUE
+)
 }
 \arguments{
 \item{testo}{a set of texts to be stripped of escape and punctation}

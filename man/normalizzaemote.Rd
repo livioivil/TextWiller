@@ -18,5 +18,5 @@ a set of text where emoticons has been replaced by the respective keyword
 \code{normalizzaemote} replaces emoticons in \code{testo} with a keyword corresponding the feeling described
 }
 \author{
-Livio Finos
+Mattia Da Pont, Livio Finos, Dario Solari
 }

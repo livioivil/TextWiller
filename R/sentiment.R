@@ -6,8 +6,9 @@
 #' 
 #' @aliases sentiment sentimentVocabularies vocabolariMadda
 #' @param text descr .
-#' @param algorithm descr .
+#' @param algorithm descr.
 #' @param vocabularies \code{vocabolariMadda} by default.
+#' @param normalizzaTesti TRUE by default
 #' @return l'output etc
 #' @note %% ~~further notes~~
 #' @author Maddalena Branca, Livio Finos
@@ -17,13 +18,18 @@
 #' sentiment(c("ciao bella", "ciao", "good","casa", "farabutto!"))
 #' 
 #' @export sentiment
-sentiment <- function(text, algorithm="Maddalena", vocabularies=NULL,...){
+sentiment <- function(text, algorithm="Maddalena", 
+                      vocabularies=NULL,
+                      normalizzaTesti=TRUE, ...){
   if(!is.null(text)){ #se c'e' almeno un testo
     if(is.null(algorithm)) algorithm="Maddalena"
     if(is.null(vocabularies)) {
       data(vocabolariMadda) #lo decommenti ed eventualmente cambi nomi dei dati
       vocabularies=vocabolariMadda
     }
+    
+    if(normalizzaTesti==TRUE)
+      text<-normalizzaTesti(text,suppressInvalidTexts=FALSE,contaStringhe=NULL,...)
     
     #choose and perform algorithm
     if(algorithm=="Maddalena") {

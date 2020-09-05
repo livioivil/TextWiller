@@ -6,8 +6,14 @@
 \alias{vocabolarioLuoghi}
 \title{Classificazione per vocabolario di utenti}
 \usage{
-classificaUtenti(names, vocabolario = NULL, scan_interno = FALSE,
-  vocab_interno = NULL, how_class = "modeFirst", cat_interna = NULL)
+classificaUtenti(
+  names,
+  vocabolario = NULL,
+  scan_interno = FALSE,
+  vocab_interno = NULL,
+  how_class = "modeFirst",
+  cat_interna = NULL
+)
 }
 \arguments{
 \item{names}{vettore di nomi}

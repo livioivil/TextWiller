@@ -13,14 +13,27 @@
 \alias{preprocessingEncoding}
 \title{Varie funzioni di normalizzazione del testo}
 \usage{
-normalizzaTesti(testo, tolower = TRUE, normalizzahtml = TRUE,
-  normalizzacaratteri = TRUE, normalizzaemote = TRUE,
-  normalizzaEmoticons = TRUE, normalizzapunteggiatura = TRUE,
-  normalizzaslang = TRUE, fixed = TRUE, perl = TRUE,
-  preprocessingEncoding = TRUE, encoding = "UTF-8", sub = "",
-  contaStringhe = c("\\\\?", "\\\\!", "@", "#", "(\\200|euro)",
-  "(\\\\$|dollar)", "SUPPRESSEDTEXT"), suppressInvalidTexts = TRUE,
-  verbatim = TRUE, remove = TRUE)
+normalizzaTesti(
+  testo,
+  tolower = TRUE,
+  normalizzahtml = TRUE,
+  normalizzacaratteri = TRUE,
+  normalizzaemote = TRUE,
+  normalizzaEmoticons = TRUE,
+  normalizzapunteggiatura = TRUE,
+  normalizzaslang = TRUE,
+  fixed = TRUE,
+  perl = TRUE,
+  preprocessingEncoding = TRUE,
+  encoding = "UTF-8",
+  sub = "",
+  contaStringhe = c("\\\\?", "\\\\!", "@", "#", "(\\200|euro)", "(\\\\$|dollar)",
+    "SUPPRESSEDTEXT"),
+  suppressInvalidTexts = TRUE,
+  verbatim = TRUE,
+  remove = TRUE,
+  removeUnderscore = FALSE
+)
 }
 \arguments{
 \item{testo}{character vector of texts}
@@ -97,9 +110,6 @@ testoNorm <- normalizzaTesti(c('ciao bella!','www.associazionerospo.org','noooo,
 testoNorm
 attr(testoNorm,"counts")
 
-}
-\author{
-Dario Solari, Livio Finos, Maddalena Branca
 }
 \keyword{~kwd1}
 \keyword{~kwd2}

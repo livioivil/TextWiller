@@ -6,14 +6,22 @@
 \alias{vocabolariMadda}
 \title{Performs sentiment analysis}
 \usage{
-sentiment(text, algorithm = "Maddalena", vocabularies = NULL, ...)
+sentiment(
+  text,
+  algorithm = "Maddalena",
+  vocabularies = NULL,
+  normalizzaTesti = TRUE,
+  ...
+)
 }
 \arguments{
 \item{text}{descr .}
 
-\item{algorithm}{descr .}
+\item{algorithm}{descr.}
 
 \item{vocabularies}{\code{vocabolariMadda} by default.}
+
+\item{normalizzaTesti}{TRUE by default}
 }
 \value{
 l'output etc
