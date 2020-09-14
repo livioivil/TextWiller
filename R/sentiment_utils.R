@@ -1,3 +1,23 @@
+.sentiment.mattivio<- function(text, vocabularies,...){
+  # vocab_scores=x[!is.na(x$score),]
+  # vocab_scores$keyword=tolower(vocab_scores$keyword)
+  # vocab_scores$keyword=gsub(" $","",vocab_scores$keyword)
+  # tt=bind_rows(
+  #   data.frame(keyword=vocabolariMadda$positive,code=NA,score=1),
+  # data.frame(keyword=vocabolariMadda$negative,code=NA,score=-1))
+  # vocab_scores=bind_rows(vocab_scores,tt)
+  textMio<-tibble(keyword=text,id=1:length(text))
+  tidy.text <- unnest_tokens(tbl = textMio,output = keyword, input = keyword)
+  tt=left_join(tidy.text,vocab_scores,"keyword")
+  tt=tt %>% filter(!is.na(score))
+  tt=tt %>%
+    group_by(id) %>%
+    summarise(score = sum(score))
+  out=rep(0,length(text))
+  out[tt$id]=tt$score
+  return(out)
+}
+
 .sentiment.maddalena<- function(text, vocabularies,...){
   #####################################################sentiment analisys
   
