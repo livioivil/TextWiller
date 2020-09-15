@@ -4,22 +4,23 @@
 \alias{sentiment}
 \alias{sentimentVocabularies}
 \alias{vocabolariMadda}
+\alias{vocabolarioMattivio}
 \title{Performs sentiment analysis}
 \usage{
 sentiment(
   text,
-  algorithm = "Maddalena",
+  algorithm = "Mattivio",
   vocabularies = NULL,
   normalizzaTesti = TRUE,
   ...
 )
 }
 \arguments{
-\item{text}{descr .}
+\item{text}{vector of texts}
 
-\item{algorithm}{descr.}
+\item{algorithm}{\code{"Mattivio"} (default), \code{"Maddalena"} or a function returning the score.}
 
-\item{vocabularies}{\code{vocabolariMadda} by default.}
+\item{vocabularies}{\code{vocabolarioMattivio} (default if \code{algorithm == "Mattivio"}), \code{vocabolariMadda} (default if \code{algorithm == "Maddalena"}) or an object used by the algorithm}
 
 \item{normalizzaTesti}{TRUE by default}
 }
@@ -37,11 +38,11 @@ aggiungere dettagli qui
 }
 \examples{
 
-sentiment(c("ciao bella", "ciao", "good","casa", "farabutto!"))
+sentiment(c("ciao bella", "mi piaci", "wow!!","good","casa", "farabutto!","ti odio"))
 
 }
 \author{
-Maddalena Branca, Livio Finos
+Maddalena Branca, Mattia Da Pont, Livio Finos
 }
 \keyword{~kwd1}
 \keyword{~kwd2}

@@ -4,28 +4,33 @@
 #' 
 #' aggiungere dettagli qui
 #' 
-#' @aliases sentiment sentimentVocabularies vocabolariMadda
+#' @aliases sentiment sentimentVocabularies vocabolariMadda vocabolarioMattivio
 #' @param text vector of texts
 #' @param algorithm \code{"Mattivio"} (default), \code{"Maddalena"} or a function returning the score.
-#' @param vocabularies \code{vocabolarioMattivio} (default), \code{vocabolariMadda} or an object used by the algorithm
+#' @param vocabularies \code{vocabolarioMattivio} (default if \code{algorithm == "Mattivio"}), \code{vocabolariMadda} (default if \code{algorithm == "Maddalena"}) or an object used by the algorithm
 #' @param normalizzaTesti TRUE by default
 #' @return l'output etc
 #' @note %% ~~further notes~~
-#' @author Maddalena Branca, Livio Finos
+#' @author Maddalena Branca, Mattia Da Pont, Livio Finos
 #' @keywords ~kwd1 ~kwd2
 #' @examples
 #' 
-#' sentiment(c("ciao bella", "ciao", "good","casa", "farabutto!"))
+#' sentiment(c("ciao bella", "mi piaci", "wow!!","good","casa", "farabutto!","ti odio"))
 #' 
 #' @export sentiment
-sentiment <- function(text, algorithm="Maddalena", 
+sentiment <- function(text, algorithm="Mattivio", 
                       vocabularies=NULL,
                       normalizzaTesti=TRUE, ...){
   if(!is.null(text)){ #se c'e' almeno un testo
     if(is.null(algorithm)) algorithm="Mattivio"
     if(is.null(vocabularies)) {
-      data(vocabolariMadda) #lo decommenti ed eventualmente cambi nomi dei dati
-      vocabularies=vocabolarioMattivio
+      if(algorithm=="Mattivio") {
+        data(vocabolarioMattivio) 
+        vocabularies=vocabolarioMattivio
+        } else if(algorithm=="Maddalena") {
+          data(vocabolariMadda) 
+          vocabularies=vocabolariMadda
+        }
     }
     
     if(normalizzaTesti==TRUE)
