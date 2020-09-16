@@ -12,6 +12,7 @@ sentiment(
   algorithm = "Mattivio",
   vocabularies = NULL,
   normalizzaTesti = TRUE,
+  get_labels = TRUE,
   ...
 )
 }
@@ -23,6 +24,8 @@ sentiment(
 \item{vocabularies}{\code{vocabolarioMattivio} (default if \code{algorithm == "Mattivio"}), \code{vocabolariMadda} (default if \code{algorithm == "Maddalena"}) or an object used by the algorithm}
 
 \item{normalizzaTesti}{TRUE by default}
+
+\item{get_labels}{(TRUE) if FALSE the quantitavive score is given, if TRUE (the default) the labels -1,0,+1 are provied (i.e. \code{sign(score)})}
 }
 \value{
 l'output etc

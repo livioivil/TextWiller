@@ -6,10 +6,12 @@
   #   data.frame(keyword=vocabolariMadda$positive,code=NA,score=1),
   # data.frame(keyword=vocabolariMadda$negative,code=NA,score=-1))
   # vocabolarioMattivio=bind_rows(vocabolarioMattivio,tt)
-  text<- wordStem(text, language = "italian")
   textMio<-tibble::tibble(keyword=text,id=1:length(text))
   
   tidy.text <- tidytext::unnest_tokens(tbl = textMio,output = keyword, input = keyword)
+  tidy.text$keyword <- wordStem(tidy.text$keyword, language = "italian")
+  tidy.text$keyword <- gsub("issim","",tidy.text$keyword)
+  
   tt=dplyr::left_join(tidy.text,vocabolarioMattivio,"keyword")
   tt=tt[!is.na(tt$score),,with=FALSE]
   tt=tt %>%
@@ -17,7 +19,8 @@
     dplyr::summarise(score = sum(score))
   out=rep(0,length(text))
   out[tt$id]=tt$score
-  return(out)
+  return(as.array(as.vector(out)))  
+  
 }
 
 .sentiment.maddalena<- function(text, vocabularies,...){
@@ -53,7 +56,7 @@
   
   p<-sum(pos_matches) #-sum(p_neutral_matches)
   n<-sum(neg_matches) #-sum(n_neutral_matches)
-  score = sign( p - n )
+  score =  p - n 
   return(as.array(as.vector(score)))  
 }
 scores = sapply(text, .get.scores, vocabularies$positive, vocabularies$negative)
