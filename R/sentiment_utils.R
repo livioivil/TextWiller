@@ -1,24 +1,63 @@
 .sentiment.mattivio<- function(text, vocabularies,...){
-  # vocabolarioMattivio=x[!is.na(x$score),]
+  # https://www.tidytextmining.com/ngrams.html
+  # 
+  vocabolarioMattivio$keyword=gsub("-"," ", vocabolarioMattivio$keyword)
+  vocabolarioMattivio$keyword=gsub("^ ","", vocabolarioMattivio$keyword)
+  vocabolarioMattivio$keyword=gsub(" $","", vocabolarioMattivio$keyword)
+  vocabolarioMattivio$keyword=gsub("  "," ", vocabolarioMattivio$keyword)
+  vocabolarioMattivio$ngram=sapply(vocabolarioMattivio$keyword, function(x) length(strsplit(x,split = " ")[[1]]))
+  table(vocabolarioMattivio$ngram)
+  save(vocabolarioMattivio,file="vocabolarioMattivio.rda")
+
+
+    # vocabolarioMattivio=x[!is.na(x$score),]
   # vocabolarioMattivio$keyword=tolower(vocabolarioMattivio$keyword)
   # vocabolarioMattivio$keyword=gsub(" $","",vocabolarioMattivio$keyword)
   # tt=bind_rows(
   #   data.frame(keyword=vocabolariMadda$positive,code=NA,score=1),
   # data.frame(keyword=vocabolariMadda$negative,code=NA,score=-1))
   # vocabolarioMattivio=bind_rows(vocabolarioMattivio,tt)
+  
   textMio<-tibble::tibble(keyword=text,id=1:length(text))
   
   tidy.text <- tidytext::unnest_tokens(tbl = textMio,output = keyword, input = keyword)
   tidy.text$keyword <- wordStem(tidy.text$keyword, language = "italian")
   tidy.text$keyword <- gsub("issim","",tidy.text$keyword)
   
-  tt=dplyr::left_join(tidy.text,vocabolarioMattivio,"keyword")
+  #useful for ngrams later
+  if(sum(unique(vocabolarioMattivio$ngram)!=1)>0)
+    textMio$keyword=sapply(unique(tidy.text$id),function(x) paste(tidy.text$keyword[tidy.text$id==x],collapse=" "))
+
+  tt=dplyr::left_join(tidy.text,vocabularies[vocabularies$ngram==1,],"keyword")
   tt=tt[!is.na(tt$score),,with=FALSE]
   tt=tt %>%
     dplyr::group_by(id) %>%
     dplyr::summarise(score = sum(score))
   out=rep(0,length(text))
   out[tt$id]=tt$score
+  
+  ## n-grams
+  ngrams=unique(vocabularies$ngram)
+  ngrams=ngrams[ngrams!=1]
+  for( n in ngrams){
+      
+      # STEM ME PLEASE!!
+    # tidy.text <- tidytext::unnest_tokens(tbl = textMio,output = keyword, input = keyword)
+    # tidy.text$keyword <- wordStem(tidy.text$keyword, language = "italian")
+    # tidy.text$keyword <- gsub("issim","",tidy.text$keyword)
+    
+      tidy.text <-  tidytext::unnest_tokens(tbl = textMio,
+                                          output = keyword, input = keyword,token = "ngrams", n = n)
+    
+    tt=dplyr::left_join(tidy.text,vocabularies[vocabularies$ngram==n,],"keyword")
+    tt=tt[!is.na(tt$score),,with=FALSE]
+    if(nrow(tt)>0){  
+      tt=tt %>%
+      dplyr::group_by(id) %>%
+      dplyr::summarise(score = sum(score))
+      out[tt$id]=out[tt$id]+tt$score
+      }  
+    }
   return(as.array(as.vector(out)))  
   
 }
