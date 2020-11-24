@@ -6,8 +6,8 @@
   vocabolarioMattivio$keyword=gsub(" $","", vocabolarioMattivio$keyword)
   vocabolarioMattivio$keyword=gsub("  "," ", vocabolarioMattivio$keyword)
   vocabolarioMattivio$ngram=sapply(vocabolarioMattivio$keyword, function(x) length(strsplit(x,split = " ")[[1]]))
-  table(vocabolarioMattivio$ngram)
-  save(vocabolarioMattivio,file="vocabolarioMattivio.rda")
+  # table(vocabolarioMattivio$ngram)
+  # save(vocabolarioMattivio,file="vocabolarioMattivio.rda")
 
 
     # vocabolarioMattivio=x[!is.na(x$score),]
