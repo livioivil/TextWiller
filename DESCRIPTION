@@ -1,0 +1,39 @@
+Package: TextWiller3
+Type: Package
+Title: Advanced Text Mining Utilities for Italian Language
+Version: 3.0.0
+Date: 2024-01-01
+Authors@R: c(
+    person("Dario", "Solari", role = "aut"),
+    person("Livio", "Finos", role = "aut"),
+    person("Andrea", "Sciandra", role = "aut"),
+    person("Matteo", "Redaelli", role = "aut"),
+    person("Alessandro", "Meneghini", role = c("aut", "cre")),
+    )
+  )
+Description: Collection of advanced text mining utilities specially devoted 
+    to the Italian language. Includes Shiny interface for interactive text analysis,
+    corpus management, preprocessing, lexical analysis, and semantic analysis.
+Depends:
+    R (>= 4.0.0)
+Imports:
+    shiny,
+    stringr,
+    dplyr,
+    ggplot2,
+    wordcloud,
+    DT,
+    readxl,
+    shinythemes,
+    SnowballC,
+    digest,
+    R6,
+    udpipe,
+    tokenizers
+Suggests:
+    testthat,
+    knitr,
+    rmarkdown
+License: GPL-3
+Encoding: UTF-8
+RoxygenNote: 7.2.0

@@ -1,0 +1,136 @@
+############################################################
+# SENTIMENT ANALYSIS
+############################################################
+#installiamo e carichiamo il pacchetto syuzhet
+install.packages("syuzhet")
+library(syuzhet)
+
+#facciamo una prova con un testo semplice
+testo <- c("e' bellissimo quando faccio andare le funzioni vitali su un valore immobile", "Questo corso è peggio del finale di Game of Thrones! Voglio indietro i soldi delle tasse")
+sentiment <- get_sentiment(testo, method = "nrc", language = "italian")
+print(sentiment)
+
+#ora proviamo con un dataset più ampio, torniamo ad usare il nostro sampledcorpus
+
+# Utilizzo del dizionario NRC per l'analisi del sentiment (puoi scegliere anche altri dizionari come 'bing' o 'afinn')
+sentiment_emotions <- get_sentiment(sampledcorpus, method = "nrc", language = "italian")
+sentiment_emotions
+
+#vediamo l'evoluzione del sentiment
+plot(
+  sentiment_values, 
+  type="l", 
+  main="Example Plot Trajectory", 
+  xlab = "n tweets", 
+  ylab= "Emotional Valence"
+)
+
+############################################################
+# TEXTCAT
+############################################################
+# Carica i pacchetti necessari
+library(caret)
+library(randomForest)
+library(e1071)
+library(tm)
+library(tidyverse)
+
+# Imposta il seme per la riproducibilità
+set.seed(42)
+
+# Carica il dataset e campiona 500 righe casualmente
+df <- read.csv('corpora/Suicide_Detection.csv')
+df <- df[sample(nrow(df), 500), ]
+df$class <- gsub("non-suicide", "nonsuicide", df$class) 
+
+# Preprocessing del testo
+corpus <- Corpus(VectorSource(df$text))  
+corpus <- tm_map(corpus, content_transformer(tolower))  # Converti in minuscolo
+corpus <- tm_map(corpus, removePunctuation)  # Rimuovi punteggiatura
+corpus <- tm_map(corpus, removeNumbers)  # Rimuovi numeri
+corpus <- tm_map(corpus, removeWords, stopwords("en"))  # Rimuovi stopwords
+corpus <- tm_map(corpus, stripWhitespace)  # Rimuovi spazi bianchi extra
+
+# Creazione della matrice di occorrenze
+dtm <- DocumentTermMatrix(corpus)
+
+# Converti la matrice in dataframe e assegna le classi
+data <- as.data.frame(as.matrix(dtm))
+colnames(data) <- make.names(colnames(data))  # Rendi i nomi di colonna validi
+data$class <- factor(df$class)  # Assicura che 'class' sia un fattore
+
+data$class
+
+# Divisione dei dati in training (75%) e test (25%)
+trainIndex <- createDataPartition(data$class, p = .75, list = FALSE)
+data_train <- data[trainIndex, ]
+data_test <- data[-trainIndex, ]
+
+colnames(data_train) <- make.names(colnames(data_train), unique = TRUE)
+
+# Verifica la suddivisione delle classi
+print(table(data_train$class))
+print(table(data_test$class))
+
+# Controllo della procedura di cross-validation
+fitControl <- trainControl(method = "cv", number = 2, classProbs = TRUE, returnResamp = "all")
+
+# Addestramento del modello SVM - Support Vector Machines
+SVM <- train(class ~ ., data = data_train, method = "svmPoly", 
+             preProcess = c("center", "scale"), 
+             trControl = fitControl, tuneLength = 3, importance = TRUE)
+
+confusionMatrix(SVM, "average")
+plot(SVM)
+
+# Addestramento del modello Random Forest
+RF <- train(class ~ ., data = data_train, method = "rf", 
+            preProcess = c("center", "scale"), 
+            trControl = fitControl, tuneLength = 3, importance = TRUE)
+
+confusionMatrix(RF, "average")
+plot(RF)
+
+############################################################
+# STILOMETRIA
+############################################################
+# installa e carica il pacchetto stylo
+install.packages("stylo")
+library(stylo)
+
+# La stilometria serve per analizzare le caratteristiche stilistiche dei testi
+# e può essere usata, ad esempio, per identificare autori o confrontare stili di scrittura
+
+# Supponiamo di voler fare un'analisi stilometrica sul nostro dataset di testi
+# Creiamo un corpus temporaneo con i testi etichettati per classe
+corpus_stylo <- data.frame(
+  text = df$text,
+  class = df$class
+)
+
+# Salviamo i testi in cartelle separate per classe, come richiesto da stylo
+dir.create("stylo_corpus")
+dir.create("stylo_corpus/nonsuicide")
+dir.create("stylo_corpus/suicide")
+
+# Scriviamo i file di testo in cartelle separate
+for (i in 1:nrow(corpus_stylo)) {
+  class_dir <- paste0("stylo_corpus/", corpus_stylo$class[i])
+  writeLines(corpus_stylo$text[i], paste0(class_dir, "/text_", i, ".txt"))
+}
+
+# Analisi stilometrica di base
+# stylo() analizza i testi nella directory di lavoro per identificare pattern linguistici
+
+
+
+setwd("stylo_corpus")
+
+results <- stylo(
+  gui = FALSE,               # disattiva l'interfaccia grafica
+  corpus.dir = ".",          # directory del corpus
+  mfw = 500,                 # most frequent words
+  analysis.type = "CA",      # analisi delle corrispondenze (puoi usare anche "BCT" o "PCR")
+  sampling = "no.sampling"   # usa i testi interi
+)
+

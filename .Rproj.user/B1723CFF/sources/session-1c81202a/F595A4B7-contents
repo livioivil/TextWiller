@@ -1,0 +1,341 @@
+##########################################
+###### ANALISI DELLE CORRISPONDENZE
+
+library(readtext)
+
+#carichiamo il corpus aborto
+
+#df <- read.csv('corpora/aborto_twitter.csv')
+df <- read.csv('corpora/reddit_mental_health_raw.csv')
+df <- readtext("corpora/harry_potter_chapters/*.txt", encoding = "UTF-8") #impostiamo la cartella
+df
+#quante righe ha il nostro dataframe?
+dim(df)
+
+#selezioniamo N righe casualmente
+sampled_df <- df[sample(nrow(df), 1000),] #selezioniamo 100 righe
+
+#rimuoviamo gli apostrofi
+sampled_df$text <- gsub("'", " ", sampled_df$text)
+sampled_df$text <- gsub("’", " ", sampled_df$text)
+
+sampled_df$text <- gsub("t.co", " ", sampled_df$text)
+sampled_df$text <- gsub("htpps", " ", sampled_df$text)
+
+# estraiamo i tokens 
+tok <- quanteda::tokens(sampled_df$text, #oppure corpus
+                        remove_punct = T,
+                        remove_symbols = T,
+                        remove_numbers = T,
+                        remove_url = T,
+                        remove_separators = T,
+                        split_hyphens = TRUE,
+                        split_tags = TRUE,
+                        padding = FALSE)
+
+
+library(textstem)
+library(quanteda)
+library(tm)
+tok <- tokens_tolower(tok) #lowering
+tok_list <- as.list(tok) #trasformiamo i token in una lista
+tok_lemma_list <- lapply(tok_list, lemmatize_words) #applichiamo la lemmatizzazione ad ogni elemento della lista
+texts_lemma <- sapply(tok_lemma_list, paste, collapse = " ") #ricostruiamo  i docs come stringhe unendo i token
+tok <- quanteda::tokens(texts_lemma) #ricostruiamo l'oggetto tokens
+
+
+# creiamo la dfm
+sampledcorpus_dfm <- dfm(tok)
+
+# rimuoviamo le stopwords
+sampledcorpus_dfm <- dfm_remove(sampledcorpus_dfm,  stopwords("english"))
+
+sampledcorpus_dfm_perexport <- convert(sampledcorpus_dfm, to = "data.frame")
+write.csv(sampledcorpus_dfm_perexport, "sampledcorpus_dfm.csv")
+
+sampledcorpus_dfm
+#controlliamo la nostra matrice
+sampledcorpus_dfm %>% dim
+sampledcorpus_dfm %>% sum
+
+# teniamo solo parole con almeno 3 caratteri
+sampledcorpus_dfm <- dfm_select(
+  sampledcorpus_dfm,
+  selection = "remove",
+  min_nchar = 3
+)
+
+# selezioniamo le parole con almeno 2 occorrenze per togliere gli hapax
+sampledcorpus_dfm <- dfm_trim(sampledcorpus_dfm, min_termfreq = 2)
+sampledcorpus_dfm %>% dim
+sampledcorpus_dfm %>% sum
+
+#teniamo solo le N most frequent words (MFW)
+top100mfw <- names(topfeatures(sampledcorpus_dfm, 50)) #proviamo con 100
+sampledcorpus_dfm <- dfm_select(sampledcorpus_dfm, pattern = top100mfw, selection = "keep")
+
+#convertiamo in DFM
+sampledcorpus_dfm <- dfm_tfidf(sampledcorpus_dfm) #per convertire la dtm in una matrice tfidf
+
+dtm_matrix <- convert(sampledcorpus_dfm, to = "matrix")
+dtm_matrix %>% dim
+View(dtm_matrix)
+
+#CA - analisi corrispondenze
+install.packages('FactoMineR')
+library(FactoMineR)
+
+CA.res<-CA(dtm_matrix)
+
+# mostrami solo i documenti (righe)
+plot(CA.res, invisible = "col")
+plot(CA.res, invisible = "row")
+
+##########################################
+###### CLUSTERING
+
+#per trovare il numero ottimale di clusters
+library(ggplot2)
+
+# Funzione per calcolare la somma delle distanze intra-cluster (WSS) per diversi k
+elbow_method <- function(dtm_matrix, max_k = 10) {
+  wss <- numeric(max_k)  # Vettore per salvare la WSS
+  
+  for (k in 1:max_k) {
+    set.seed(42)
+    kmeans_result <- kmeans(dtm_matrix, centers = k, nstart = 10)
+    wss[k] <- kmeans_result$tot.withinss  # Somma delle distanze intra-cluster
+  }
+  
+  # Plot del metodo del gomito
+  qplot(1:max_k, wss, geom = "line") +
+    geom_point() +
+    labs(title = "Elbow Method for K-Means", x = "Number of Clusters (k)", y = "Within-cluster Sum of Squares") +
+    theme_minimal()
+}
+
+# Applicazione del metodo del gomito sulla matrice DTM
+elbow_method(dtm_matrix, max_k = 20)
+
+# Applicazione del clustering k-means
+set.seed(42)
+kmeans_result <- kmeans(dtm_matrix, centers = 6) #qui specifichiamo quanti centroidi usare nel modello
+print(kmeans_result$cluster)
+dtm_matrix
+
+#quali sono i top word types per ogni cluster?
+# Assegna i cluster ai documenti
+clusters <- kmeans_result$cluster
+
+# Trova i top terms per cluster
+top_terms_per_cluster <- function(dtm_matrix, clusters, top_n = 5) {
+  cluster_terms <- aggregate(dtm_matrix, by = list(cluster = clusters), FUN = mean)
+  cluster_terms <- cluster_terms[, -1]  # Rimuove la colonna dei cluster
+  
+  top_terms <- apply(cluster_terms, 1, function(x) {
+    names(sort(x, decreasing = TRUE)[1:top_n])  # Prendi i primi N termini per media più alta
+  })
+  
+  return(top_terms)
+}
+
+top_terms <- top_terms_per_cluster(dtm_matrix, clusters)
+print(top_terms)
+
+# In che relazione sono i cluster? Per capirlo usiamo hierarchical clustering
+# Calcola la distanza euclidea tra i documenti
+distance_matrix <- dist(dtm_matrix, method = "euclidean")
+
+# Creazione del dendrogramma con clustering gerarchico (metodo ward.D2)
+hclust_result <- hclust(distance_matrix, method = "ward.D2")
+
+# Plot del dendrogramma
+plot(hclust_result, main = "Hierarchical Clustering Dendrogram", xlab = "documents", sub = "", cex = TRUE)
+
+
+# Taglia il dendrogramma per ottenere 5 cluster
+cutree_clusters <- cutree(hclust_result, k = 10)
+
+# Mostra il numero di documenti per cluster
+table(cutree_clusters)
+
+# NOTA: il dendrogramma mostra una struttura alternativa rispetto al clustering K-means
+
+
+## PERFORM LDA
+
+# Carica le librerie necessarie
+install.packages("topicmodels")
+
+# installazione di ldatuning da remotes
+install.packages("remotes")
+remotes::install_github("nikita-moor/ldatuning", force=TRUE)
+
+library(quanteda)
+library(textstem)
+library(slam)
+library(topicmodels)
+library(ldatuning)
+
+#carichiamo il corpus tweet su aborto
+df <- read.csv('corpora/suicide_detection.csv')
+df %>% dim
+
+#selezioniamone N 1000 righe casualmente
+sampled_df <- df[sample(nrow(df), 1000),]
+
+#rimuoviamo gli apostrofi
+sampled_df$text <- gsub("'", " ", sampled_df$text)
+sampled_df$text <- gsub("’", " ", sampled_df$text)
+
+sampledcorpus <- sampled_df$text
+
+
+# estraiamo i tokens (with options)
+tok <- quanteda::tokens(sampledcorpus,
+                        remove_punct = T,
+                        remove_symbols = T,
+                        remove_numbers = T,
+                        remove_url = T,
+                        remove_separators = T,
+                        split_hyphens = FALSE,
+                        #split_tags = TRUE,
+                        include_docvars = TRUE,
+                        padding = FALSE)
+
+library(tm)
+library(quanteda)
+library(slam)
+tok <- tokens_tolower(tok) #lowering
+tok_list <- as.list(tok) #trasformiamo i token in una lista
+tok_lemma_list <- lapply(tok_list, lemmatize_words) #applichiamo la lemmatizzazione ad ogni elemento della lista
+texts_lemma <- sapply(tok_lemma_list, paste, collapse = " ") #ricostruiamo  i docs come stringhe unendo i token
+tok <- quanteda::tokens(texts_lemma) #ricostruiamo l'oggetto tokens
+
+
+#creiamo un oggetto quanteda
+sampledcorpus_dfm <- quanteda::dfm(tok, tolower=T)
+sampledcorpus_dfm %>% dim #dimensioni del corpus: docid * features (words)
+sampledcorpus_dfm %>% sum #V
+
+# rimuoviamo le stopwords
+sampledcorpus_dfm <- dfm_remove(sampledcorpus_dfm, stopwords("english"))
+
+# teniamo solo parole con almeno 3 caratteri
+sampledcorpus_dfm <- dfm_select(
+  sampledcorpus_dfm,
+  selection = "remove",
+  min_nchar = 3
+)
+
+
+## INIZIAMO A FARE LDA
+
+# 1. Creazione della Document-Term Matrix (DTM)
+dtm <- convert(sampledcorpus_dfm, to = "tm")
+dtm
+
+
+library(tm)
+library(slam)
+# 2. Rimozione dei termini rari 
+dtm_reduced <- removeSparseTerms(dtm, 0.99) #manteniamo i termini che compaiono in almeno 1 % dei doc
+dtm_reduced
+
+# 3. Rimozione dei documenti vuoti
+rowTotals <- apply(dtm_reduced, 1, sum)  # Calcola la somma dei termini per riga
+dtm_reduced <- dtm_reduced[rowTotals > 0, ]  # Mantiene solo documenti con almeno un termine
+dtm_reduced
+
+# Controllo che la DTM non sia vuota
+if (nrow(dtm_reduced) == 0) {
+  stop("Errore: Nessun documento rimasto dopo la pulizia della DTM. Riduci la soglia di sparsità.")
+}
+
+# 4. Selezione del numero ottimale di topic
+optimal.topics <- FindTopicsNumber(dtm_reduced, topics = 2:20,  # Cerca il numero ottimale tra 2 e 10
+                                   metrics = c("Arun2010", "Griffiths2004"),
+                                   verbose = TRUE)
+FindTopicsNumber_plot(optimal.topics)  # Visualizza il grafico per scegliere il numero di topic
+
+#cosa sono queste metriche?
+'Arun et al. (2010)
+Questa metrica misura la divergenza tra la distribuzione dei topic nei documenti e la distribuzione delle parole nei topic.
+Valori più bassi indicano una migliore separazione dei topic.
+Quindi, cerca il numero di topic in cui il valore della metrica è minimo.
+
+Griffiths et al. (2004)
+Basata sulla verosimiglianza bayesiana della generazione dei dati.
+Valori più alti indicano una migliore coerenza del modello.
+Cerca il numero di topic in cui questa metrica è massima.
+'
+
+# 5. Addestramento del modello LDA con il numero ottimale di topic (lo specifichiamo con K)
+lda_model <- LDA(dtm_reduced, k = 6, control = list(seed = 1234))
+
+# 6. Visualizzazione dei topic
+lda_topics <- terms(lda_model, 10)  # Estrai le 10 parole più importanti per ogni topic
+print(lda_topics)
+
+library(tidyverse)
+
+# Estrai le probabilità delle parole per ogni topic
+lda_terms <- posterior(lda_model)$terms  
+
+# Creiamo una lista per raccogliere i dati
+topic_words <- lapply(1:6, function(i) { 
+  sorted_indices <- order(lda_terms[i, ], decreasing = TRUE)[1:10]  # Ordina e seleziona top 10 parole
+  data.frame(
+    Topic = i,
+    Word = colnames(lda_terms)[sorted_indices],  # Ottieni le parole corrispondenti
+    Probability = lda_terms[i, sorted_indices]  # Ottieni le probabilità corrispondenti
+  )
+}) #attenzione! il range va impostato in base al numero di topic
+
+# Combina tutti i topic in un unico dataframe
+lda_topics_df <- bind_rows(topic_words)
+
+# Visualizzazione con ggplot2
+ggplot(lda_topics_df, aes(x = reorder(Word, Probability), y = Probability, fill = factor(Topic))) +
+  geom_bar(stat = "identity", show.legend = FALSE) +
+  facet_wrap(~ Topic, scales = "free_y") +
+  coord_flip() +
+  labs(title = "Top 10 parole per ogni topic",
+       x = "Parole",
+       y = "Probabilità") +
+  theme_minimal()
+
+#a questo punto potremmo voler togliere qualche altro termine (es gli url), togliere le stopwords, fare lo stemming, per migliorare i nostri risultatiq
+
+sampled_df$text <- gsub("t.co", " ", sampled_df$text) #es se vogliamo togliere t.co
+library(textstem)
+sampled_df$text <- stem_strings(sampled_df$text, language = "italian")
+
+#aggiungiamo una visualizzazione più avanzata
+
+install.packages("LDAvis")
+install.packages('servr') 
+library(LDAvis)
+library(servr)
+
+# Prepara il termine-documento matrix per LDAvis
+dtm_matrix <- as.matrix(dtm_reduced)  # Convertiamo in una matrice
+lda_vis_data <- createJSON(phi = posterior(lda_model)$terms, 
+                           theta = posterior(lda_model)$topics, 
+                           doc.length = rowTotals[rowTotals > 0], 
+                           vocab = colnames(dtm_matrix), 
+                           term.frequency = colSums(dtm_matrix))
+lda_vis_data
+
+# Visualizzazione interattiva
+serVis(lda_vis_data, out.dir = 'lda_vis_output', open.browser = TRUE)
+
+
+# Estrai la probabilità dei topic per ciascun documento
+lda_doc_topics <- posterior(lda_model)$topics
+
+# Converti in data frame e aggiungi ID documento
+lda_doc_topics_df <- as.data.frame(lda_doc_topics)
+lda_doc_topics_df$document <- rownames(lda_doc_topics_df)
+
+

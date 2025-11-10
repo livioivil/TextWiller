@@ -1,0 +1,93 @@
+### FILE: inst/apps/textwiller_app/app.R - VERSIONE SEMPLIFICATA
+library(shiny)
+library(shinythemes)
+library(ggplot2)
+
+# SISTEMA DI CARICAMENTO SEMPLIFICATO
+source_modules <- function() {
+  cat("=== LOADING TEXTWILLER MODULES ===\n")
+  
+  # Carica i moduli base
+  module_files <- c(
+    "mod_corpus_io.R",
+    "mod_preprocess.R", 
+    "mod_exploration.R",
+    "mod_lexical_analysis.R",
+    "mod_sentiment.R",
+    "mod_semantic_analysis.R",
+    "mod_legacy.R"
+  )
+  
+  # Carica i nuovi moduli sidebar
+  sidebar_modules <- c(
+    "mod_reproducibility.R",
+    "mod_language.R"
+  )
+  
+  # Cerca nella cartella corrente
+  for (file in c(module_files, sidebar_modules)) {
+    if (file.exists(file)) {
+      cat("Loading:", file, "\n")
+      source(file, local = FALSE)
+    } else {
+      cat("File not found:", file, "\n")
+    }
+  }
+  
+  cat("=== MODULES LOADED ===\n\n")
+  return(TRUE)
+}
+
+# Carica i moduli
+success <- source_modules()
+
+# UI principale con sidebar
+ui <- fluidPage(
+  theme = shinytheme("flatly"),
+  titlePanel("TextWiller 3.0 - Advanced Text Analysis"),
+  
+  sidebarLayout(
+    # SIDEBAR CON RIPRODUCIBILITÀ E LINGUA
+    sidebarPanel = uiOutput("sidebar_ui"),
+    
+    # MAIN PANEL CON TABS
+    mainPanel = tabsetPanel(
+      id = "main_tabs",
+      type = "tabs",
+      
+      tabPanel("📥 Import Corpus", mod_corpus_io_ui("import")),
+      tabPanel("⚙️ Preprocessing", mod_preprocess_ui("preprocess")),
+      tabPanel("📊 Exploration", mod_exploration_ui("exploration")),
+      tabPanel("📈 Lexical Analysis", mod_lexical_analysis_ui("lexical")),
+      tabPanel("😊 Sentiment Analysis", mod_sentiment_ui("sentiment")),
+      tabPanel("🔍 Semantic Analysis", mod_semantic_analysis_ui("semantic")),
+      tabPanel("🔧 Funzioni Legacy", mod_legacy_ui("legacy"))
+    )
+  )
+)
+
+server <- function(input, output, session) {
+  
+  # Sidebar dinamica
+  output$sidebar_ui <- renderUI({
+    tagList(
+      mod_reproducibility_ui("reproducibility"),
+      mod_language_ui("language")
+    )
+  })
+  
+  # Modules principali
+  imported_corpus <- mod_corpus_io_server("import")
+  processed_corpus <- mod_preprocess_server("preprocess", imported_corpus)
+  mod_exploration_server("exploration", imported_corpus)
+  mod_lexical_analysis_server("lexical", imported_corpus)
+  mod_sentiment_server("sentiment", imported_corpus)
+  mod_semantic_analysis_server("semantic", imported_corpus)
+  mod_legacy_server("legacy")
+  
+  # Nuovi moduli sidebar - VERSIONE SEMPLIFICATA
+  mod_reproducibility_server("reproducibility")
+  mod_language_server("language")
+}
+
+shinyApp(ui = ui, server = server)

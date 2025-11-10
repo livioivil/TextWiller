@@ -1,0 +1,138 @@
+CHANGELOG - TextWiller 3.0
+
+🎯 COSE FATTE (Implementate)
+
+1. Struttura Pacchetto Rivista
+
+✅ Nuova architettura modulare in /R/
+
+01_corpus_io.R - Import/export corpus
+02_preprocessing.R - Pipeline di normalizzazione
+03_exploration.R - Analisi esplorativa
+04_lexical_analysis.R - Misure di complessità (TTR, Brunato, etc.)
+05_sentiment_analysis.R - Analisi del sentiment
+09_semantic_analysis.R - Word embeddings (FastText, Word2Vec, BERT)
+✅ App Shiny completamente ristrutturata
+
+6 moduli indipendenti e integrati
+Interfaccia utente moderna con navigazione
+Gestione stato reattivo del corpus
+2. Funzionalità Core Implementate
+
+✅ Sistema di importazione corpus
+
+File di testo (.txt)
+File tabulari (.csv)
+Input manuale
+Dati demo italiano/inglese
+✅ Pipeline di preprocessing configurabile
+
+Normalizzazione testo (lowercase, punteggiatura, numeri)
+Rimozione stopwords italiano/inglese
+Normalizzazione URL, emoticon, slang italiano
+Preserva funzioni originali TextWiller
+✅ Analisi lessicale avanzata
+
+Multiple varianti TTR (simple, root, corrected, Herdan, Guiraud)
+MATTR (Moving Average TTR)
+Misure di complessità Brunato per italiano
+Densità lessicale e ricchezza vocabolario
+Estrazione keywords (TF-IDF, log-likelihood)
+✅ Analisi semantica
+
+Supporto per FastText, Word2Vec, BERT
+Similarità semantica tra documenti
+Ricerca parole simili
+Clustering documenti nello spazio semantico
+Riduzione dimensionale (PCA, t-SNE, UMAP)
+✅ Tracciamento riproducibile esportabile
+
+Cronologia analisi condivisa tra funzioni e app
+Esportazione script R + file .rds caricabili successivamente
+Modulo Shiny dedicato per download/upload e reset della history
+✅ Language & Resources Hub
+
+Tab dedicato per caricare dizionari, stopwords e multi-word 
+Integrazione con stopwords-iso e selezione risorse nelle pipeline
+Strumenti per aggiornare l'elaborazione (preprocessing, exploration)
+✅ Multi-word & Lexicon-aware analysis
+
+Generazione multi-word (RAKE/PMI/MD/LFMD) via UDPipe direttamente nel preprocessing
+Sezione exploration con filtri basati su lexicon caricati e metriche di copertura
+✅ Corpus granularity e stopword pipeline
+
+Segmentazione documenti (documenti, frasi, n-gram word/char) direttamente dal modulo di import
+Rimozione stopwords riscritta per evitare errori regex e adeguarsi ai dizionari caricati
+UI riorganizzata: Analysis History spostato sotto le tab principali con descrizioni più chiare delle opzioni legacy
+✅ Lexical & Semantic Studio
+
+Tab lessicale riprogettata con metriche aggiornate, keyword explorer e overlay sui lexicon caricati
+Tab semantica trasformata in "Semantic Studio" con stato modello, linguaggio condiviso e sezione diagnosi embeddings
+3. Integrazione Funzioni Originali
+
+✅ Funzioni di normalizzazione preservate
+
+normalizzaTesti() e tutte le sue componenti
+removeStopwords() con stopwords italiano
+preprocessingEncoding() per gestione encoding
+🔧 COSE DA FARE (Immediate)
+
+1. Miglioramento Corpus Summary 🆕
+
+r
+# DA IMPLEMENTARE in get_corpus_stats()
+- [ ] **Percentuale hapax legomena** (parole che compaiono 1 volta)
+- [ ] **TTR integrato** nel summary
+- [ ] **Distribuzione frequenze parole**
+- [ ] **Indice di ricchezza vocabolario**
+2. Integrazione Finale Funzioni Originali 🆕
+
+r
+# FUNZIONI DA INTEGRARE COMPLETAMENTE:
+
+🔴 CRITICHE:
+- [ ] sentiment() + sentiment_utils.R 
+- [ ] classificaUtenti() + dizionari nomi/luoghi
+- [ ] Caricamento dizionari (.rda): 
+  * dizionario_sentiment_ita.rda
+  * dizionario_nomi_propri.rda  
+  * dizionario_luoghi.rda
+  * vocabolarioMattivio.rda
+
+🟡 IMPORTANTI:
+- [ ] urlExtract() + patternExtract() + shorturl2url()
+- [ ] Altri dizionari: emoji, loughran, etc.
+
+🟢 OPZIONALI:
+- [ ] RTHound() (deciso di lasciare per ora)
+3. Streamline Approach 🆕
+
+r
+# OBIETTIVO: Sistema unificato che combina vecchio e nuovo
+
+- [ ] **Wrapper functions** che usano automaticamente le funzioni originali quando disponibili
+- [ ] **Fallback graceful** quando funzioni originali non disponibili  
+- [ ] **Configurazione centralizzata** per preferenze (usare legacy sì/no)
+- [ ] **Sistema di logging** per tracciare quali funzioni vengono usate
+📋 PIANO DI LAVORO DETTAGLIATO
+
+FASE 1: Corpus Summary Enhancement (ORA)
+
+Estendere get_corpus_stats() in R/03_exploration.R
+Aggiungere calcolo hapax e TTR
+Aggiornare modulo exploration per mostrare nuove metriche
+FASE 2: Integrazione Finale Sentiment
+
+Verificare caricamento dizionari sentiment
+Testare funzione sentiment() originale
+Sistemare eventuali problemi di dipendenze
+FASE 3: Integrazione Classificazione Utenti
+
+Caricare dizionari nomi/luoghi
+Integrare classificaUtenti()
+Creare modulo Shiny per classificazione
+FASE 4: Streamline System
+
+Creare sistema di configurazione centrale
+Implementare wrapper functions unificate
+Aggiungere logging e fallback

@@ -1,0 +1,21 @@
+TextWiller
+
+======
+
+dev for R package TextWiller by Dario Solari, Livio Finos, Matteo Redaelli, Mattia Uttini, Marco Rinaldo, Maddalena Branca, Federico Ferraccioli (and associazionerospo.org).
+
+Install it in R using the following command
+
+# install.packages("devtools") # if you don't already have it.
+
+library(devtools)
+
+#if you wanto to download the last stable version, use the following code
+
+install_github("livioivil/TextWiller@TextWiller_JOSS")
+
+#if you want to download the latest release (unstable) use the following code
+
+install_github("livioivil/TextWiller")
+
+library(TextWiller)
