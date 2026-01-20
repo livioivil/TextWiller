@@ -18,6 +18,8 @@ Depends:
     R (>= 4.0.0)
 Imports:
     shiny,
+    httr,
+    jsonlite,
     stringr,
     dplyr,
     ggplot2,
@@ -29,7 +31,13 @@ Imports:
     digest,
     R6,
     udpipe,
-    tokenizers
+    tokenizers,
+    R.utils,
+    text,
+    reticulate,
+    text2vec,
+    irlba,
+    word2vec
 Suggests:
     testthat,
     knitr,

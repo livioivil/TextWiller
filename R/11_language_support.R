@@ -48,6 +48,49 @@ LanguageConfig <- R6::R6Class(
       )
       self$version <- self$version + 1
     },
+      
+    # NEW: Clear all resources
+    clear = function() {
+      self$resources <- list()
+      self$inline_resources <- list()
+      self$version <- self$version + 1
+      message("Language configuration cleared")
+      invisible(TRUE)
+    },
+    
+    # NEW: Remove specific resource
+    remove_resource = function(name, language = NULL) {
+      removed <- 0
+      
+      if (is.null(language)) {
+        # Remove from all languages
+        languages <- unique(c(names(self$resources), names(self$inline_resources)))
+      } else {
+        languages <- language
+      }
+      
+      for (lang in languages) {
+        # Remove from file resources
+        if (!is.null(self$resources[[lang]]) && name %in% names(self$resources[[lang]])) {
+          self$resources[[lang]][[name]] <- NULL
+          removed <- removed + 1
+        }
+        
+        # Remove from inline resources
+        if (!is.null(self$inline_resources[[lang]]) && name %in% names(self$inline_resources[[lang]])) {
+          self$inline_resources[[lang]][[name]] <- NULL
+          removed <- removed + 1
+        }
+      }
+      
+      if (removed > 0) {
+        self$version <- self$version + 1
+        message(sprintf("Removed resource '%s' from %d location(s)", name, removed))
+      }
+      
+      invisible(removed > 0)
+    },
+    
     
     load_resources = function() {
       loaded <- list()
@@ -86,10 +129,13 @@ LanguageConfig <- R6::R6Class(
               entry_content <- NULL
               if (include_content) {
                 if (!is.null(res$path) && file.exists(res$path)) {
-                  entry_content <- if (tools::file_ext(res$path) == "rds") {
-                    readRDS(res$path)
+                  ext <- tools::file_ext(res$path)
+                  if (identical(res$type, "udpipe_model")) {
+                    entry_content <- res$path
+                  } else if (ext == "rds") {
+                    entry_content <- readRDS(res$path)
                   } else {
-                    readLines(res$path, encoding = "UTF-8", warn = FALSE)
+                    entry_content <- readLines(res$path, encoding = "UTF-8", warn = FALSE)
                   }
                 }
               }
@@ -99,6 +145,7 @@ LanguageConfig <- R6::R6Class(
                 language = res$language,
                 source = res$source,
                 created = res$created,
+                path = res$path %||% NA_character_,
                 content = entry_content
               )
             }
@@ -116,6 +163,7 @@ LanguageConfig <- R6::R6Class(
                 language = res$language,
                 source = res$source,
                 created = res$created,
+                path = NA_character_,
                 content = entry_content
               )
             }
@@ -141,6 +189,7 @@ LanguageConfig <- R6::R6Class(
           language = entry$language,
           source = entry$source,
           created = entry$created,
+          path = entry$path,
           stringsAsFactors = FALSE
         )
       }))
@@ -159,10 +208,15 @@ LanguageConfig <- R6::R6Class(
             if (!is.null(res$content)) {
               return(res$content)
             } else if (!is.null(res$path) && file.exists(res$path)) {
-              if (tools::file_ext(res$path) == "rds") {
+              ext <- tools::file_ext(res$path)
+              if (identical(res$type, "udpipe_model")) {
+                return(res$path)
+              } else if (ext == "rds") {
                 return(readRDS(res$path))
-              } else {
+              } else if (ext %in% c("txt", "csv", "dic")) {
                 return(readLines(res$path, encoding = "UTF-8", warn = FALSE))
+              } else {
+                return(res$path)
               }
             }
           }
@@ -225,6 +279,21 @@ get_analysis_language <- function() {
 register_language_resource <- function(language, name, content, type = "lexicon") {
   cfg <- get_language_config()
   cfg$add_inline_resource(name = name, content = content, type = type, language = language)
+  invisible(TRUE)
+}
+
+#' Register a file-based language resource (for large assets such as UDPipe models)
+#' @param language Language code ("it" or "en")
+#' @param name Resource name
+#' @param path Filesystem path to the resource
+#' @param type Resource type (e.g. "udpipe_model", "lexicon")
+#' @export
+register_language_resource_file <- function(language, name, path, type = "file") {
+  if (!file.exists(path)) {
+    stop("Resource file does not exist: ", path)
+  }
+  cfg <- get_language_config()
+  cfg$add_resource(name = name, path = normalizePath(path), type = type, language = language)
   invisible(TRUE)
 }
 

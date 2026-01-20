@@ -2,7 +2,16 @@
 mod_exploration_ui <- function(id) {
   ns <- shiny::NS(id)
   shiny::tagList(
-    shiny::h3("Corpus Exploration & Visualization"),
+    shiny::fluidRow(
+      shiny::column(8, shiny::h3("Explore")),
+      shiny::column(4, align = "right",
+        shiny::actionButton(
+          ns("calculate"),
+          "Calculate",
+          class = "btn-success"
+        )
+      )
+    ),
     
     # Controls
     shiny::wellPanel(
@@ -37,21 +46,66 @@ mod_exploration_ui <- function(id) {
     
     # Summary Statistics
     shiny::fluidRow(
-      shiny::column(4,
+      shiny::column(12,
         shiny::wellPanel(
           shiny::h4("Corpus Summary"),
           shiny::tableOutput(ns("summary_table")),
           shiny::verbatimTextOutput(ns("lexicon_status"))
         )
-      ),
-      shiny::column(8,
-        shiny::wellPanel(
-          shiny::h4("Document Length Distribution"),
-          shiny::plotOutput(ns("length_histogram"))
-        )
       )
     ),
-    
+
+    # Corpus Snapshots (before/after preprocessing)
+    shiny::wellPanel(
+      shiny::h4("Corpus Snapshots"),
+      shiny::fluidRow(
+        shiny::column(6,
+          shiny::selectInput(
+            ns("corpus_view"),
+            "Versione da mostrare",
+            choices = c("Importata" = "raw", "Preprocessata (se disponibile)" = "processed"),
+            selected = "raw"
+          )
+        ),
+        shiny::column(6,
+          shiny::numericInput(
+            ns("snapshot_rows"),
+            "Righe da mostrare",
+            value = 10,
+            min = 3,
+            max = 50,
+            step = 1
+          )
+        )
+      ),
+      DT::dataTableOutput(ns("corpus_snapshot"))
+    ),
+
+    # Concordance / KWIC
+    shiny::wellPanel(
+      shiny::h4("Concordanze (KWIC)"),
+      shiny::fluidRow(
+        shiny::column(5,
+          shiny::textInput(ns("kwic_term"), "Termine/regex (case-insensitive):", value = "")
+        ),
+        shiny::column(3,
+          shiny::selectInput(
+            ns("kwic_source"),
+            "Usa corpus",
+            choices = c("Importato" = "raw", "Preprocessato" = "processed"),
+            selected = "raw"
+          )
+        ),
+        shiny::column(2,
+          shiny::numericInput(ns("kwic_window"), "Parole di contesto", value = 5, min = 1, max = 20, step = 1)
+        ),
+        shiny::column(2,
+          shiny::actionButton(ns("run_kwic"), "Calcola KWIC", class = "btn-primary btn-block")
+        )
+      ),
+      DT::dataTableOutput(ns("kwic_table"))
+    ),
+
     # Word Analysis
     shiny::fluidRow(
       shiny::column(6,
@@ -70,15 +124,21 @@ mod_exploration_ui <- function(id) {
     
     # Detailed Tables
     shiny::wellPanel(
-      shiny::h4("Detailed Word Frequencies"),
+      shiny::h4("Most Frequent Words"),
       DT::dataTableOutput(ns("freq_table"))
     )
   )
 }
 
-mod_exploration_server <- function(id, corpus) {
+mod_exploration_server <- function(id, corpus, processed_corpus = NULL) {
   shiny::moduleServer(id, function(input, output, session) {
     lang_cfg <- TextWiller3::get_language_config()
+    calc_trigger <- shiny::reactiveVal(Sys.time())
+
+    shiny::observeEvent(input$calculate, {
+      calc_trigger(Sys.time())
+    })
+
     analysis_language <- shiny::reactive({
       lang_cfg$get_version()
       lang_cfg$current_language
@@ -145,6 +205,7 @@ mod_exploration_server <- function(id, corpus) {
     
     # Calculate word frequencies reactively - VERSIONE SICURA
     word_frequencies <- shiny::reactive({
+      calc_trigger()
       shiny::req(corpus())
       
       # Usa una funzione sicura che non dipende da TextWiller3
@@ -186,41 +247,13 @@ mod_exploration_server <- function(id, corpus) {
     })
     
     display_frequencies <- shiny::reactive({
+      calc_trigger()
       freq <- word_frequencies()
       terms <- lexicon_terms()
       if (isTRUE(input$filter_lexicon) && !is.null(terms) && length(terms) > 0) {
         freq <- freq[tolower(freq$word) %in% terms, , drop = FALSE]
       }
       freq
-    })
-    
-    # Get document lengths - VERSIONE SICURA
-    doc_lengths <- shiny::reactive({
-      shiny::req(corpus())
-      
-      # Funzione sicura per lunghezze documento
-      get_document_lengths_safe <- function(text) {
-        if (is.null(text) || length(text) == 0) {
-          return(data.frame(
-            document_id = integer(),
-            word_count = integer(),
-            char_count = integer(),
-            stringsAsFactors = FALSE
-          ))
-        }
-        
-        word_counts <- sapply(strsplit(text, "\\s+"), length)
-        char_counts <- nchar(text)
-        
-        data.frame(
-          document_id = seq_along(text),
-          word_count = word_counts,
-          char_count = char_counts,
-          stringsAsFactors = FALSE
-        )
-      }
-      
-      get_document_lengths_safe(corpus())
     })
     
     # Get corpus stats - VERSIONE SICURA
@@ -318,25 +351,115 @@ mod_exploration_server <- function(id, corpus) {
       }
       cat(sprintf("Lexicon \"%s\" con %d termini totali.", res_name, length(terms)))
     })
-    
-    # Document length histogram
-    output$length_histogram <- shiny::renderPlot({
-      shiny::req(doc_lengths())
-      
-      lengths <- doc_lengths()
-      
-      ggplot2::ggplot(lengths, ggplot2::aes(x = word_count)) +
-        ggplot2::geom_histogram(binwidth = 5, fill = "steelblue", alpha = 0.7, color = "white") +
-        ggplot2::labs(
-          title = "Distribution of Document Lengths (Words)",
-          x = "Words per Document",
-          y = "Frequency"
-        ) +
-        ggplot2::theme_minimal() +
-        ggplot2::theme(
-          plot.title = ggplot2::element_text(hjust = 0.5, face = "bold"),
-          panel.grid.minor = ggplot2::element_blank()
-        )
+
+    # Snapshot of corpus (raw vs processed)
+    selected_corpus_for_view <- shiny::reactive({
+      calc_trigger()
+      choice <- input$corpus_view
+      if (choice == "processed" && !is.null(processed_corpus) && !is.null(processed_corpus())) {
+        return(processed_corpus())
+      }
+      corpus()
+    })
+
+    escape_regex_local <- function(x) {
+      gsub("([.\\^$|()*+?{}\\[\\]\\\\])", "\\\\\\1", x)
+    }
+
+    output$corpus_snapshot <- DT::renderDataTable({
+      texts_raw <- corpus()
+      texts_proc <- if (!is.null(processed_corpus)) processed_corpus() else NULL
+      view_choice <- input$corpus_view
+      n <- input$snapshot_rows
+      if (is.null(n) || !is.numeric(n)) n <- 10
+      idx <- seq_len(min(n, length(texts_raw)))
+
+      df <- data.frame(
+        Document = idx,
+        Importata = if (length(texts_raw) > 0) substr(texts_raw[idx], 1, 200) else character(length(idx)),
+        stringsAsFactors = FALSE
+      )
+      if (!is.null(texts_proc) && length(texts_proc) >= max(idx)) {
+        df$Preprocessata <- substr(texts_proc[idx], 1, 200)
+      } else {
+        df$Preprocessata <- NA_character_
+      }
+
+      if (view_choice == "raw") {
+        df <- df[, c("Document", "Importata"), drop = FALSE]
+      } else if (view_choice == "processed") {
+        df <- df[, c("Document", "Preprocessata"), drop = FALSE]
+      }
+
+      DT::datatable(
+        df,
+        options = list(pageLength = n, dom = 'tip', scrollX = TRUE),
+        rownames = FALSE
+      )
+    })
+
+    # Concordance / KWIC
+    kwic_data <- shiny::eventReactive(input$run_kwic, {
+      term <- trimws(input$kwic_term)
+      if (!nzchar(term)) {
+        shiny::showNotification("Inserisci un termine per la concordanza.", type = "warning")
+        return(NULL)
+      }
+      source_choice <- input$kwic_source
+      texts <- if (source_choice == "processed" && !is.null(processed_corpus) && !is.null(processed_corpus())) {
+        processed_corpus()
+      } else {
+        corpus()
+      }
+      if (is.null(texts) || length(texts) == 0) {
+        shiny::showNotification("Nessun testo disponibile per la concordanza.", type = "warning")
+        return(NULL)
+      }
+
+      kwic_window <- input$kwic_window
+      if (is.null(kwic_window) || !is.numeric(kwic_window)) kwic_window <- 5
+      kwic_window <- max(1, kwic_window)
+      pattern <- paste0("\\b", escape_regex_local(term), "\\b")
+      if (is.null(pattern)) return(NULL)
+
+      build_kwic <- function(text_vec, pat, window) {
+        results <- list()
+        for (i in seq_along(text_vec)) {
+          tokens <- unlist(strsplit(text_vec[i], "\\s+"))
+          if (length(tokens) == 0) next
+          match_idx <- which(grepl(pat, tokens, ignore.case = TRUE, perl = TRUE))
+          if (length(match_idx) == 0) next
+          for (m in match_idx) {
+            left_start <- max(1, m - window)
+            right_end <- min(length(tokens), m + window)
+            left_ctx <- paste(tokens[left_start:(m - 1)], collapse = " ")
+            right_ctx <- paste(tokens[(m + 1):right_end], collapse = " ")
+            results[[length(results) + 1]] <- data.frame(
+              Documento = i,
+              Left = left_ctx,
+              Keyword = tokens[m],
+              Right = right_ctx,
+              stringsAsFactors = FALSE
+            )
+          }
+        }
+        if (length(results) == 0) {
+          return(data.frame(Documento = integer(), Left = character(), Keyword = character(), Right = character()))
+        }
+        do.call(rbind, results)
+      }
+
+      build_kwic(texts, pattern, kwic_window)
+    })
+
+    output$kwic_table <- DT::renderDataTable({
+      kwic <- kwic_data()
+      if (is.null(kwic)) return(NULL)
+      DT::datatable(
+        kwic,
+        options = list(pageLength = 10, scrollX = TRUE),
+        rownames = FALSE
+      )
     })
     
     # Word frequency plot

@@ -2,7 +2,16 @@
 mod_sentiment_ui <- function(id) {
   ns <- shiny::NS(id)
   shiny::tagList(
-    shiny::h3("Sentiment Analysis (Italiano)"),
+    shiny::fluidRow(
+      shiny::column(8, shiny::h3("Sentiment Analysis (Italiano)")),
+      shiny::column(4, align = "right",
+        shiny::actionButton(
+          ns("calculate"),
+          "Calculate",
+          class = "btn-success"
+        )
+      )
+    ),
     
     # Analysis Controls
     shiny::wellPanel(
@@ -15,9 +24,6 @@ mod_sentiment_ui <- function(id) {
         ),
         shiny::column(4,
           shiny::checkboxInput(ns("normalize_text"), "Normalizza testo", value = TRUE)
-        ),
-        shiny::column(4,
-          shiny::checkboxInput(ns("use_legacy"), "Usa funzioni originali", value = TRUE)
         )
       ),
       shiny::actionButton(ns("run_sentiment"), "Analizza Sentiment", 
@@ -54,27 +60,41 @@ mod_sentiment_server <- function(id, corpus) {
     # Reactive for sentiment results
     sentiment_results <- shiny::reactiveVal()
     
+    as_numeric_scores <- function(x) {
+      if (is.null(x)) return(numeric(0))
+      if (is.data.frame(x)) {
+        candidate_cols <- intersect(c("sentiment", "score", "value", "sentiment_score"), names(x))
+        if (length(candidate_cols) > 0) {
+          x <- x[[candidate_cols[[1]]]]
+        }
+      }
+      if (is.list(x)) {
+        x <- unlist(x, use.names = FALSE)
+      }
+      x <- suppressWarnings(as.numeric(x))
+      x <- x[!is.na(x)]
+      x
+    }
+    
     # Run sentiment analysis
-    shiny::observeEvent(input$run_sentiment, {
+    shiny::observeEvent(list(input$run_sentiment, input$calculate), {
       shiny::req(corpus())
       
       shiny::showNotification("Analizzando sentiment...", type = "message")
       
       tryCatch({
-        # Perform sentiment analysis - VERSIONE CORRETTA
-        if (input$use_legacy && exists("sentiment")) {
-          # Usa la funzione originale con i parametri corretti
-          scores <- sentiment(
-            corpus(),
-            algorithm = input$sentiment_algorithm,
-            normalizzaTesti = input$normalize_text
-          )
-        } else {
-          # Usa la funzione di fallback
-          scores <- TextWiller3::analyze_sentiment_it(
-            corpus(),
-            use_legacy = FALSE  # Forza l'uso del fallback
-          )
+        scores_raw <- TextWiller3::analyze_sentiment_it(
+          corpus(),
+          use_legacy = FALSE  # Usa sempre il dizionario del pacchetto
+        )
+        
+        scores <- as_numeric_scores(scores_raw)
+        if (length(scores) == 0) {
+          stop("Nessun punteggio sentiment numerico generato.")
+        }
+        # Allinea lunghezza ai documenti se necessario
+        if (length(scores) != length(corpus())) {
+          scores <- head(scores, length(corpus()))
         }
         
         # Create results object
@@ -97,7 +117,7 @@ mod_sentiment_server <- function(id, corpus) {
       }, error = function(e) {
         shiny::showNotification(paste("Errore nell'analisi sentiment:", e$message), type = "error")
       })
-    })
+    }, ignoreInit = TRUE)
     
     # Sentiment plot
     output$sentiment_plot <- shiny::renderPlot({

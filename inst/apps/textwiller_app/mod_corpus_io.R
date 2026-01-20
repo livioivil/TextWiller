@@ -1,8 +1,21 @@
 # Corpus Import Module UI
 mod_corpus_io_ui <- function(id) {
   ns <- shiny::NS(id)
+  current_language <- tryCatch({
+    TextWiller3::get_analysis_language()
+  }, error = function(e) "it")
+  
   shiny::tagList(
-    shiny::h3("Corpus Import & Management"),
+    shiny::fluidRow(
+      shiny::column(8, shiny::h3("Corpus Import & Management")),
+      shiny::column(4, align = "right",
+        shiny::actionButton(
+          ns("calculate"),
+          "Calculate",
+          class = "btn-success"
+        )
+      )
+    ),
     
     # File Import Section
     shiny::wellPanel(
@@ -13,13 +26,27 @@ mod_corpus_io_ui <- function(id) {
             choices = c(
               "Text Files (.txt)" = "text_files",
               "CSV Files" = "csv_files", 
+              "CSV with POS tags (Lemma_CAT, Lemma, CAT)" = "csv_pos",
               "Manual Input" = "manual_input",
               "Demo Data" = "demo_data"
             ),
             selected = "text_files"
           )
         ),
-        shiny::column(8,
+        shiny::column(4,
+          shiny::selectInput(
+            ns("corpus_language"),
+            "Corpus language:",
+            choices = c("Italian" = "it", "English" = "en"),
+            selected = current_language
+          )
+        ),
+        shiny::column(4,
+          shiny::helpText("Selected language guides import, segmentation and resources.")
+        )
+      ),
+      shiny::fluidRow(
+        shiny::column(12,
           shiny::uiOutput(ns("import_ui"))
         )
       )
@@ -28,7 +55,7 @@ mod_corpus_io_ui <- function(id) {
     shiny::wellPanel(
       shiny::h4("Document Granularity"),
       shiny::fluidRow(
-        shiny::column(4,
+        shiny::column(6,
           shiny::selectInput(ns("segmentation_mode"), "Segment documents as:",
             choices = c(
               "Whole documents" = "document",
@@ -39,25 +66,20 @@ mod_corpus_io_ui <- function(id) {
             selected = "document"
           )
         ),
-        shiny::column(4,
-          shiny::selectInput(ns("sentence_language"), "Sentence language:",
-            choices = c("Italiano" = "it", "English" = "en"),
-            selected = "it")
-        ),
-        shiny::column(4,
+        shiny::column(6,
           shiny::numericInput(ns("chunk_size"), "Chunk size:", value = 100, min = 10, max = 1000, step = 10)
         )
       ),
       shiny::conditionalPanel(
         condition = sprintf("input['%s'] == 'word_chunks'", ns("segmentation_mode")),
-        shiny::helpText("Crea nuovi documenti da blocchi di N parole consecutivamente.")
+        shiny::helpText("Create new documents from consecutive blocks of N words.")
       ),
       shiny::conditionalPanel(
         condition = sprintf("input['%s'] == 'char_chunks'", ns("segmentation_mode")),
-        shiny::helpText("Crea nuovi documenti da blocchi di N caratteri consecutivi.")
+        shiny::helpText("Create new documents from consecutive blocks of N characters.")
       ),
       shiny::actionButton(ns("apply_segmentation"), "Apply granularity settings", class = "btn-primary"),
-      shiny::helpText("La segmentazione viene applicata al corpus attualmente caricato.")
+      shiny::helpText("Segmentation applies to currently loaded corpus and uses language selected above.")
     ),
     
     # Corpus Management Section
@@ -100,6 +122,46 @@ mod_corpus_io_server <- function(id) {
   shiny::moduleServer(id, function(input, output, session) {
     
     ns <- session$ns
+    lang_cfg <- tryCatch({
+      TextWiller3::get_language_config()
+    }, error = function(e) NULL)
+    
+    calc_trigger <- shiny::reactiveVal(Sys.time())
+    safe_log_action <- function(operation, parameters = list(), input_state = NULL, output_state = NULL) {
+      if (!requireNamespace("TextWiller3", quietly = TRUE)) return(invisible(NULL))
+      try(
+        TextWiller3::log_reproducibility_action(
+          module = "corpus_io",
+          operation = operation,
+          parameters = parameters,
+          input_state = input_state,
+          output_state = output_state
+        ),
+        silent = TRUE
+      )
+    }
+    
+    shiny::observeEvent(input$calculate, {
+      calc_trigger(Sys.time())
+    })
+    
+    shiny::observeEvent(input$corpus_language, {
+      shiny::req(input$corpus_language)
+      if (!is.null(lang_cfg)) {
+        tryCatch({
+          TextWiller3::set_analysis_language(input$corpus_language)
+          shiny::showNotification(
+            paste("Corpus language set to", ifelse(input$corpus_language == "it", "Italian", "English")),
+            type = "message"
+          )
+        }, error = function(e) {
+          # Fallback if TextWiller3 not available
+          if (!is.null(lang_cfg) && exists("set_language", envir = lang_cfg)) {
+            lang_cfg$set_language(input$corpus_language)
+          }
+        })
+      }
+    }, ignoreNULL = TRUE)
     
     # Reactive value for corpus data
     corpus_data <- shiny::reactiveVal(data.frame(
@@ -125,13 +187,26 @@ mod_corpus_io_server <- function(id) {
         base_source <- data$source[i]
         
         if (mode == "sentences") {
-          sentences <- tokenizers::tokenize_sentences(doc_text, simplify = FALSE, lowercase = FALSE, language = language)[[1]]
-          sentences <- sentences[nchar(trimws(sentences)) > 0]
-          if (length(sentences) == 0) next
-          ids <- paste0(base_id, "_s", seq_along(sentences))
-          new_texts <- c(new_texts, sentences)
-          new_ids <- c(new_ids, ids)
-          new_sources <- c(new_sources, rep(paste0(base_source, "_sent"), length(sentences)))
+          tryCatch({
+            sentences <- tokenizers::tokenize_sentences(doc_text, simplify = FALSE, 
+                                                       lowercase = FALSE, language = language)[[1]]
+            sentences <- sentences[nchar(trimws(sentences)) > 0]
+            if (length(sentences) == 0) next
+            ids <- paste0(base_id, "_s", seq_along(sentences))
+            new_texts <- c(new_texts, sentences)
+            new_ids <- c(new_ids, ids)
+            new_sources <- c(new_sources, rep(paste0(base_source, "_sent"), length(sentences)))
+          }, error = function(e) {
+            # Fallback: simple sentence splitting
+            sentences <- unlist(strsplit(doc_text, "[.!?]+"))
+            sentences <- sentences[nchar(trimws(sentences)) > 0]
+            if (length(sentences) > 0) {
+              ids <- paste0(base_id, "_s", seq_along(sentences))
+              new_texts <- c(new_texts, sentences)
+              new_ids <- c(new_ids, ids)
+              new_sources <- c(new_sources, rep(paste0(base_source, "_sent"), length(sentences)))
+            }
+          })
         } else if (mode == "word_chunks") {
           words <- unlist(strsplit(doc_text, "\\s+"))
           words <- words[nchar(words) > 0]
@@ -174,7 +249,7 @@ mod_corpus_io_server <- function(id) {
       }
       mode <- input$segmentation_mode
       chunk_size <- input$chunk_size
-      language <- input$sentence_language
+      language <- input$corpus_language
       
       segmented <- tryCatch({
         segment_corpus_data(data, mode, language = language, chunk_size = chunk_size)
@@ -193,6 +268,12 @@ mod_corpus_io_server <- function(id) {
             type = "message"
           )
         }
+        safe_log_action(
+          operation = "apply_segmentation",
+          parameters = list(mode = mode, chunk_size = chunk_size, language = language),
+          input_state = list(original_docs = nrow(data)),
+          output_state = list(segmented_docs = nrow(segmented))
+        )
       }
     })
     
@@ -217,12 +298,28 @@ mod_corpus_io_server <- function(id) {
           shiny::tagList(
             shiny::fileInput(ns("csv_files"), "Select CSV files:",
               multiple = TRUE,
-              accept = c(".csv"),
+              accept = c(".csv", ".tsv"),
               buttonLabel = "Browse..."
             ),
             shiny::textInput(ns("text_column"), "Text column name:", value = "text"),
             shiny::textInput(ns("id_column"), "ID column name (optional):", value = ""),
             shiny::numericInput(ns("skip_rows"), "Skip rows:", value = 0, min = 0)
+          )
+        },
+        
+        "csv_pos" = {
+          shiny::tagList(
+            shiny::fileInput(ns("csv_pos_file"), "Select CSV file with POS tags:",
+              multiple = FALSE,
+              accept = c(".csv"),
+              buttonLabel = "Browse..."
+            ),
+            shiny::helpText("Expected columns: Lemma_CAT, Lemma, CAT (or similar)"),
+            shiny::checkboxInput(ns("register_as_lexicon"), "Register as lexicon resource", value = TRUE),
+            shiny::textInput(ns("pos_resource_name"), "Resource name:", value = "pos_lexicon"),
+            shiny::selectInput(ns("pos_language"), "Language for lexicon:", 
+                             choices = c("Italian" = "it", "English" = "en"),
+                             selected = input$corpus_language %||% "it")
           )
         },
         
@@ -242,7 +339,8 @@ mod_corpus_io_server <- function(id) {
             shiny::selectInput(ns("demo_dataset"), "Demo dataset:",
               choices = c(
                 "Italian News Sample" = "ita_news",
-                "Twitter Italian Sample" = "twitter_ita"
+                "Twitter Italian Sample" = "twitter_ita",
+                "English News Sample" = "en_news"
               )
             ),
             shiny::actionButton(ns("load_demo_btn"), "Load Demo Data", class = "btn-primary")
@@ -294,6 +392,12 @@ mod_corpus_io_server <- function(id) {
         corpus_data(updated_data)
         shiny::showNotification(sprintf("Successfully imported %d documents", nrow(new_data)), 
                         type = "message")
+        safe_log_action(
+          operation = "import_text_files",
+          parameters = list(n_files = nrow(input$text_files), encoding = input$file_encoding),
+          input_state = NULL,
+          output_state = list(imported_docs = nrow(new_data), total_docs = nrow(updated_data))
+        )
         
       }, error = function(e) {
         shiny::showNotification(paste("Error importing files:", e$message), type = "error")
@@ -356,10 +460,116 @@ mod_corpus_io_server <- function(id) {
         corpus_data(updated_data)
         shiny::showNotification(sprintf("Successfully imported %d documents", nrow(new_data)), 
                         type = "message")
+        safe_log_action(
+          operation = "import_csv",
+          parameters = list(n_files = nrow(input$csv_files), text_column = input$text_column, id_column = input$id_column),
+          input_state = list(skip_rows = input$skip_rows),
+          output_state = list(imported_docs = nrow(new_data), total_docs = nrow(updated_data))
+        )
         
       }, error = function(e) {
         shiny::showNotification(paste("Error importing CSV data:", e$message), type = "error")
         NULL
+      })
+    })
+    
+    # Handle POS-tagged CSV imports
+    shiny::observeEvent(input$csv_pos_file, {
+      shiny::req(input$csv_pos_file)
+      
+      shiny::showNotification("Importing POS-tagged lexicon...", type = "message")
+      
+      tryCatch({
+        # Read the CSV
+        data <- read.csv(input$csv_pos_file$datapath, stringsAsFactors = FALSE)
+        
+        # Check for required columns
+        if (nrow(data) == 0) {
+          shiny::showNotification("CSV file is empty", type = "error")
+          return()
+        }
+        
+        # Try to identify columns
+        col_names <- tolower(names(data))
+        lemma_cat_col <- which(grepl("lemma_cat|lemma.cat|lemma_cat", col_names))[1]
+        lemma_col <- which(grepl("^lemma$|lemma_", col_names))[1]
+        cat_col <- which(grepl("^cat$|pos|tag", col_names))[1]
+        
+        if (is.na(lemma_col)) {
+          shiny::showNotification("Cannot find 'Lemma' column in CSV", type = "error")
+          return()
+        }
+        
+        # Extract lemmas
+        lemmas <- data[[lemma_col]]
+        lemmas <- lemmas[!is.na(lemmas) & nchar(lemmas) > 0]
+        
+        if (length(lemmas) == 0) {
+          shiny::showNotification("No valid lemmas found in file", type = "error")
+          return()
+        }
+        
+        # Register as lexicon resource if requested
+        if (isTRUE(input$register_as_lexicon)) {
+          resource_name <- input$pos_resource_name
+          if (nchar(resource_name) == 0) {
+            resource_name <- tools::file_path_sans_ext(input$csv_pos_file$name)
+          }
+          
+          language <- input$pos_language %||% input$corpus_language %||% "it"
+          
+          tryCatch({
+            TextWiller3::register_language_resource(
+              language = language,
+              name = resource_name,
+              content = unique(lemmas),
+              type = "lexicon"
+            )
+            shiny::showNotification(
+              sprintf("Registered %d lemmas as '%s' lexicon for %s", 
+                     length(unique(lemmas)), resource_name, 
+                     ifelse(language == "it", "Italian", "English")),
+              type = "message"
+            )
+          }, error = function(e) {
+            shiny::showNotification(paste("Error registering lexicon:", e$message), type = "warning")
+          })
+        }
+        
+        # Also add to corpus if there's text content
+        text_cols <- names(data)[sapply(data, is.character)]
+        text_cols <- text_cols[!tolower(text_cols) %in% c("lemma_cat", "lemma", "cat", "pos", "tag")]
+        
+        if (length(text_cols) > 0) {
+          # Use first text column found
+          text_col <- text_cols[1]
+          texts <- data[[text_col]]
+          texts <- texts[!is.na(texts) & nchar(texts) > 0]
+          
+          if (length(texts) > 0) {
+            new_data <- data.frame(
+              text = texts,
+              doc_id = paste0("pos_lex_", seq_along(texts)),
+              source = "pos_lexicon_csv",
+              stringsAsFactors = FALSE
+            )
+            
+            # Merge with existing corpus
+            current_data <- corpus_data()
+            updated_data <- if(nrow(current_data) == 0) {
+              new_data
+            } else {
+              rbind(current_data, new_data)
+            }
+            
+            corpus_data(updated_data)
+            shiny::showNotification(sprintf("Added %d text entries from POS lexicon", length(texts)), 
+                            type = "message")
+          }
+        }
+        
+      }, error = function(e) {
+        shiny::showNotification(paste("Error importing POS-tagged CSV:", e$message), type = "error")
       })
     })
     
@@ -393,6 +603,12 @@ mod_corpus_io_server <- function(id) {
         
         shiny::showNotification(sprintf("Added %d manual documents", length(texts)), 
                         type = "message")
+        safe_log_action(
+          operation = "add_manual_documents",
+          parameters = list(source = input$manual_source),
+          input_state = list(lines = length(texts)),
+          output_state = list(total_docs = nrow(updated_data))
+        )
       }
     })
     
@@ -428,11 +644,31 @@ mod_corpus_io_server <- function(id) {
             source = "demo_twitter_ita", 
             stringsAsFactors = FALSE
           )
+        },
+        "en_news" = {
+          data.frame(
+            text = c(
+              "The government announced new economic measures to support businesses.",
+              "The football team won the national championship after an excellent season.",
+              "Scientific research shows important progress in regenerative medicine.",
+              "The film festival attracts thousands of visitors from around the world.",
+              "New technologies are revolutionizing the way we work and communicate."
+            ),
+            doc_id = c("en_news_1", "en_news_2", "en_news_3", "en_news_4", "en_news_5"),
+            source = "demo_en_news",
+            stringsAsFactors = FALSE
+          )
         }
       )
       
       corpus_data(demo_data)
       shiny::showNotification("Demo data loaded successfully", type = "message")
+      safe_log_action(
+        operation = "load_demo_data",
+        parameters = list(dataset = input$demo_dataset),
+        input_state = NULL,
+        output_state = list(docs = nrow(demo_data))
+      )
     })
     
     # Clear corpus
@@ -444,10 +680,17 @@ mod_corpus_io_server <- function(id) {
         stringsAsFactors = FALSE
       ))
       shiny::showNotification("Corpus cleared", type = "message")
+      safe_log_action(
+        operation = "clear_corpus",
+        parameters = list(trigger = "clear_btn"),
+        input_state = NULL,
+        output_state = list(docs = 0)
+      )
     })
     
     # Corpus preview
     output$preview_table <- DT::renderDataTable({
+      calc_trigger()
       shiny::req(corpus_data())
       
       preview_data <- switch(input$preview_type,
@@ -455,7 +698,11 @@ mod_corpus_io_server <- function(id) {
         "tail" = tail(corpus_data(), input$preview_rows),
         "sample" = {
           data <- corpus_data()
-          data[sample(min(nrow(data), input$preview_rows)), ]
+          if (nrow(data) > 0) {
+            data[sample(min(nrow(data), input$preview_rows)), ]
+          } else {
+            data
+          }
         }
       )
       
@@ -479,22 +726,23 @@ mod_corpus_io_server <- function(id) {
     
     # Corpus info
     output$corpus_info <- shiny::renderPrint({
+      calc_trigger()
       data <- corpus_data()
+      lang_label <- if (!is.null(input$corpus_language) && input$corpus_language == "en") "English" else "Italian"
       if(nrow(data) == 0) {
         cat("No corpus data loaded.\n")
       } else {
-        stats <- TextWiller3::get_corpus_stats(data$text)
+        # Safe stats calculation
+        word_counts <- sapply(strsplit(data$text, "\\s+"), length)
+        total_words <- sum(word_counts)
+        avg_words <- if (length(word_counts) > 0) round(mean(word_counts), 1) else 0
+        
         cat("Corpus Summary:\n")
         cat("Total documents:", nrow(data), "\n")
         cat("Sources:", paste(unique(data$source), collapse = ", "), "\n")
-        cat("Total words:", stats$total_words, "\n")
-        vocab_size <- if(stats$total_words > 0) {
-          nrow(TextWiller3::calculate_word_frequencies_enhanced(data$text))
-        } else {
-          0
-        }
-        cat("Vocabulary size:", vocab_size, "\n")
-        cat("Average document length:", stats$avg_words, "words\n")
+        cat("Corpus language:", lang_label, "\n")
+        cat("Total words:", total_words, "\n")
+        cat("Average document length:", avg_words, "words\n")
       }
     })
     

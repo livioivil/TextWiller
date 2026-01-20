@@ -64,11 +64,18 @@ rake_multiword_candidates <- function(x,
   if (!all(c(group, term, "upos") %in% names(data))) {
     stop("Input data frame must contain columns: ", paste(c(group, term, "upos"), collapse = ", "))
   }
+  if (!is.data.frame(data) || nrow(data) == 0) {
+    empty_stats <- data.frame(keyword = character(), ngram = integer(), freq = integer(), stringsAsFactors = FALSE)
+    return(list(stats = empty_stats, dfMW = data))
+  }
   
   stats <- switch(
     type,
     automatic = {
       relevant_rows <- data$upos %in% relevant
+      if (!any(relevant_rows)) {
+        return(list(stats = data.frame(keyword = character(), ngram = integer(), freq = integer(), stringsAsFactors = FALSE), dfMW = data.frame()))
+      }
       switch(
         method,
         rake = {
@@ -130,11 +137,27 @@ rake_multiword_candidates <- function(x,
       manual
     }
   )
+  # Normalize candidate columns to avoid type issues in downstream recoding
+  if (is.data.frame(stats) && nrow(stats) > 0) {
+    if ("keyword" %in% names(stats)) {
+      stats$keyword <- as.character(stats$keyword)
+    }
+    if ("ngram" %in% names(stats)) {
+      stats$ngram <- as.integer(stats$ngram)
+    }
+  }
   
   # Filter tokens to relevant POS tags
   token_subset <- data[data$upos %in% relevant, , drop = FALSE]
   token_subset$lemma <- as.character(token_subset$lemma)
   token_subset$token <- as.character(token_subset$token)
+  
+  if (nrow(stats) == 0) {
+    token_subset$multiword <- if (term == "lemma") token_subset$lemma else token_subset$token
+    token_subset$upos_multiword <- token_subset$upos
+    token_subset$ngram <- NA_integer_
+    return(list(stats = stats, dfMW = token_subset))
+  }
   
   # Recode into multi-words
   if (term == "lemma") {

@@ -319,9 +319,19 @@ extract_keywords <- function(corpus, method = "tfidf", top_n = 20) {
     return(empty_result)
   }
   
-  # Calculate term frequencies
-  all_terms <- unlist(strsplit(tolower(paste(corpus, collapse = " ")), "\\s+"))
-  all_terms <- all_terms[nchar(all_terms) > 1]
+  # Tokenize once on a sanitized version (remove regex-special chars)
+  clean_corpus <- gsub("[^[:alnum:]\\s]", " ", tolower(corpus))
+  tokens_by_doc <- strsplit(clean_corpus, "\\s+")
+  tokens_by_doc <- lapply(tokens_by_doc, function(x) x[nchar(x) > 1])
+  stopwords <- tryCatch(
+    TextWiller3::get_language_config()$get_stopwords(TextWiller3::get_language_config()$current_language),
+    error = function(e) character(0)
+  )
+  if (length(stopwords) > 0) {
+    tokens_by_doc <- lapply(tokens_by_doc, function(x) x[!x %in% tolower(stopwords)])
+  }
+
+  all_terms <- unlist(tokens_by_doc, use.names = FALSE)
   
   if (length(all_terms) == 0) {
     empty_result <- data.frame(term = character(), score = numeric())
@@ -335,14 +345,13 @@ extract_keywords <- function(corpus, method = "tfidf", top_n = 20) {
     return(empty_result)
   }
   
-  term_freq <- table(all_terms)
-  term_freq <- sort(term_freq, decreasing = TRUE)
+  term_freq <- sort(table(all_terms), decreasing = TRUE)
   
   if (method == "tfidf") {
-    # Simple TF-IDF implementation
-    doc_freq <- sapply(names(term_freq), function(term) {
-      sum(grepl(paste0("\\b", term, "\\b"), tolower(corpus)))
-    })
+    # Simple TF-IDF implementation (doc frequency computed on token sets)
+    doc_freq <- vapply(names(term_freq), function(term) {
+      sum(vapply(tokens_by_doc, function(doc_tokens) term %in% doc_tokens, logical(1)))
+    }, integer(1))
     
     tf <- as.numeric(term_freq)
     idf <- log(length(corpus) / (doc_freq + 1))
@@ -376,6 +385,12 @@ extract_keywords <- function(corpus, method = "tfidf", top_n = 20) {
   )
   
   return(result)
+}
+
+#' Escape regex meta-characters in a string
+#' @noRd
+escape_regex <- function(x) {
+  gsub("([.\\^$|()*+?{}\\[\\]\\\\])", "\\\\\\1", x)
 }
 
 #' Summarize core lexical features (Brunato-inspired)
@@ -444,4 +459,127 @@ summarize_lexical_features <- function(corpus) {
   )
   
   list(basic = basic, placeholders = placeholders)
+}
+
+#' Summarize dependency-based linguistic features from UDPipe annotations
+#'
+#' @param tokens Data frame produced by `udpipe::udpipe_annotate`
+#' @return List with summary, POS distribution, dependency relations, and verb mood/tense/person tables
+#' @export
+summarize_dependency_features <- function(tokens) {
+  if (is.null(tokens) || !is.data.frame(tokens) || nrow(tokens) == 0) {
+    empty <- data.frame(feature = character(), value = character(), stringsAsFactors = FALSE)
+    return(list(
+      summary = empty,
+      pos_distribution = empty,
+      dep_relations = empty,
+      verb_mood_tense = empty
+    ))
+  }
+  
+  safe_table <- function(x) {
+    if (is.null(x) || length(x) == 0) return(data.frame(value = character(), freq = integer(), percent = numeric()))
+    tab <- sort(table(x), decreasing = TRUE)
+    data.frame(
+      value = names(tab),
+      freq = as.integer(tab),
+      percent = round(as.integer(tab) / sum(tab) * 100, 2),
+      stringsAsFactors = FALSE
+    )
+  }
+  
+  pos_dist <- safe_table(tokens$upos)
+  dep_rel <- safe_table(tokens$dep_rel)
+  
+  # Parse UD features for verbs
+  parse_feats <- function(feats, key) {
+    if (is.null(feats)) return(rep(NA_character_, length(feats)))
+    sapply(feats, function(f) {
+      parts <- strsplit(f, "\\|", fixed = FALSE)[[1]]
+      val <- parts[grepl(paste0("^", key, "="), parts)]
+      if (length(val) == 0) return(NA_character_)
+      sub(paste0("^", key, "="), "", val[1])
+    })
+  }
+  verb_rows <- tokens$upos == "VERB"
+  verb_feats <- tokens$feats
+  verb_mood <- parse_feats(verb_feats, "Mood")
+  verb_tense <- parse_feats(verb_feats, "Tense")
+  verb_person <- parse_feats(verb_feats, "Person")
+  verb_mood_tense <- data.frame(
+    mood = verb_mood[verb_rows],
+    tense = verb_tense[verb_rows],
+    person = verb_person[verb_rows],
+    stringsAsFactors = FALSE
+  )
+  verb_mood_tense <- verb_mood_tense[stats::complete.cases(verb_mood_tense), , drop = FALSE]
+  verb_mood_tense_summary <- if (nrow(verb_mood_tense) > 0) {
+    aggregate(list(freq = rep(1, nrow(verb_mood_tense))), by = list(
+      mood = verb_mood_tense$mood,
+      tense = verb_mood_tense$tense,
+      person = verb_mood_tense$person
+    ), FUN = sum)
+  } else {
+    data.frame(mood = character(), tense = character(), person = character(), freq = integer(), stringsAsFactors = FALSE)
+  }
+  
+  # Tree depth and link length
+  tokens$head_token_id[is.na(tokens$head_token_id)] <- 0
+  compute_depth <- function(df) {
+    depth <- integer(nrow(df))
+    for (i in seq_len(nrow(df))) {
+      current <- df$head_token_id[i]
+      d <- 1L
+      guard <- 0L
+      while (!is.na(current) && current > 0 && guard < nrow(df)) {
+        d <- d + 1L
+        guard <- guard + 1L
+        next_row <- which(df$token_id == current)
+        if (length(next_row) == 0) break
+        current <- df$head_token_id[next_row[1]]
+      }
+      depth[i] <- d
+    }
+    depth
+  }
+  tokens$depth <- compute_depth(tokens)
+  
+  # Link length
+  tokens$link_length <- abs(tokens$token_id - tokens$head_token_id)
+  tokens$link_length[is.na(tokens$link_length)] <- 0
+  
+  # Subordination metrics
+  sub_rel <- c("advcl", "ccomp", "xcomp", "acl")
+  sub_count <- sum(tokens$dep_rel %in% sub_rel, na.rm = TRUE)
+  sentences <- if ("sentence_id" %in% names(tokens)) unique(tokens$sentence_id) else NA
+  n_sent <- length(sentences)
+  
+  summary <- data.frame(
+    feature = c(
+      "POS distribution",
+      "Verb mood/tense/person distribution",
+      "Dependency relations",
+      "Average parse tree depth",
+      "Average dependency link length",
+      "Subordination per sentence",
+      "Tokens per sentence"
+    ),
+    value = c(
+      if (nrow(pos_dist) > 0) "Available" else "Not available",
+      if (nrow(verb_mood_tense_summary) > 0) "Available" else "Not available",
+      if (nrow(dep_rel) > 0) "Available" else "Not available",
+      if (nrow(tokens) > 0) round(mean(tokens$depth, na.rm = TRUE), 2) else NA,
+      if (nrow(tokens) > 0) round(mean(tokens$link_length, na.rm = TRUE), 2) else NA,
+      if (n_sent > 0) round(sub_count / n_sent, 2) else NA,
+      if (n_sent > 0) round(nrow(tokens) / n_sent, 2) else NA
+    ),
+    stringsAsFactors = FALSE
+  )
+  
+  list(
+    summary = summary,
+    pos_distribution = pos_dist,
+    dep_relations = dep_rel,
+    verb_mood_tense = verb_mood_tense_summary
+  )
 }

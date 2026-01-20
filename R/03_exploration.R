@@ -64,8 +64,7 @@ analyze_sentiment <- function(text, use_legacy = TRUE) {
   if (use_legacy && exists("sentiment")) {
     result <- sentiment(text)
   } else {
-    warning("Original sentiment function not available. Using basic fallback.")
-    result <- rep(0, length(text))  # Basic fallback
+    result <- TextWiller3::analyze_sentiment_it(text, use_legacy = FALSE)
   }
   
   log_reproducibility_action(
@@ -91,8 +90,7 @@ classify_users <- function(names, use_legacy = TRUE) {
   if (use_legacy && exists("classificaUtenti")) {
     result <- classificaUtenti(names)
   } else {
-    warning("Original classificaUtenti not available.")
-    result <- rep("unknown", length(names))
+    result <- TextWiller3::classify_gender_it(names, use_legacy = FALSE)
   }
   
   log_reproducibility_action(

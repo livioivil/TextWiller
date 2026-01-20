@@ -15,11 +15,11 @@ analyze_sentiment_it <- function(text, algorithm = "Mattivio", normalizzaTesti =
   mc <- match.call()
   original_text <- text
   if (use_legacy && exists("sentiment")) {
-    # Use original TextWiller sentiment function
+    # Usa la funzione originale, se presente
     result <- sentiment(text, algorithm = algorithm, normalizzaTesti = normalizzaTesti)
   } else {
-    # Enhanced fallback sentiment analysis
-    result <- sentiment_fallback(text)
+    # Usa sempre il dizionario completo presente in data/
+    result <- sentiment_dictionary_scores(text)
   }
   
   log_reproducibility_action(
@@ -33,29 +33,34 @@ analyze_sentiment_it <- function(text, algorithm = "Mattivio", normalizzaTesti =
   result
 }
 
-#' Fallback sentiment analysis
+#' Scoring basato sul dizionario di sentiment (data/dizionario_sentiment_ita)
 #' @noRd
-sentiment_fallback <- function(text) {
-  # Basic sentiment analysis based on Italian sentiment dictionaries
-  if (exists("dizionario_sentiment_ita")) {
-    data(dizionario_sentiment_ita)
-    dict <- dizionario_sentiment_ita
-  } else {
-    # Very basic Italian sentiment words
-    dict <- data.frame(
-      word = c("buono", "bello", "ottimo", "eccellente", "fantastico", 
-               "brutto", "cattivo", "pessimo", "terribile", "orribile"),
-      score = c(1, 1, 1, 1, 1, -1, -1, -1, -1, -1)
-    )
+sentiment_dictionary_scores <- function(text) {
+  dict <- load_sentiment_dictionary()
+  keywords <- tolower(dict$keyword)
+  scores <- dict$score
+  vapply(text, function(txt) {
+    tokens <- strsplit(tolower(txt), "\\s+")[[1]]
+    matches <- match(tokens, keywords)
+    sum(scores[matches], na.rm = TRUE)
+  }, numeric(1))
+}
+
+#' Carica il dizionario di sentiment completo (errore se mancante)
+#' @noRd
+load_sentiment_dictionary <- function() {
+  if (!exists("dizionario_sentiment_ita", envir = environment(), inherits = FALSE)) {
+    if (exists("dizionario_sentiment_ita", envir = .GlobalEnv, inherits = FALSE)) {
+      assign("dizionario_sentiment_ita", get("dizionario_sentiment_ita", envir = .GlobalEnv), envir = environment())
+    } else {
+      data(dizionario_sentiment_ita, package = "TextWiller3", envir = environment())
+    }
   }
-  
-  scores <- sapply(text, function(txt) {
-    words <- strsplit(tolower(txt), "\\s+")[[1]]
-    word_scores <- dict$score[match(words, dict$word)]
-    sum(word_scores, na.rm = TRUE)
-  })
-  
-  return(scores)
+  dict <- get("dizionario_sentiment_ita", envir = environment(), inherits = FALSE)
+  if (is.null(dict$keyword) || is.null(dict$score)) {
+    stop("dizionario_sentiment_ita non contiene colonne 'keyword' e 'score'.")
+  }
+  dict
 }
 
 #' Load sentiment dictionaries

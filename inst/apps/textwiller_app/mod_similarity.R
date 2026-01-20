@@ -67,7 +67,7 @@ similarity_server <- function(id) {
         }
         
         # calcola gli embeddings
-        embeddings <- text::textEmbed(texts, model = input$model)
+        embeddings <- text::textEmbed(texts = texts, model = input$model)
         
         # estrazione embeddings in modo robusto
         if ("texts" %in% names(embeddings)) {

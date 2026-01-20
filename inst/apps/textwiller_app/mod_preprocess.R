@@ -1,20 +1,17 @@
-# Enhanced Preprocessing Module
 # Enhanced Preprocessing Module with Legacy Support
 mod_preprocess_ui <- function(id) {
   ns <- shiny::NS(id)
   shiny::tagList(
-    shiny::h3("Configurable Preprocessing Pipeline"),
-    
-    fluidRow(
-      column(12,
-        shiny::wellPanel(
-          shiny::h4("TextWiller Legacy Features"),
-          shiny::checkboxInput(ns("use_legacy"), "Use original TextWiller normalization", value = TRUE),
-          shiny::helpText("Abilita le funzioni storiche di TextWiller (normalizzazione, slang, emoticon) quando disponibili.")
+    shiny::fluidRow(
+      shiny::column(8, shiny::h3("Preprocessing Pipeline Configuration")),
+      shiny::column(4, align = "right",
+        shiny::actionButton(
+          ns("calculate"),
+          "Calculate",
+          class = "btn-success"
         )
       )
     ),
-    
     fluidRow(
       column(6,
         shiny::wellPanel(
@@ -24,10 +21,10 @@ mod_preprocess_ui <- function(id) {
               "Convert to lowercase" = "lowercase",
               "Remove punctuation" = "remove_punct", 
               "Remove numbers" = "remove_numbers",
+              "Remove symbols" = "remove_symbols",
               "Remove extra whitespace" = "remove_whitespace",
               "Normalize URLs" = "normalize_urls",
-              "Normalize emoticons" = "normalize_emoticons",
-              "Normalize Italian slang" = "normalize_slang"
+              "Normalize emoticons" = "normalize_emoticons"
             ),
             selected = c("lowercase", "remove_punct", "remove_whitespace")
           )
@@ -67,20 +64,21 @@ mod_preprocess_ui <- function(id) {
             column(6,
               actionButton(
                 ns("load_stopwords_iso"),
-                "Scarica stopwords-iso",
+                "Download stopwords-iso",
                 class = "btn-info btn-block",
                 icon = shiny::icon("cloud-download-alt")
               )
             )
           ),
-          helpText("Le stopwords personalizzate possono essere caricate dal tab \"Language & Resources\"."),
+          helpText("Custom stopwords can be loaded from the \"Language & Resources\" tab."),
           verbatimTextOutput(ns("stopword_status")),
           tags$hr(),
-          checkboxInput(ns("enable_multiword"), "Abilita creazione multi-word (RAKE/Collocations)", value = FALSE),
-          fileInput(ns("udpipe_model"), "Modello UDPipe (.udpipe)", accept = ".udpipe"),
+          checkboxInput(ns("enable_multiword"), "Enable multi-word creation (RAKE/Collocations)", value = FALSE),
+          fileInput(ns("udpipe_model"), "UDPipe model (.udpipe)", accept = ".udpipe"),
+          selectInput(ns("udpipe_resource"), "Or select a registered model", choices = c("None" = "")),
           fluidRow(
             column(4,
-              selectInput(ns("multiword_method"), "Metodo",
+              selectInput(ns("multiword_method"), "Method",
                 choices = c("RAKE" = "rake", "PMI" = "pmi", "MD" = "md", "LFMD" = "lfmd"),
                 selected = "rake"
               )
@@ -94,10 +92,10 @@ mod_preprocess_ui <- function(id) {
           ),
           fluidRow(
             column(6,
-              numericInput(ns("multiword_freq_min"), "Frequenza minima", value = 5, min = 1, max = 100)
+              numericInput(ns("multiword_freq_min"), "Minimum frequency", value = 2, min = 1, max = 100)
             ),
             column(6,
-              selectInput(ns("multiword_term"), "Ricostruisci su", choices = c("lemma", "token"), selected = "lemma")
+              selectInput(ns("multiword_term"), "Rebuild on", choices = c("lemma", "token"), selected = "lemma")
             )
           ),
           verbatimTextOutput(ns("multiword_status")),
@@ -165,32 +163,60 @@ mod_preprocess_server <- function(id, corpus) {
   shiny::moduleServer(id, function(input, output, session) {
     
     processed_corpus <- shiny::reactiveVal()
-    lang_cfg <- TextWiller3::get_language_config()
+    lang_cfg <- tryCatch({
+      TextWiller3::get_language_config()
+    }, error = function(e) {
+      list(current_language = "it", get_version = function() 0)
+    })
+    
     analysis_language <- shiny::reactive({
-      lang_cfg$get_version()
-      lang_cfg$current_language
+      tryCatch({
+        TextWiller3::get_analysis_language()
+      }, error = function(e) {
+        lang_cfg$current_language
+      })
     })
     
     multiword_model <- shiny::reactiveVal(NULL)
-    multiword_model_label <- shiny::reactiveVal("Nessun modello UDPipe caricato.")
+    multiword_model_label <- shiny::reactiveVal("No UDPipe model loaded.")
     multiword_stats <- shiny::reactiveVal(NULL)
+    multiword_message <- shiny::reactiveVal(NULL)
+    udpipe_inventory <- shiny::reactivePoll(
+      2000, session,
+      checkFunc = function() paste(input$calculate, analysis_language()),
+      valueFunc = function() {
+        tryCatch({
+          TextWiller3::list_language_resources(
+            language = analysis_language(),
+            type = "udpipe_model",
+            include_content = TRUE
+          )
+        }, error = function(e) {
+          data.frame()
+        })
+      }
+    )
     
     stopword_inventory <- shiny::reactivePoll(
       2000, session,
-      checkFunc = function() paste(lang_cfg$get_version(), analysis_language()),
+      checkFunc = function() paste(input$calculate, analysis_language()),
       valueFunc = function() {
-        TextWiller3::list_language_resources(
-          language = analysis_language(),
-          type = "stopwords",
-          include_content = TRUE
-        )
+        tryCatch({
+          TextWiller3::list_language_resources(
+            language = analysis_language(),
+            type = "stopwords",
+            include_content = TRUE
+          )
+        }, error = function(e) {
+          data.frame()
+        })
       }
     )
     
     custom_stopwords <- shiny::reactive({
       resources <- stopword_inventory()
       selected <- input$stopword_source
-      if (is.null(resources) || nrow(resources) == 0 || is.null(selected) || selected == "builtin") {
+      if (!is.data.frame(resources) || nrow(resources) == 0 || is.null(selected) || selected == "builtin") {
         return(NULL)
       }
       idx <- which(resources$name == selected)
@@ -198,6 +224,46 @@ mod_preprocess_server <- function(id, corpus) {
         return(NULL)
       }
       resources$content[[idx]]
+    })
+    
+    shiny::observe({
+      resources <- udpipe_inventory()
+      choices <- c("None" = "")
+      if (is.data.frame(resources) && nrow(resources) > 0) {
+        labels <- paste0(resources$name, " [", resources$type, "]")
+        names(labels) <- resources$name
+        choices <- c(choices, labels)
+      }
+      shiny::updateSelectInput(session, "udpipe_resource", choices = choices)
+    })
+    
+    observeEvent(input$udpipe_resource, {
+      res_name <- input$udpipe_resource
+      if (is.null(res_name) || res_name == "") return()
+      resources <- udpipe_inventory()
+      idx <- which(resources$name == res_name)
+      if (length(idx) == 0) return()
+      path <- resources$path[idx]
+      if (is.null(path) || is.na(path)) {
+        path <- resources$content[[idx]]
+      }
+      if (is.null(path) || is.na(path) || !file.exists(path)) {
+        shiny::showNotification("Model path not available.", type = "error")
+        return()
+      }
+      tryCatch({
+        if (requireNamespace("udpipe", quietly = TRUE)) {
+          model <- udpipe::udpipe_load_model(file = path)
+          multiword_model(model)
+          multiword_model_label(paste("Model loaded:", basename(path)))
+          multiword_message(NULL)
+          shiny::showNotification("UDPipe model loaded from resources.", type = "message")
+        } else {
+          shiny::showNotification("Install 'udpipe' package to use UDPipe models.", type = "error")
+        }
+      }, error = function(e) {
+        shiny::showNotification(paste("Error loading UDPipe model:", e$message), type = "error")
+      })
     })
     
     shiny::observe({
@@ -213,11 +279,11 @@ mod_preprocess_server <- function(id, corpus) {
     
     output$language_badge <- shiny::renderUI({
       lang <- analysis_language()
-      label <- ifelse(lang == "it", "Italiano", "English")
+      label <- ifelse(lang == "it", "Italian", "English")
       shiny::p(
         shiny::strong("Analysis language: "),
         label,
-        shiny::span(" (modificabile nel tab Language & Resources)", style = "font-size:90%; color:#7f8c8d;")
+        shiny::span(" (change in Language & Resources tab)", style = "font-size:90%; color:#7f8c8d;")
       )
     })
     
@@ -230,27 +296,27 @@ mod_preprocess_server <- function(id, corpus) {
           resource_name = name
         )
         shiny::showNotification(
-          paste("Scaricate", length(words), "stopwords dal repository stopwords-iso"),
+          paste("Downloaded", length(words), "stopwords from stopwords-iso"),
           type = "message"
         )
         shiny::updateSelectInput(session, "stopword_source", selected = name)
       }, error = function(e) {
-        shiny::showNotification(paste("Errore caricamento stopwords:", e$message), type = "error")
+        shiny::showNotification(paste("Error downloading stopwords:", e$message), type = "error")
       })
     })
     
     output$stopword_status <- shiny::renderPrint({
       resources <- stopword_inventory()
-      if (is.null(resources) || nrow(resources) == 0) {
-        cat("Uso stopwords integrate.")
+      if (!is.data.frame(resources) || nrow(resources) == 0) {
+        cat("Using built-in stopwords.")
       } else if (input$stopword_source == "builtin") {
-        cat("Stopwords personalizzate disponibili:", nrow(resources))
+        cat("Custom stopwords available:", nrow(resources))
       } else {
         selected <- custom_stopwords()
         if (is.null(selected)) {
-          cat("Nessuna informazione per la risorsa selezionata.")
+          cat("No information for selected resource.")
         } else {
-          cat("Stopwords attive:", length(selected))
+          cat("Active stopwords:", length(selected))
         }
       }
     })
@@ -258,26 +324,34 @@ mod_preprocess_server <- function(id, corpus) {
     observeEvent(input$udpipe_model, {
       req(input$udpipe_model$datapath)
       tryCatch({
-        model <- udpipe::udpipe_load_model(file = input$udpipe_model$datapath)
-        multiword_model(model)
-        multiword_model_label(paste("Modello caricato:", input$udpipe_model$name))
-        shiny::showNotification("Modello UDPipe caricato correttamente", type = "message")
+        if (requireNamespace("udpipe", quietly = TRUE)) {
+          model <- udpipe::udpipe_load_model(file = input$udpipe_model$datapath)
+          multiword_model(model)
+          multiword_model_label(paste("Model loaded:", input$udpipe_model$name))
+          multiword_message(NULL)
+          shiny::showNotification("UDPipe model loaded successfully", type = "message")
+        } else {
+          shiny::showNotification("Install 'udpipe' package to use UDPipe models.", type = "error")
+        }
       }, error = function(e) {
-        shiny::showNotification(paste("Errore caricamento modello UDPipe:", e$message), type = "error")
+        shiny::showNotification(paste("Error loading UDPipe model:", e$message), type = "error")
       })
     })
     
     observeEvent(input$enable_multiword, {
       if (!isTRUE(input$enable_multiword)) {
         multiword_stats(NULL)
+        multiword_message(NULL)
       }
     })
     
     output$multiword_status <- shiny::renderPrint({
       if (!isTRUE(input$enable_multiword)) {
-        cat("Multi-word disabilitato.")
+        cat("Multi-word disabled.")
       } else if (is.null(multiword_model())) {
-        cat("Carica un modello UDPipe (.udpipe) per abilitare la creazione di multi-word.")
+        cat("Load a UDPipe model (.udpipe) or select one from registered models.")
+      } else if (!is.null(multiword_message())) {
+        cat(multiword_model_label(), "\n", multiword_message())
       } else {
         cat(multiword_model_label())
       }
@@ -286,7 +360,10 @@ mod_preprocess_server <- function(id, corpus) {
     output$multiword_table <- shiny::renderTable({
       stats <- multiword_stats()
       if (is.null(stats) || nrow(stats) == 0) {
-        return(data.frame(Messaggio = "Nessuna multi-word rilevata finora"))
+        return(data.frame(Message = "No multi-words detected yet"))
+      }
+      if ("Message" %in% names(stats)) {
+        return(stats)
       }
       head(stats[, intersect(c("keyword", "freq", "ngram", "pmi", "md", "lfmd"), names(stats)), drop = FALSE], 10)
     }, striped = TRUE, bordered = TRUE)
@@ -299,7 +376,8 @@ mod_preprocess_server <- function(id, corpus) {
       
       model <- multiword_model()
       if (is.null(model)) {
-        shiny::showNotification("Caricare un modello UDPipe per usare i multi-word.", type = "warning")
+        multiword_message("No active UDPipe model: load one or select from catalog.")
+        shiny::showNotification("Load a UDPipe model to use multi-words.", type = "warning")
         return(text_vec)
       }
       
@@ -311,17 +389,19 @@ mod_preprocess_server <- function(id, corpus) {
       annotations <- tryCatch({
         udpipe::udpipe_annotate(model, x = text_vec, doc_id = doc_ids)
       }, error = function(e) {
-        shiny::showNotification(paste("Errore annotazione UDPipe:", e$message), type = "error")
+        shiny::showNotification(paste("UDPipe annotation error:", e$message), type = "error")
         return(NULL)
       })
       
       if (is.null(annotations)) {
+        multiword_message("UDPipe annotation failed.")
         return(text_vec)
       }
       
       tokens <- as.data.frame(annotations)
       if (nrow(tokens) == 0) {
         multiword_stats(NULL)
+        multiword_message("Empty annotation: check text or model.")
         return(text_vec)
       }
       
@@ -330,6 +410,12 @@ mod_preprocess_server <- function(id, corpus) {
       tokens$lemma[is.na(tokens$lemma) | tokens$lemma == ""] <- tokens$token[is.na(tokens$lemma) | tokens$lemma == ""]
       
       token_subset <- tokens[, c("doc_id", "term_id", "token", "lemma", "upos", "POSSelected")]
+      n_relevant <- sum(token_subset$upos %in% c("PROPN", "NOUN", "ADJ", "VERB"))
+      if (n_relevant == 0) {
+        multiword_stats(data.frame(Message = "No relevant POS (NOUN/VERB/ADJ/PROPN) found."))
+        multiword_message("No relevant POS in text.")
+        return(text_vec)
+      }
       
       results <- tryCatch({
         TextWiller3::rake_multiword_candidates(
@@ -342,7 +428,8 @@ mod_preprocess_server <- function(id, corpus) {
           method = input$multiword_method
         )
       }, error = function(e) {
-        shiny::showNotification(paste("Errore generazione multi-word:", e$message), type = "error")
+        shiny::showNotification(paste("Error generating multi-words:", e$message), type = "error")
+        multiword_message(paste("Generation error:", e$message))
         NULL
       })
       
@@ -351,16 +438,19 @@ mod_preprocess_server <- function(id, corpus) {
       }
       
       if (is.null(results$stats) || nrow(results$stats) == 0) {
-        multiword_stats(NULL)
+        multiword_stats(data.frame(Message = "No multi-words found with current parameters"))
+        multiword_message("No multi-words found: try lowering Minimum frequency or adjusting Ngram min/max.")
         return(text_vec)
       }
       
       multiword_stats(head(results$stats, 50))
+      multiword_message(NULL)
       
       updated_tokens <- tryCatch({
         TextWiller3::apply_rake_multiwords(token_subset, results, term = input$multiword_term)
       }, error = function(e) {
-        shiny::showNotification(paste("Errore applicazione multi-word:", e$message), type = "error")
+        shiny::showNotification(paste("Error applying multi-words:", e$message), type = "error")
+        multiword_message(paste("Application error:", e$message))
         NULL
       })
       
@@ -373,7 +463,7 @@ mod_preprocess_server <- function(id, corpus) {
       updated_tokens <- updated_tokens[keep_rows, , drop = FALSE]
       
       field <- if (input$multiword_term == "lemma") updated_tokens$lemma else updated_tokens$token
-      reconstructed <- tapply(field, updated_tokens$doc_id, function(words) paste(words, collapse = " "))
+      reconstructed <- vapply(split(field, updated_tokens$doc_id), paste, character(1), collapse = " ")
       
       new_text <- text_vec
       matched <- match(names(reconstructed), doc_ids)
@@ -386,7 +476,6 @@ mod_preprocess_server <- function(id, corpus) {
       shiny::updateCheckboxGroupInput(session, "normalization_steps", 
                               selected = c("lowercase", "remove_punct", "remove_whitespace"))
       shiny::updateCheckboxGroupInput(session, "advanced_steps", selected = character(0))
-      shiny::updateSelectInput(session, "language", selected = "it")
       shiny::updateNumericInput(session, "min_word_length", value = 2)
       processed_corpus(NULL)
       shiny::showNotification("Pipeline reset to defaults", type = "message")
@@ -421,6 +510,10 @@ mod_preprocess_server <- function(id, corpus) {
       if("remove_numbers" %in% input$normalization_steps) {
         text <- gsub("[[:digit:]]", " ", text)
       }
+
+      if("remove_symbols" %in% input$normalization_steps) {
+        text <- gsub("[^[:alnum:]\\s]", " ", text)
+      }
       
       if("remove_whitespace" %in% input$normalization_steps) {
         text <- gsub("\\s+", " ", text)
@@ -429,11 +522,16 @@ mod_preprocess_server <- function(id, corpus) {
       
       # Apply advanced steps
       if("remove_stopwords" %in% input$advanced_steps) {
-        text <- TextWiller3::remove_stopwords_enhanced(
-          text,
-          language = analysis_language(),
-          custom_stopwords = custom_stopwords()
-        )
+        tryCatch({
+          text <- TextWiller3::remove_stopwords_enhanced(
+            text,
+            language = analysis_language(),
+            custom_stopwords = custom_stopwords()
+          )
+        }, error = function(e) {
+          # Fallback: simple stopword removal
+          cat("Stopword removal error, using fallback\n")
+        })
       }
       
       if("remove_short_words" %in% input$advanced_steps) {
@@ -449,7 +547,11 @@ mod_preprocess_server <- function(id, corpus) {
         text <- sapply(strsplit(text, "\\s+"), function(tokens) {
           tokens <- tokens[nchar(tokens) > 0]
           if (length(tokens) == 0) return("")
-          stemmed <- SnowballC::wordStem(tokens, language = stem_lang)
+          if (requireNamespace("SnowballC", quietly = TRUE)) {
+            stemmed <- SnowballC::wordStem(tokens, language = stem_lang)
+          } else {
+            stemmed <- tokens  # Fallback if SnowballC not available
+          }
           paste(stemmed, collapse = " ")
         })
       }
@@ -460,7 +562,7 @@ mod_preprocess_server <- function(id, corpus) {
     }
     
     # Preview processing
-    shiny::observeEvent(input$preview_btn, {
+    shiny::observeEvent(list(input$preview_btn, input$calculate), {
       shiny::req(corpus())
       
       preview_text <- head(corpus(), 3)
@@ -473,33 +575,51 @@ mod_preprocess_server <- function(id, corpus) {
         }
       })
       
-      # Show statistics
-      original_stats <- TextWiller3::get_corpus_stats(preview_text)
-      processed_stats <- TextWiller3::get_corpus_stats(processed_preview)
-      
-      output$before_stats <- shiny::renderTable({
-        data.frame(
-          Metric = c("Documents", "Total Words", "Avg Words/Doc", "Vocabulary"),
-          Value = c(
-            original_stats$n_docs,
-            original_stats$total_words,
-            original_stats$avg_words,
-            nrow(TextWiller3::calculate_word_frequencies_enhanced(preview_text, preprocess = FALSE))
+      # Show statistics with safe fallbacks
+      tryCatch({
+        original_stats <- TextWiller3::get_corpus_stats(preview_text)
+        processed_stats <- TextWiller3::get_corpus_stats(processed_preview)
+        
+        output$before_stats <- shiny::renderTable({
+          data.frame(
+            Metric = c("Documents", "Total Words", "Avg Words/Doc"),
+            Value = c(
+              original_stats$n_docs,
+              original_stats$total_words,
+              original_stats$avg_words
+            )
           )
-        )
-      }, bordered = TRUE)
-      
-      output$after_stats <- shiny::renderTable({
-        data.frame(
-          Metric = c("Documents", "Total Words", "Avg Words/Doc", "Vocabulary"),
-          Value = c(
-            processed_stats$n_docs,
-            processed_stats$total_words,
-            processed_stats$avg_words,
-            nrow(TextWiller3::calculate_word_frequencies_enhanced(processed_preview, preprocess = FALSE))
+        }, bordered = TRUE)
+        
+        output$after_stats <- shiny::renderTable({
+          data.frame(
+            Metric = c("Documents", "Total Words", "Avg Words/Doc"),
+            Value = c(
+              processed_stats$n_docs,
+              processed_stats$total_words,
+              processed_stats$avg_words
+            )
           )
-        )
-      }, bordered = TRUE)
+        }, bordered = TRUE)
+      }, error = function(e) {
+        # Fallback stats
+        word_counts_orig <- sapply(strsplit(preview_text, "\\s+"), length)
+        word_counts_proc <- sapply(strsplit(processed_preview, "\\s+"), length)
+        
+        output$before_stats <- shiny::renderTable({
+          data.frame(
+            Metric = c("Documents", "Total Words", "Avg Words/Doc"),
+            Value = c(length(preview_text), sum(word_counts_orig), round(mean(word_counts_orig), 1))
+          )
+        }, bordered = TRUE)
+        
+        output$after_stats <- shiny::renderTable({
+          data.frame(
+            Metric = c("Documents", "Total Words", "Avg Words/Doc"),
+            Value = c(length(processed_preview), sum(word_counts_proc), round(mean(word_counts_proc), 1))
+          )
+        }, bordered = TRUE)
+      })
     })
     
     # Apply processing to full corpus
@@ -521,16 +641,16 @@ mod_preprocess_server <- function(id, corpus) {
       
       shiny::removeModal()
       
-      # Show summary
-      original_stats <- TextWiller3::get_corpus_stats(corpus())
-      processed_stats <- TextWiller3::get_corpus_stats(full_processed)
+      # Show summary with safe calculations
+      word_counts_orig <- sapply(strsplit(corpus(), "\\s+"), length)
+      word_counts_proc <- sapply(strsplit(full_processed, "\\s+"), length)
       
       shiny::showNotification(
         sprintf(
           "Processing complete! Reduced from %d to %d words (%.1f%%)",
-          original_stats$total_words,
-          processed_stats$total_words,
-          (1 - processed_stats$total_words / original_stats$total_words) * 100
+          sum(word_counts_orig),
+          sum(word_counts_proc),
+          (1 - sum(word_counts_proc) / sum(word_counts_orig)) * 100
         ),
         type = "message",
         duration = 10
