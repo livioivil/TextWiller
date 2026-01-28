@@ -269,7 +269,7 @@ export_history_script <- function(path) {
 #' @param parameters Named list of parameter values (character summaries)
 #' @param input_state Optional snapshot of inputs
 #' @param output_state Optional snapshot of outputs
-#' @noRd
+#' @export
 log_reproducibility_action <- function(module, operation, parameters = list(),
                                        input_state = NULL, output_state = NULL) {
   if (!isTRUE(getOption("textwiller.reproducibility_enabled", TRUE))) {

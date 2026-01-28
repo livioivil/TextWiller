@@ -18,7 +18,7 @@ analyze_sentiment_it <- function(text, algorithm = "Mattivio", normalizzaTesti =
     # Usa la funzione originale, se presente
     result <- sentiment(text, algorithm = algorithm, normalizzaTesti = normalizzaTesti)
   } else {
-    # Usa sempre il dizionario completo presente in data/
+    # Usa il dizionario completo presente in data/
     result <- sentiment_dictionary_scores(text)
   }
   

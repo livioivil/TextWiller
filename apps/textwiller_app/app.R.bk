@@ -1,0 +1,144 @@
+library(shiny)
+library(shinythemes)
+library(ggplot2)
+
+# Source all modules with proper error handling
+source_modules <- function() {
+  module_files <- c(
+    "mod_corpus_io.R",
+    "mod_preprocess.R", 
+    "mod_exploration.R",
+    "mod_lexical_analysis.R"  # NEW: Add lexical analysis module
+  )
+  
+  for (file in module_files) {
+    if (file.exists(file)) {
+      source(file, local = TRUE)
+    } else {
+      warning("Module file not found: ", file)
+    }
+  }
+}
+
+# Load modules
+source_modules()
+
+ui <- fluidPage(
+  theme = shinytheme("flatly"),
+  titlePanel("TextWiller 3.0 - Advanced Text Analysis"),
+  
+  sidebarLayout(
+    sidebarPanel(
+      width = 3,
+      h4("Navigation"),
+      wellPanel(
+        actionButton("nav_import", "📥 Import", class = "btn-block btn-primary"),
+        actionButton("nav_preprocess", "⚙️ Preprocess", class = "btn-block btn-default"),
+        actionButton("nav_explore", "📊 Explore", class = "btn-block btn-default"),
+        actionButton("nav_lexical", "📈 Lexical", class = "btn-block btn-default")  # NEW
+      ),
+      
+      # Current corpus info
+      wellPanel(
+        h4("Corpus Info"),
+        verbatimTextOutput("global_corpus_info")
+      )
+    ),
+    
+    mainPanel(
+      width = 9,
+      tabsetPanel(
+        id = "main_tabs",
+        type = "tabs",
+        
+        # Import Tab
+        tabPanel(
+          "Import Corpus",
+          icon = icon("upload"),
+          mod_corpus_io_ui("import")
+        ),
+        
+        # Preprocessing Tab  
+        tabPanel(
+          "Preprocessing",
+          icon = icon("cog"),
+          mod_preprocess_ui("preprocess")
+        ),
+        
+        # Exploration Tab
+        tabPanel(
+          "Exploration", 
+          icon = icon("chart-bar"),
+          mod_exploration_ui("exploration")
+        ),
+        
+        # NEW: Lexical Analysis Tab
+        tabPanel(
+          "Lexical Analysis",
+          icon = icon("chart-line"),
+          mod_lexical_analysis_ui("lexical")
+        )
+      )
+    )
+  )
+)
+
+server <- function(input, output, session) {
+  
+  # Navigation
+  observeEvent(input$nav_import, {
+    updateTabsetPanel(session, "main_tabs", selected = "Import Corpus")
+  })
+  
+  observeEvent(input$nav_preprocess, {
+    updateTabsetPanel(session, "main_tabs", selected = "Preprocessing") 
+  })
+  
+  observeEvent(input$nav_explore, {
+    updateTabsetPanel(session, "main_tabs", selected = "Exploration")
+  })
+  
+  observeEvent(input$nav_lexical, {
+    updateTabsetPanel(session, "main_tabs", selected = "Lexical Analysis")
+  })
+  
+  # Import module
+  imported_corpus <- mod_corpus_io_server("import")
+  
+  # Global corpus info
+  output$global_corpus_info <- renderPrint({
+    corpus <- imported_corpus()
+    if(is.null(corpus) || length(corpus) == 0) {
+      cat("No corpus loaded\n")
+      cat("Use Import tab to add documents")
+    } else {
+      stats <- TextWiller3::get_corpus_stats(corpus)
+      cat("Documents:", stats$n_docs, "\n")
+      cat("Total words:", stats$total_words, "\n")
+      cat("Avg length:", stats$avg_words, "words\n")
+      vocab_size <- if(stats$total_words > 0 && stats$n_docs > 0) {
+        nrow(TextWiller3::calculate_word_frequencies(corpus))
+      } else {
+        0
+      }
+      cat("Vocabulary:", vocab_size, "words\n")
+      
+      # NEW: Show lexical diversity
+      if(stats$total_words > 0) {
+        ttr <- TextWiller3::calculate_ttr(corpus)
+        cat("Lexical diversity:", round(ttr, 3), "(TTR)\n")
+      }
+    }
+  })
+  
+  # Preprocessing module
+  processed_corpus <- mod_preprocess_server("preprocess", imported_corpus)
+  
+  # Exploration module
+  mod_exploration_server("exploration", imported_corpus)
+  
+  # NEW: Lexical analysis module
+  mod_lexical_analysis_server("lexical", imported_corpus)
+}
+
+shinyApp(ui = ui, server = server)
